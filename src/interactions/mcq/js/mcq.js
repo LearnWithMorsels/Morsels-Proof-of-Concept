@@ -1,1 +1,1 @@
-import {Card} from '../card';
+console.log( 'MCQ INTERACTION - STOCK' );

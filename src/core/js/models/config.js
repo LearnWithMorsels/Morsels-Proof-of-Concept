@@ -1,5 +1,3 @@
-//import {CONFIG} from '../../app/config.json';
-
 export class ConfigModel {
 
 	constructor( configURI = '../../app/config.json' ) {
@@ -9,7 +7,6 @@ export class ConfigModel {
 					.then( response => response.json() )
 					.then( data => this.properties = data )
 					.then( data => resolve( data ) )
-					//.then( () => { console.info( this.properties ) } )
 					.catch( e => reject( e ) )
 			}
 		);

@@ -1,1 +1,1 @@
-console.log( 'app' );
+console.log( 'MCQ INTERACTION - APP' );
