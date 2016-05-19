@@ -1,0 +1,38 @@
+{
+	"title": "Mon Premier Cours",
+	"description": "Un cours d'essai en utilisant le cadre Morsels",
+	"_sections": [
+		{
+			"title": "Section un",
+			"_morsels": [
+				{
+					"title": "Question de maths simples",
+					"_content": {
+						"body": "Qu'est-ce que 2 + 2?",
+						"instruction": "S'il vous plaît sélectionner une réponse"
+					},
+					"_items": [
+						{
+							"title": "Un"
+						},
+						{
+							"title": "Deux"
+						},
+						{
+							"title": "Trois"
+						},
+						{
+							"title": "Quatre"
+						}
+					]
+				}
+			]
+		}
+	],
+	"_notes": {
+		"adding": {
+			"title": "Additionnant",
+			"body": "Vous pouvez facilement ajouter en ajoutant les numéros"
+		}
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"theme": "magnolia",
+	"languages": {
+		"primary": "en",
+		"other": [
+			"fr"
+		]
+	}
+}

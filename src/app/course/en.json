@@ -1,0 +1,52 @@
+{
+	"title": "My First Course",
+	"description": "A test course using the Morsels framework",
+	"_sections": [
+		{
+			"title": "Section one",
+			"_classes": "",
+			"_morsels": [
+				{
+					"title": "Simple maths question",
+					"_morsel": "mcq",
+					"_content": {
+						"body": "What is 2 + 2?",
+						"instruction": "Please select an answer"
+					},
+					"_items": [
+						{
+							"title": "One",
+							"_isCorrect": false
+						},
+						{
+							"title": "Two",
+							"_isCorrect": false
+						},
+						{
+							"title": "Three",
+							"_isCorrect": false
+						},
+						{
+							"title": "Four",
+							"_isCorrect": true
+						}
+					],
+					"_options": {
+						"_selectable": 1
+					},
+					"_feedback": {
+						"_correct": {
+							"_notes": ["adding"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"_notes": {
+		"adding": {
+			"title": "Adding Up",
+			"body": "You can easily add up by adding the numbers"
+		}
+	}
+}
