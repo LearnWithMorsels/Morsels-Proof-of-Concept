@@ -4,29 +4,30 @@ export class ConfigModel {
 
 	constructor( configURI = '../../app/config.json' ) {
 
-		this.proConfig = new Promise( ( resolve, reject ) => {
+		this.promise = new Promise( ( resolve, reject ) => {
 				fetch( configURI )
 					.then( response => response.json() )
-					//.then( data => this.properties = data )
+					.then( data => this.properties = data )
 					.then( data => resolve( data ) )
 					//.then( () => { console.info( this.properties ) } )
 					.catch( e => reject( e ) )
 			}
 		);
 
-	}
-
-	data() {
-
-		this.proConfig
+		this.promise
 			.then(
-				( data ) => {
-					console.info( 'Got the data!', data );
-					return data;
-				},
+				( data ) => { /*console.info( 'Got the data!', data )*/ },
 				( e ) => { console.error( ':(', e ) }
 			);
+		
+		return this;
 
+	}
+
+	get( strKey = null ) {
+
+		return ( strKey === null ) ? this.properties : ( this.properties[strKey] || null );
+		
 	}
 
 }

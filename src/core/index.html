@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script src="./js/vendor/polyfill.js"></script>
+        <script src="./js/vendor/system.js"></script>
+        <script>
+            System.config(
+                {
+                    packages: {
+                        js: {
+                            format: 'register',
+                            defaultExtension: 'js'
+                        }
+                    },
+                    meta: {
+                        'js/*': {
+                            format: 'cjs'
+                        }
+                    }
+                }
+            );
+
+            System.import( './js/morsels.js' )
+                    .then( null, console.error.bind( console ) );
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

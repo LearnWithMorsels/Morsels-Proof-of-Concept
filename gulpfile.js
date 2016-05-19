@@ -193,7 +193,7 @@ gulp.task( 'data', () => {
 });
 
 gulp.task( 'index', () => {
-	return gulp.src( ['./src/theme/' + objConfig.theme + '/index.html'] )
+	return gulp.src( ['./src/core/index.html'] )
 			.pipe( gulp.dest( './build' ) );
 });
 
@@ -203,6 +203,7 @@ gulp.task('js', ['vendor-js'], () => {
 	return gulp.src(
 			[
 				'./src/core/js/**/*.js',
+				//'!./src/core/js/init.js',
 				'!./src/core/js/vendor/**/*.js',
 				'./src/cards/*/js/*/**.js',
 				'./src/interactions/*/js/*/**.js'
