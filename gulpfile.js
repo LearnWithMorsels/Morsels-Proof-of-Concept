@@ -3,17 +3,14 @@ const gulp = require( 'gulp' ),
 		jshint = require( 'gulp-jshint' ),
 		sass = require( 'gulp-sass' ),
 		uglify = require( 'gulp-uglify' ),
-		concat = require( 'gulp-concat' ),
 		rename = require( 'gulp-rename' ),
 		replace = require( 'gulp-replace' ),
 		using = require( 'gulp-using' ),
 		sourcemaps = require( 'gulp-sourcemaps' ),
 		change = require( 'gulp-change' ),
-		merge = require( 'gulp-merge-json' ),
 		addsrc = require( 'gulp-add-src' ),
 		extend = require( 'gulp-multi-extend' ),
 		babel = require( 'gulp-babel' ),
-		traceur = require( 'gulp-traceur' ),
 		foreach = require( 'gulp-foreach' );
 
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) );
@@ -56,7 +53,13 @@ gulp.task( 'core-js', () => {
 });
 
 gulp.task( 'vendor-js', () => {
-	return gulp.src( ['./src/core/js/vendor/**/*.js', './node_modules/systemjs/dist/system.js', './node_modules/babel-polyfill/dist/polyfill.js'] )
+	return gulp.src(
+				[
+					'./src/core/js/vendor/**/*.js',
+					'./node_modules/systemjs/dist/system.js',
+					'./node_modules/babel-polyfill/dist/polyfill.js'
+				]
+			)
 			.pipe( using() )
 			//.pipe( uglify( { preserveComments: 'license' } ) )
 			.pipe( gulp.dest( './build/js/vendor' ) );
