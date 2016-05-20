@@ -1,6 +1,6 @@
 export class ConfigModel {
 
-	constructor( configURI = '../../app/config.json' ) {
+	constructor( configURI = 'app/config.json' ) {
 
 		this.promise = new Promise( ( resolve, reject ) => {
 				fetch( configURI )

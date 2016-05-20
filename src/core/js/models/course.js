@@ -1,7 +1,7 @@
-export function CourseModel( strLanguage ) {
+export function Course( strLanguage ) {
 
     var promise = new Promise( ( resolve, reject ) => {
-            fetch( '../../morsels/app/course/' + strLanguage + '.json' )
+            fetch( 'app/course/' + strLanguage + '.json' )
                 .then( response => response.json() )
                 .then( data => resolve( data ) )
                 .catch( e => reject( e ) )

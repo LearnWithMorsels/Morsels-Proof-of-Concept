@@ -5,38 +5,64 @@
 		{
 			"title": "Section one",
 			"_classes": "",
-			"_morsels": [
+			"_cards": [
 				{
-					"title": "Simple maths question",
-					"_morsel": "mcq",
+					"_card": "text",
 					"_content": {
+						"title": "How to add up",
+						"body": "To find the sum of the numbers, you can add them together."
+					}
+				},
+				{
+					"_card": "text",
+					"_content": {
+						"title": "The history of adding up",
+						"body": "People began to add up when they started to gather more than one rock."
+					}
+				},
+				{
+					"_card": "text",
+					"_content": {
+						"title": "You can add up",
+						"body": "Don't be scared..."
+					},
+					"_interaction": {
+						"_type": "mcq",
+						"title": "Simple maths question",
 						"body": "What is 2 + 2?",
-						"instruction": "Please select an answer"
-					},
-					"_items": [
-						{
-							"title": "One",
-							"_isCorrect": false
+						"instruction": "Please select an answer",
+						"_items": [
+							{
+								"title": "One",
+								"_isCorrect": false
+							},
+							{
+								"title": "Two",
+								"_isCorrect": false
+							},
+							{
+								"title": "Three",
+								"_isCorrect": false
+							},
+							{
+								"title": "Four",
+								"_isCorrect": true
+							}
+						],
+						"_options": {
+							"_selectable": 1,
+							"_attempts": 3
 						},
-						{
-							"title": "Two",
-							"_isCorrect": false
-						},
-						{
-							"title": "Three",
-							"_isCorrect": false
-						},
-						{
-							"title": "Four",
-							"_isCorrect": true
-						}
-					],
-					"_options": {
-						"_selectable": 1
-					},
-					"_feedback": {
-						"_correct": {
-							"_notes": ["adding"]
+						"_feedback": {
+							"_correct": {
+								"title": "Well done!",
+								"body": "You added up"
+							},
+							"_incorrect": {
+								"title": "Not quite!",
+								"body": "You can't add up",
+								"_notes": ["adding"]
+							}
 						}
 					}
 				}
@@ -46,7 +72,7 @@
 	"_notes": {
 		"adding": {
 			"title": "Adding Up",
-			"body": "You can easily add up by adding the numbers"
+			"body": "Remember, you can easily add up by adding the numbers"
 		}
 	}
 }
