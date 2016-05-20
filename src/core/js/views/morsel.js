@@ -1,4 +1,4 @@
-//import
+import Handlebars from 'vendor/handlebars';
 
 export class MorselView {
 

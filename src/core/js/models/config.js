@@ -1,5 +1,6 @@
-
 export class ConfigModel {
+
+	//this.promise = null;
 
 	/**
 	 * Create a new config object and retrieve the JSON file

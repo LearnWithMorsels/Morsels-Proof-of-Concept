@@ -10,7 +10,7 @@ export function Course( strLanguage ) {
 	 * The promise for retrieving the JSON file
 	 * @type {Promise}
 	 */
-    this.promise = new Promise( ( resolve, reject ) => {
+    var promise = new Promise( ( resolve, reject ) => {
             fetch( 'app/course/' + strLanguage + '.json' )
                 .then( response => response.json() )
                 .then( data => resolve( data ) )
@@ -18,11 +18,11 @@ export function Course( strLanguage ) {
         }
     );
 
-	this.promise.then(
+	promise.then(
         ( data ) => { /*console.info( 'Got the data!', data )*/ },
         ( e ) => { console.error( ':(', e ) }
     );
 
-    return this.promise;
+    return promise;
 
 }

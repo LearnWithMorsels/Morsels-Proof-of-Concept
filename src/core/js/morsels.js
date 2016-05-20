@@ -24,6 +24,8 @@ import {Course} from './models/course';
 
 var objConfig = new ConfigModel( 'app/config.json' );
 
+console.log( objConfig.promise );
+
 objConfig.promise.then(
     () => {
         Course( objConfig.get( 'languages' ).primary )
