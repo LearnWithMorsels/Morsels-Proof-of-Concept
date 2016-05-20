@@ -1,7 +1,5 @@
 export class ConfigModel {
 
-	//this.promise = null;
-
 	/**
 	 * Create a new config object and retrieve the JSON file
 	 * @param {string} [configURI='app/config.json'] The location of the JSON file

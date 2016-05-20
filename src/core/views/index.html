@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script src="./js/vendor/polyfill.min.js"></script>
+        <script src="./js/vendor/system.js"></script>
+        <script>
+            System.config(
+                {
+	                packages: {
+		                js: {
+			                map: {
+				                crossroads: 'js/vendor/crossroads.min.js',
+				                handlebars: 'js/vendor/handlebars.js',
+				                jquery: 'js/vendor/jquery.min.js',
+				                signals: 'js/vendor/signals.min.js'
+			                },
+			                meta: {
+				                crossroads: {
+					                exports: 'crossroads',
+					                format: 'global'
+				                },
+				                handlebars: {
+					                exports: 'Handlebars',
+					                format: 'global'
+				                },
+				                jquery: {
+					                exports: '$'
+				                }
+			                }
+		                }
+	                }
+                }
+            );
+
+            System.import( './js/app.js' ).then( null, console.error.bind( console ) );
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

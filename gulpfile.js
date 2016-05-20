@@ -18,7 +18,7 @@ const gulp = require( 'gulp' ),
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 		appOverrides = function( stream, file, folder ) {
 			var strFile = file.history[0].replace( new RegExp( '^' + file.base ), '' ).replace( /^\//, '' ),
-					regex = new RegExp( '\/' + ( folder ? folder + '/' : '' ) + '$' ),
+					regex = new RegExp( '\/' + ( folder ? folder + '\/' : '' ) + '$' ),
 					strAppFile = file.base.replace( regex, '' ) + '/app/' + ( folder ? folder + '/' : '' ) + strFile;
 
 			if( fs.existsSync( strAppFile ) ) {
@@ -40,8 +40,74 @@ var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 		};
 
 gulp.task( 'index', () => {
-	return gulp.src( ['./src/core/index.html'] )
+	return gulp.src( ['./src/core/views/index.html'] )
 			.pipe( gulp.dest( './build' ) );
+} );
+
+gulp.task( 'templates', () => {
+	var core = gulp.src( ['./src/core/views/templates/**/*.hbs'] )
+					.pipe(
+							foreach(
+									function( stream, file ) {
+										return appOverrides( stream, file, 'core/views/templates' );
+									}
+							)
+					),
+			cards = gulp.src( ['./src/cards/*/templates/**/*.hbs'] )
+					.pipe(
+							foreach(
+									function( stream, file ) {
+										return appOverrides( stream, file, 'cards' );
+									}
+							)
+					)
+					.pipe(
+							rename(
+									function( path ) {
+										path.dirname = 'cards/' + path.dirname.replace( /\/templates$/, '' );
+										return path;
+									}
+							)
+					),
+			extensions = gulp.src( ['./src/extensions/*/templates/**/*.hbs'] )
+					.pipe(
+							foreach(
+									function( stream, file ) {
+										return appOverrides( stream, file, 'extensions' );
+									}
+							)
+					)
+					.pipe(
+							rename(
+									function( path ) {
+										path.dirname = 'extensions/' + path.dirname.replace( /\/templates$/, '' );
+										return path;
+									}
+							)
+					),
+			interactions = gulp.src( ['./src/interactions/*/templates/**/*.hbs'] )
+					.pipe(
+							foreach(
+									function( stream, file ) {
+										return appOverrides( stream, file, 'interactions' );
+									}
+							)
+					)
+					.pipe(
+							rename(
+									function( path ) {
+										path.dirname = 'interactions/' + path.dirname.replace( /\/templates$/, '' );
+										return path;
+									}
+							)
+					);
+
+	return merge( core, cards )
+			.pipe( gulp.dest( './build/templates' ) );
+} );
+
+gulp.task( 'watch-templates', () => {
+	return gulp.watch( ['./src/core/views/**/*'], ['index', 'templates'] );
 } );
 
 gulp.task( 'core-js', () => {
@@ -116,39 +182,43 @@ gulp.task( 'core-js', () => {
 			.pipe( gulp.dest( './build/js' ) );
 } );
 
-gulp.task( 'watch-core-js', ['core-js'], () => {
+gulp.task( 'watch-core-js', () => {
 	return gulp.watch( ['./src/core/js/**/*.js'], ['core-js'] );
 } );
 
 gulp.task( 'vendor-js', () => {
 	return gulp.src( [
 		'./node_modules/babel-polyfill/dist/polyfill.min.js',
-		'./node_modules/handlebars/dist/handlebars.amd.min.js',
+		'./node_modules/crossroads/dist/crossroads.min.js',
+		'./node_modules/handlebars/dist/handlebars.js',
 		'./node_modules/jquery/dist/jquery.min.js',
+		'./node_modules/signals/dist/signals.min.js',
 		'./node_modules/systemjs/dist/system.js'
 	] )
 			//.pipe( using() )
+			//.pipe( sourcemaps.init() )
+			//.pipe( sourcemaps.write( './' ) )
 			.pipe( gulp.dest( './build/js/vendor' ) );
 } );
 
 gulp.task( 'css', () => {
 	var theme = gulp.src( './src/theme/' + objConfig.theme + '/sass/**/*.scss' )
-					//.pipe( using() )
+			//.pipe( using() )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( rename( 'theme.min.css' ) ),
 			cards = gulp.src( './src/cards/*/sass/**/*.scss' )
-					//.pipe( using() )
+			//.pipe( using() )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'cards.min.css' ) ),
 			extensions = gulp.src( './src/extensions/*/sass/**/*.scss' )
-					//.pipe( using() )
+			//.pipe( using() )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'extensions.min.css' ) ),
 			interactions = gulp.src( './src/interactions/*/sass/**/*.scss' )
-					//.pipe( using() )
+			//.pipe( using() )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'interactions.min.css' ) );
@@ -158,17 +228,17 @@ gulp.task( 'css', () => {
 			.pipe( gulp.dest( './build/css' ) );
 } );
 
-gulp.task( 'watch-css', ['css'], () => {
+gulp.task( 'watch-css', () => {
 	return gulp.watch( './src/theme/' + objConfig.theme + '/sass/**/*.scss', ['css'] );
 } );
 
 gulp.task( 'resources', () => {
 	return gulp.src( './src/app/resources/**/*' )
-			//.pipe( using() )
+	//.pipe( using() )
 			.pipe( gulp.dest( './build/app/resources' ) );
 } );
 
-gulp.task( 'watch-resources', ['resources'], () => {
+gulp.task( 'watch-resources', () => {
 	return gulp.watch( './src/app/resources/**/*', ['resources'] );
 } );
 
@@ -177,7 +247,7 @@ gulp.task( 'config', () => {
 			.pipe( gulp.dest( './build/app' ) );
 } );
 
-gulp.task( 'watch-config', ['config'], () => {
+gulp.task( 'watch-config', () => {
 	return gulp.watch( './src/app/config.json', ['config'] );
 } );
 
@@ -188,7 +258,7 @@ gulp.task( 'data', () => {
 			.pipe( gulp.dest( './build/app/course' ) );
 } );
 
-gulp.task( 'watch-data', ['data'], () => {
+gulp.task( 'watch-data', () => {
 	return gulp.watch( './src/app/course/*.json', ['data'] );
 } );
 
@@ -199,6 +269,6 @@ gulp.task( 'docs', () => {
 
 gulp.task( 'js', ['core-js', 'vendor-js'] );
 
-gulp.task( 'watch', ['watch-core-js', 'watch-css', 'watch-resources', 'watch-config', 'watch-data'] );
+gulp.task( 'watch', ['default', 'watch-templates', 'watch-core-js', 'watch-css', 'watch-resources', 'watch-config', 'watch-data'] );
 
-gulp.task( 'default', ['index', 'js', 'css', 'resources', 'config', 'data'] );
+gulp.task( 'default', ['index', 'templates', 'js', 'css', 'resources', 'config', 'data'] );

@@ -35,9 +35,11 @@
 					},
 					"_interaction": {
 						"_type": "mcq",
-						"title": "Simple maths question",
-						"body": "What is 2 + 2?",
-						"instruction": "Please select an answer.",
+						"_content": {
+							"title": "Simple maths question",
+							"body": "What is 2 + 2?",
+							"instruction": "Please select an answer."
+						},
 						"_items": [
 							{
 								"title": "One",

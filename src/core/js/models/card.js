@@ -1,11 +1,15 @@
-import {MorselModel} from './morsel';
+import {MorselsModel} from './morsels';
 
-export class CardModel extends MorselModel {
+export class CardModel extends MorselsModel {
 
-	constructor( properties ) {
+	constructor( card, properties ) {
 		super();
+
+		this.template = 'cards/' + card + '/' + card + '.hbs';
 		this.properties = properties;
-		console.log( 'Card ES6 Class!' );
+
+		super.render( this.template, this.properties )
+				.then( html => { console.info( html ) } );
 	}
 
 }

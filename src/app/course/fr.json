@@ -4,27 +4,33 @@
 	"_sections": [
 		{
 			"title": "Section un",
-			"_morsels": [
+			"_cards": [
+				{},
+				{},
 				{
-					"title": "Question de maths simples",
+					"title": "Question",
 					"_content": {
-						"body": "Qu'est-ce que 2 + 2?",
-						"instruction": "S'il vous plaît sélectionner une réponse"
+						"title": "Question de maths simples"
 					},
-					"_items": [
-						{
-							"title": "Un"
+					"_interaction": {
+						"_content": {
+							"body": "Qu'est-ce que 2 + 2?"
 						},
-						{
-							"title": "Deux"
-						},
-						{
-							"title": "Trois"
-						},
-						{
-							"title": "Quatre"
-						}
-					]
+						"_items": [
+							{
+								"title": "Un"
+							},
+							{
+								"title": "Deux"
+							},
+							{
+								"title": "Trois"
+							},
+							{
+								"title": "Quatre"
+							}
+						]
+					}
 				}
 			]
 		}
