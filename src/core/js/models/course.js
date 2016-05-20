@@ -1,6 +1,16 @@
+/**
+ * Retrieve the course details
+ * @param strLanguage {string} The language code of the file
+ * @returns {Promise} The promise
+ * @constructor
+ */
 export function Course( strLanguage ) {
 
-    var promise = new Promise( ( resolve, reject ) => {
+	/**
+	 * The promise for retrieving the JSON file
+	 * @type {Promise}
+	 */
+    this.promise = new Promise( ( resolve, reject ) => {
             fetch( 'app/course/' + strLanguage + '.json' )
                 .then( response => response.json() )
                 .then( data => resolve( data ) )
@@ -8,11 +18,11 @@ export function Course( strLanguage ) {
         }
     );
 
-    promise.then(
+	this.promise.then(
         ( data ) => { /*console.info( 'Got the data!', data )*/ },
         ( e ) => { console.error( ':(', e ) }
     );
 
-    return promise;
+    return this.promise;
 
 }

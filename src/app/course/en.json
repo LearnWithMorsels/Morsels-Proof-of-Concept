@@ -4,10 +4,15 @@
 	"_sections": [
 		{
 			"title": "Section one",
+			"_content": {
+				"title": "Welcome to section 1",
+				"body": "In this section, you will learn how to add."
+			},
 			"_classes": "",
 			"_cards": [
 				{
 					"_card": "text",
+					"title": "Intro",
 					"_content": {
 						"title": "How to add up",
 						"body": "To find the sum of the numbers, you can add them together."
@@ -15,6 +20,7 @@
 				},
 				{
 					"_card": "text",
+					"title": "History",
 					"_content": {
 						"title": "The history of adding up",
 						"body": "People began to add up when they started to gather more than one rock."
@@ -22,15 +28,16 @@
 				},
 				{
 					"_card": "text",
+					"title": "You try",
 					"_content": {
-						"title": "You can add up",
+						"title": "You can add up too!",
 						"body": "Don't be scared..."
 					},
 					"_interaction": {
 						"_type": "mcq",
 						"title": "Simple maths question",
 						"body": "What is 2 + 2?",
-						"instruction": "Please select an answer",
+						"instruction": "Please select an answer.",
 						"_items": [
 							{
 								"title": "One",
@@ -56,11 +63,11 @@
 						"_feedback": {
 							"_correct": {
 								"title": "Well done!",
-								"body": "You added up"
+								"body": "You added up."
 							},
 							"_incorrect": {
 								"title": "Not quite!",
-								"body": "You can't add up",
+								"body": "You can't add up.",
 								"_notes": ["adding"]
 							}
 						}
@@ -72,7 +79,7 @@
 	"_notes": {
 		"adding": {
 			"title": "Adding Up",
-			"body": "Remember, you can easily add up by adding the numbers"
+			"body": "Remember, you can easily add up by adding the numbers."
 		}
 	}
 }

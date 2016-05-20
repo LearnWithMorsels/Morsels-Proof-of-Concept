@@ -2,8 +2,12 @@
 	"theme": "magnolia",
 	"languages": {
 		"primary": "en",
-		"other": [
-			"fr"
-		]
-	}
+		"selector": {
+			"default": "en",
+			"items": [
+				"fr"
+			]
+		}
+	},
+	"enableAppOverwrites": true
 }

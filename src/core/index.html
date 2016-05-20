@@ -10,20 +10,14 @@
                 {
                     packages: {
                         js: {
-                            format: 'register',
+	                        format: 'cjs',
                             defaultExtension: 'js'
-                        }
-                    },
-                    meta: {
-                        'js/*': {
-                            format: 'cjs'
                         }
                     }
                 }
             );
 
-            System.import( './js/morsels.js' )
-                    .then( null, console.error.bind( console ) );
+            System.import( './js/morsels.js' ).then( null, console.error.bind( console ) );
         </script>
     </head>
     <body>
