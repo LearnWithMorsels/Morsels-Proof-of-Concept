@@ -1,5 +1,6 @@
+//import * as $ from 'jquery';
 import {MorselsModel} from './morsels';
-import {SectionModel} from './section';
+import {Section} from './section';
 
 export class Course extends MorselsModel {
 
@@ -13,8 +14,8 @@ export class Course extends MorselsModel {
 
 		super();
 
-		this.element = document.getElementsByTagName( 'morsel-course' )[0];
 		this.element = $( '#morsel-course' );
+		this.children = [];
 
 		/**
 		 * The promise for retrieving the JSON file
@@ -24,15 +25,14 @@ export class Course extends MorselsModel {
 					fetch( 'app/course/' + strLanguage + '.json' )
 							.then( response => response.json() )
 							.then( course => {
-									this.element.html( '' );
+								this.element.html( '' );
 
-									for( var section of course._sections ) {
-										var objSection = new SectionModel( section, this );
-										this.element.append( objSection.element );
-									}
+								for( var section of course._sections ) {
+									this.children.push( new Section( section, this ) );
+								}
 
-									return course
-								} )
+								return course
+							} )
 							//.then( course => super.render() )
 							.then( course => resolve( course ) )
 							.catch( e => reject( e ) )

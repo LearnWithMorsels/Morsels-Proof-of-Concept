@@ -6,7 +6,7 @@ export class Config {
 	 * Create a new config object and retrieve the JSON file
 	 * @param {string} [configURI='app/config.json'] The location of the JSON file
 	 * @constructor
-	 * @returns {ConfigModel}
+	 * @returns {Config}
 	 */
 	constructor( configURI = 'app/config.json' ) {
 
@@ -38,7 +38,11 @@ export class Config {
 
 		return this;
 	}
-	
+
+	/**
+	 * Get the default language to render
+	 * @returns {Promise}
+	 */
 	defaultLanguage() {
 
 		return this.get( 'languages' )
@@ -52,7 +56,7 @@ export class Config {
 						reject( e );
 						return null;
 					}
-				} )
+				} );
 
 	}
 

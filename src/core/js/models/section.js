@@ -1,24 +1,31 @@
+//import * as $ from 'jquery';
 import {MorselsModel} from './morsels';
-import {CardModel} from './card';
-import {elementcreator} from '../tools/elementcreator';
+import {Card} from './card';
 
-export class SectionModel extends MorselsModel {
+export class Section extends MorselsModel {
 
+	/**
+	 * Create a section of the course to insert cards into
+	 * @param {Object} properties
+	 * @param {Course} parent The parent course model
+	 */
 	constructor( properties, parent ) {
 		super();
 
 		this.template = 'section.hbs';
 		this.properties = properties;
 		this.parent = parent;
-		//this.element = elementcreator( 'morsel-section' );
+		this.children = [];
 		this.element = $( '<div class="morsel-section"/>' );
+
+		this.parent.element.append( this.element );
 
 		super.render()
 				.then( html => this.element.html( html ) )
-				.then( () => this.parent.element.append( this.element ) )
+				//.then( () => this.parent.element.append( this.element ) )
 				.then( () => {
-					for( var card of properties._cards ) {
-						new CardModel( card, this );
+					for( var card in properties._cards ) {
+						this.children.push( new Card( properties._cards[card], this, card ) );
 					}
 				} );
 

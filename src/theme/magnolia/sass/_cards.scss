@@ -1,17 +1,84 @@
 .morsel-card {
-	margin-bottom: 30px;
+	//width: 16px;
+	//height: 100%;
+
+	//display: inline-block;
+
+	position: relative;
+
+	overflow: visible;
+
+	vertical-align: top;
 
 	.mdl-card {
-		margin: 0 auto;
-
-		position: relative;
+		//max-width: 100%;
+		min-height: 0;
+		height: 100%;
+		margin: 0 auto 16px;
 
 		transition: box-shadow 250ms, transform 250ms, z-index 250ms;
 
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+
 		z-index: 1;
 
+		.mdl-card__title {
+			&.mdl-card__title-image-background {
+				height: 186px;
+
+				position: relative;
+
+				color: #FFF;
+
+				background: #111 center / cover;
+
+				&::after {
+					position: absolute;
+					top: 0;
+					right: 0;
+					bottom: 0;
+					left: 0;
+
+					/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.45+0,0+46,0+50 */
+					background: -moz-linear-gradient(45deg,  rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 46%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+					background: -webkit-linear-gradient(45deg,  rgba(0,0,0,0.45) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+					background: linear-gradient(45deg,  rgba(0,0,0,0.45) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#73000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+					z-index: 1;
+
+					content: "";
+				}
+
+				.mdl-card__title-text {
+					position: relative;
+
+					z-index: 2;
+				}
+			}
+		}
+
+		.mdl-card__actions {
+			height: 52px;
+			padding: 16px;
+
+			position: relative;
+
+			button {
+				position: absolute;
+				top: -20px;
+				right: 16px;
+			}
+		}
+
+		+ .mdl-card {}
+
 		&.dragging {
-			transition: none;
+			transition: box-shadow 100ms;
 
 			z-index: 2;
 		}

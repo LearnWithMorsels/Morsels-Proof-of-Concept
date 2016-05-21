@@ -1,4 +1,4 @@
-import {jquery} from 'jquery';
+import * as $ from 'jquery';
 import * as Handlebars from 'handlebars';
 
 var renderPromise;
@@ -10,19 +10,44 @@ export class MorselsModel {
 		//console.log( 'Handlebars', Handlebars );
 		//console.log( 'crossroads', crossroads );
 
+		/**
+		 * Is the model complete
+		 * @type {boolean}
+		 */
 		this.isComplete = false;
+
+		/**
+		 * The jQuery element of the model
+		 * @type {null}
+		 */
 		this.element = null;
+
+		/**
+		 * The template file to use, relative to /app/templates
+		 * @type {null}
+		 */
 		this.template = null;
+
+		/**
+		 * The properties of the model
+		 * @type {{}}
+		 */
 		this.properties = {};
-		this.renderPromise = null;
 	}
 
+	/**
+	 * Function to perform before the template renders
+	 */
 	preRender() {}
 
+	/**
+	 * Render the template of the model with the properties
+	 * @returns {Promise}
+	 */
 	render() {
 		this.preRender();
 
-		renderPromise = new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve, reject ) => {
 					fetch( 'templates/' + this.template )
 							.then( response => response.text() )
 							.then( template => Handlebars.compile( template ) )
@@ -34,8 +59,6 @@ export class MorselsModel {
 							.catch( e => reject( e ) );
 				}
 		);
-
-		return renderPromise;
 	}
 
 }
