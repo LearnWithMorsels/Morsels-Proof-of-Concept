@@ -1,11 +1,19 @@
 .morsel-card {
 	margin-bottom: 30px;
-	
+
 	.mdl-card {
-		transition: box-shadow 250ms, transform 250ms;
+		margin: 0 auto;
+
+		position: relative;
+
+		transition: box-shadow 250ms, transform 250ms, z-index 250ms;
+
+		z-index: 1;
 
 		&.dragging {
-			transition: box-shadow 150ms;
+			transition: none;
+
+			z-index: 2;
 		}
 	}
 }
