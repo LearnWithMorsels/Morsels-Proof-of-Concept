@@ -1,10 +1,25 @@
 <!DOCTYPE html>
     <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <title></title>
+	    <title>Morsels</title>
+
+	    <meta charset="UTF-8">
+	    <meta name="theme-color" content="#FF0099">
+	    <meta name="msapplication-navbutton-color" content="#FF0099">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+	    <link href="./css/material.blue_grey-red.min.css" type="text/css" rel="stylesheet">
+	    <link href="./css/course.min.css" type="text/css" rel="stylesheet">
+	    <link href="./css/main.css" type="text/css" rel="stylesheet">
+	    <link href="./css/prism-default.css" type="text/css" rel="stylesheet">
+	    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css" rel="stylesheet">
+	    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css" rel="stylesheet">
+
         <script src="./js/vendor/polyfill.min.js"></script>
         <script src="./js/vendor/system.js"></script>
+        <script src="./js/vendor/material.min.js"></script>
         <script>
             System.config(
                 {
@@ -36,12 +51,8 @@
 
             System.import( './js/app.js' );
         </script>
-	    <link href="./css/theme.min.css" type="text/css" rel="stylesheet">
-	    <link href="./css/cards.min.css" type="text/css" rel="stylesheet">
-	    <link href="./css/extensions.min.css" type="text/css" rel="stylesheet">
-	    <link href="./css/interactions.min.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <morsel-course><div class="loader">Loading...</div></morsel-course>
+        <div id="morsel-course"><div class="mdl-spinner mdl-js-spinner is-active"></div></div>
     </body>
 </html>

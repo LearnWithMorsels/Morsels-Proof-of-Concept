@@ -14,6 +14,7 @@ export class Course extends MorselsModel {
 		super();
 
 		this.element = document.getElementsByTagName( 'morsel-course' )[0];
+		this.element = $( '#morsel-course' );
 
 		/**
 		 * The promise for retrieving the JSON file
@@ -23,11 +24,11 @@ export class Course extends MorselsModel {
 					fetch( 'app/course/' + strLanguage + '.json' )
 							.then( response => response.json() )
 							.then( course => {
-									this.element.innerHTML = '';
+									this.element.html( '' );
 
 									for( var section of course._sections ) {
 										var objSection = new SectionModel( section, this );
-										this.element.appendChild( objSection.element );
+										this.element.append( objSection.element );
 									}
 
 									return course

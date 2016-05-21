@@ -29,5 +29,5 @@ objConfig.defaultLanguage().then( language => { new Course( language ) } );
 
 
 
-var XFoo = document.registerElement('morsel-course');
+//var XFoo = document.registerElement('morsel-course');
 // document.body.appendChild(new XFoo());

@@ -1,19 +1,20 @@
-const gulp = require( 'gulp' ),
-		fs = require( 'fs' ),
+const fs = require( 'fs' ),
+		gulp = require( 'gulp' ),
+		addsrc = require( 'gulp-add-src' ),
+		babel = require( 'gulp-babel' ),
+		change = require( 'gulp-change' ),
+		concat = require( 'gulp-concat' ),
+		foreach = require( 'gulp-foreach' ),
+		jsdoc = require( 'gulp-jsdoc3' ),
 		jshint = require( 'gulp-jshint' ),
-		sass = require( 'gulp-sass' ),
-		uglify = require( 'gulp-uglify' ),
+		extend = require( 'gulp-multi-extend' ),
 		rename = require( 'gulp-rename' ),
 		replace = require( 'gulp-replace' ),
-		using = require( 'gulp-using' ),
+		sass = require( 'gulp-sass' ),
 		sourcemaps = require( 'gulp-sourcemaps' ),
-		change = require( 'gulp-change' ),
-		extend = require( 'gulp-multi-extend' ),
-		babel = require( 'gulp-babel' ),
-		concat = require( 'gulp-concat' ),
-		merge = require( 'merge-stream' ),
-		jsdoc = require( 'gulp-jsdoc3' ),
-		foreach = require( 'gulp-foreach' );
+		uglify = require( 'gulp-uglify' ),
+		using = require( 'gulp-using' ),
+		merge = require( 'merge-stream' );
 
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 		appOverrides = function( stream, file, folder ) {
@@ -40,12 +41,16 @@ var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 		};
 
 gulp.task( 'index', () => {
-	return gulp.src( ['./src/core/views/index.html'] )
+	return gulp.src( './src/core/views/index.html' )
 			.pipe( gulp.dest( './build' ) );
 } );
 
+gulp.task( 'watch-index', () => {
+	return gulp.watch( './src/core/views/index.html', ['index'] );
+} );
+
 gulp.task( 'templates', () => {
-	var core = gulp.src( ['./src/core/views/templates/**/*.hbs'] )
+	var core = gulp.src( './src/core/views/templates/**/*.hbs' )
 					.pipe(
 							foreach(
 									function( stream, file ) {
@@ -53,7 +58,7 @@ gulp.task( 'templates', () => {
 									}
 							)
 					),
-			cards = gulp.src( ['./src/cards/*/templates/**/*.hbs'] )
+			cards = gulp.src( './src/cards/*/templates/**/*.hbs' )
 					.pipe(
 							foreach(
 									function( stream, file ) {
@@ -69,7 +74,7 @@ gulp.task( 'templates', () => {
 									}
 							)
 					),
-			extensions = gulp.src( ['./src/extensions/*/templates/**/*.hbs'] )
+			extensions = gulp.src( './src/extensions/*/templates/**/*.hbs' )
 					.pipe(
 							foreach(
 									function( stream, file ) {
@@ -85,7 +90,7 @@ gulp.task( 'templates', () => {
 									}
 							)
 					),
-			interactions = gulp.src( ['./src/interactions/*/templates/**/*.hbs'] )
+			interactions = gulp.src( './src/interactions/*/templates/**/*.hbs' )
 					.pipe(
 							foreach(
 									function( stream, file ) {
@@ -107,7 +112,17 @@ gulp.task( 'templates', () => {
 } );
 
 gulp.task( 'watch-templates', () => {
-	return gulp.watch( ['./src/core/views/templates/**/*.hbs', './src/cards/*/templates/**/*.hbs', './src/extensions/*/templates/**/*.hbs', './src/interactions/*/templates/**/*.hbs', './src/app/core/views/templates/**/*.hbs', './src/app/cards/*/templates/**/*.hbs', './src/app/extensions/*/templates/**/*.hbs', './src/app/interactions/*/templates/**/*.hbs'], ['index', 'templates'] );
+	return gulp.watch(
+			[
+				'./src/core/views/templates/**/*.hbs',
+				'./src/app/core/views/templates/**/*.hbs',
+				'./src/cards/*/templates/**/*.hbs',
+				'./src/app/cards/*/templates/**/*.hbs',
+				'./src/extensions/*/templates/**/*.hbs',
+				'./src/app/extensions/*/templates/**/*.hbs',
+				'./src/interactions/*/templates/**/*.hbs',
+				'./src/app/interactions/*/templates/**/*.hbs'
+			], ['templates'] );
 } );
 
 gulp.task( 'core-js', () => {
@@ -177,13 +192,13 @@ gulp.task( 'core-js', () => {
 							}
 					)
 			)
-			.pipe( uglify( { preserveComments: 'license' } ) )
+			.pipe( uglify( {preserveComments: 'license'} ) )
 			.pipe( sourcemaps.write( './' ) )
 			.pipe( gulp.dest( './build/js' ) );
 } );
 
 gulp.task( 'watch-core-js', () => {
-	return gulp.watch( ['./src/core/js/**/*.js'], ['core-js'] );
+	return gulp.watch( './src/core/js/**/*.js', ['core-js'] );
 } );
 
 gulp.task( 'vendor-js', () => {
@@ -192,38 +207,43 @@ gulp.task( 'vendor-js', () => {
 		'./node_modules/crossroads/dist/crossroads.min.js',
 		'./node_modules/handlebars/dist/handlebars.js',
 		'./node_modules/jquery/dist/jquery.min.js',
+		'./node_modules/material-design-lite/dist/material.min.js',
 		'./node_modules/signals/dist/signals.min.js',
 		'./node_modules/systemjs/dist/system.js'
 	] )
-			//.pipe( using() )
-			//.pipe( sourcemaps.init() )
-			//.pipe( sourcemaps.write( './' ) )
+	//.pipe( using() )
+	//.pipe( sourcemaps.init() )
+	//.pipe( sourcemaps.write( './' ) )
 			.pipe( gulp.dest( './build/js/vendor' ) );
 } );
 
 gulp.task( 'css', () => {
 	var theme = gulp.src( './src/theme/' + objConfig.theme + '/sass/**/*.scss' )
-			//.pipe( using() )
 					.pipe( sourcemaps.init() )
-					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
-					.pipe( rename( 'theme.min.css' ) ),
+					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) ),
 			cards = gulp.src( './src/cards/*/sass/**/*.scss' )
-			//.pipe( using() )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'cards.min.css' ) ),
 			extensions = gulp.src( './src/extensions/*/sass/**/*.scss' )
-			//.pipe( using() )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'extensions.min.css' ) ),
 			interactions = gulp.src( './src/interactions/*/sass/**/*.scss' )
-			//.pipe( using() )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'interactions.min.css' ) );
 
 	return merge( theme, cards, extensions, interactions )
+			.pipe( concat( 'course.min.css' ) )
+			.pipe( addsrc(
+					[
+						'./node_modules/material-design-lite/dist/material.blue_grey-red.min.css',
+						'./node_modules/material-design-lite/dist/assets/prism-default.css',
+						'./node_modules/material-design-lite/dist/assets/main.css',
+						'./node_modules/material-design-lite/dist/assets/components.css'
+					]
+			) )
 			.pipe( sourcemaps.write( './' ) )
 			.pipe( gulp.dest( './build/css' ) );
 } );
@@ -234,7 +254,6 @@ gulp.task( 'watch-css', () => {
 
 gulp.task( 'resources', () => {
 	return gulp.src( './src/app/resources/**/*' )
-	//.pipe( using() )
 			.pipe( gulp.dest( './build/app/resources' ) );
 } );
 
@@ -254,7 +273,6 @@ gulp.task( 'watch-config', () => {
 gulp.task( 'data', () => {
 	return gulp.src( './src/app/course/*.json' )
 			.pipe( extend( './src/app/course/' + objConfig.languages.primary + '.json' ) )
-			//.pipe( using() )
 			.pipe( gulp.dest( './build/app/course' ) );
 } );
 
@@ -269,6 +287,6 @@ gulp.task( 'docs', () => {
 
 gulp.task( 'js', ['core-js', 'vendor-js'] );
 
-gulp.task( 'watch', ['default', 'watch-templates', 'watch-core-js', 'watch-css', 'watch-resources', 'watch-config', 'watch-data'] );
+gulp.task( 'watch', ['default', 'watch-index', 'watch-templates', 'watch-core-js', 'watch-css', 'watch-resources', 'watch-config', 'watch-data'] );
 
 gulp.task( 'default', ['index', 'templates', 'js', 'css', 'resources', 'config', 'data'] );
