@@ -107,7 +107,7 @@ gulp.task( 'templates', () => {
 } );
 
 gulp.task( 'watch-templates', () => {
-	return gulp.watch( ['./src/core/views/**/*'], ['index', 'templates'] );
+	return gulp.watch( ['./src/core/views/templates/**/*.hbs', './src/cards/*/templates/**/*.hbs', './src/extensions/*/templates/**/*.hbs', './src/interactions/*/templates/**/*.hbs', './src/app/core/views/templates/**/*.hbs', './src/app/cards/*/templates/**/*.hbs', './src/app/extensions/*/templates/**/*.hbs', './src/app/interactions/*/templates/**/*.hbs'], ['index', 'templates'] );
 } );
 
 gulp.task( 'core-js', () => {

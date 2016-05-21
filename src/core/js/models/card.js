@@ -1,15 +1,19 @@
 import {MorselsModel} from './morsels';
+import {elementcreator} from '../tools/elementcreator';
 
 export class CardModel extends MorselsModel {
 
-	constructor( card, properties ) {
+	constructor( properties, parent ) {
 		super();
 
-		this.template = 'cards/' + card + '/' + card + '.hbs';
+		this.template = 'cards/' + properties._card + '/' + properties._card + '.hbs';
 		this.properties = properties;
+		this.parent = parent;
+		this.element = elementcreator( 'morsel-card' );
 
-		super.render( this.template, this.properties )
-				/*.then( html => { console.info( html ) } )*/;
+		super.render()
+				.then( html => this.element.innerHTML = html )
+				.then( () => this.parent.element.appendChild( this.element ) );
 	}
 
 }

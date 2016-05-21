@@ -23,8 +23,10 @@ export class Course extends MorselsModel {
 					fetch( 'app/course/' + strLanguage + '.json' )
 							.then( response => response.json() )
 							.then( course => {
+									this.element.innerHTML = '';
+
 									for( var section of course._sections ) {
-										var objSection = new SectionModel( section );
+										var objSection = new SectionModel( section, this );
 										this.element.appendChild( objSection.element );
 									}
 

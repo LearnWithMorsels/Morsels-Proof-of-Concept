@@ -1,24 +1,27 @@
 import {MorselsModel} from './morsels';
 import {CardModel} from './card';
+import {elementcreator} from '../tools/elementcreator';
 
 export class SectionModel extends MorselsModel {
 
-	constructor( properties ) {
+	constructor( properties, parent ) {
 		super();
 
 		this.template = 'section.hbs';
 		this.properties = properties;
-		this.element = new ( document.registerElement( 'morsel-section' ) );
-
-
-
-		for( var card of properties._cards ) {
-			//var objCard = new CardModel( card._card, card );
-		}
+		this.parent = parent;
+		this.element = elementcreator( 'morsel-section' );
 
 		super.render()
-				.then( html => { this.html = html } )
-				.then( () => console.info( 'this.html: ' + this.html ) );
+				.then( html => this.element.innerHTML = html )
+				.then( () => this.parent.element.appendChild( this.element ) )
+				.then( () => {
+					for( var card of properties._cards ) {
+						new CardModel( card, this );
+					}
+				} );
+
+
 	}
 	
 }
