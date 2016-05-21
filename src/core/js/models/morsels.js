@@ -1,6 +1,8 @@
 import {jquery} from 'jquery';
 import * as Handlebars from 'handlebars';
 
+var renderPromise;
+
 export class MorselsModel {
 
 	constructor() {
@@ -9,22 +11,31 @@ export class MorselsModel {
 		//console.log( 'crossroads', crossroads );
 
 		this.isComplete = false;
-		this.element = 'CORE';
-		this.template = 'CORE';
+		this.element = null;
+		this.template = null;
 		this.properties = {};
+		this.renderPromise = null;
 	}
 
+	preRender() {}
+
 	render() {
-		return new Promise( ( resolve, reject ) => {
+		this.preRender();
+
+		renderPromise = new Promise( ( resolve, reject ) => {
 					fetch( 'templates/' + this.template )
 							.then( response => response.text() )
 							.then( template => Handlebars.compile( template ) )
-							.then( handlebar => { return handlebar( this.properties ) } )
-							.then( html => resolve( html ),
-									e => { console.error( 'Failed to render "' + this.template + '": ', e.message ) } )
+							.then( handlebar => handlebar( this.properties ),
+									e => console.error( 'Failed to render "' + this.template + '": ', e.message ) )
+							.then( html => this.element.innerHTML = html )
+							.then( html => console.log( this.element, this.template, this.properties ) )
+							.then( html => resolve( html ) )
 							.catch( e => reject( e ) );
 				}
 		);
+
+		return renderPromise;
 	}
 
 }

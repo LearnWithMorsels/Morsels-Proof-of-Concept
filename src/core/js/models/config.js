@@ -18,7 +18,7 @@ export class Config {
 				fetch( configURI )
 					.then( response => response.json() )
 					.then( data => resolve( data ) )
-					.catch( e => reject )
+					.catch( e => reject( e ) )
 			}
 		);
 

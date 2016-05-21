@@ -1,6 +1,7 @@
+import {MorselsModel} from './morsels';
 import {SectionModel} from './section';
 
-export class Course {
+export class Course extends MorselsModel {
 
 	/**
 	 * Retrieve the course details
@@ -10,31 +11,32 @@ export class Course {
 	 */
 	constructor( strLanguage ) {
 
-		this.element = 'Course';
+		super();
+
+		this.element = document.getElementsByTagName( 'morsel-course' )[0];
 
 		/**
 		 * The promise for retrieving the JSON file
 		 * @type {Promise}
 		 */
-		var promise = new Promise( ( resolve, reject ) => {
+		this.promise = new Promise( ( resolve, reject ) => {
 					fetch( 'app/course/' + strLanguage + '.json' )
 							.then( response => response.json() )
-							.then( data => resolve( data ) )
+							.then( course => {
+									for( var section of course._sections ) {
+										var objSection = new SectionModel( section );
+										this.element.appendChild( objSection.element );
+									}
+
+									return course
+								} )
+							//.then( course => super.render() )
+							.then( course => resolve( course ) )
 							.catch( e => reject( e ) )
 				}
 		);
 
-		promise.then(
-				( course ) => {
-					for( var section of course._sections ) {
-						console.log( 'Section: ' + section.title, section );
-
-						var objSection = new SectionModel( section );
-					}
-				}
-		).then( null, ( e ) => { console.error( ':(', e ) } );
-
-		return promise;
+		return this.promise;
 
 	}
 

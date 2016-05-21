@@ -8,6 +8,9 @@ export class SectionModel extends MorselsModel {
 
 		this.template = 'section.hbs';
 		this.properties = properties;
+		this.element = new ( document.registerElement( 'morsel-section' ) );
+
+
 
 		for( var card of properties._cards ) {
 			//var objCard = new CardModel( card._card, card );
