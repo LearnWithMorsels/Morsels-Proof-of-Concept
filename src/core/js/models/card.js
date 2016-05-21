@@ -9,7 +9,7 @@ export class CardModel extends MorselsModel {
 		this.properties = properties;
 
 		super.render( this.template, this.properties )
-				.then( html => { console.info( html ) } );
+				/*.then( html => { console.info( html ) } )*/;
 	}
 
 }

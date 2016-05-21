@@ -1,4 +1,6 @@
-export class ConfigModel {
+import {objectrummage} from '../tools/objectrummage';
+
+export class Config {
 
 	/**
 	 * Create a new config object and retrieve the JSON file
@@ -15,19 +17,42 @@ export class ConfigModel {
 		this.promise = new Promise( ( resolve, reject ) => {
 				fetch( configURI )
 					.then( response => response.json() )
-					.then( data => this.properties = data )
 					.then( data => resolve( data ) )
-					.catch( e => reject( e ) )
+					.catch( e => reject )
 			}
 		);
 
-		this.promise
-			.then(
-				( data ) => { /*console.info( 'Got the data!', data )*/ },
-				( e ) => { console.error( ':(', e ) }
-			);
-		
 		return this;
+
+	}
+
+	/**
+	 * Function to perform after the config has loaded
+	 * @param doThis
+	 * @returns {Config}
+	 */
+	onLoad( doThis ) {
+		this.promise
+				.then( data => doThis,
+						e => console.error( 'Failed to perform onLoad function: ' + e.message ) );
+
+		return this;
+	}
+	
+	defaultLanguage() {
+
+		return this.get( 'languages' )
+				.then( languages => {
+					if( languages.selector &&
+							languages.selector.default ) {
+						return languages.selector.default;
+					} else if( languages.primary ) {
+						return languages.primary;
+					} else {
+						reject( e );
+						return null;
+					}
+				} )
 
 	}
 
@@ -38,8 +63,17 @@ export class ConfigModel {
 	 */
 	get( strKey = null ) {
 
-		return ( strKey === null ) ? this.properties : ( this.properties[strKey] || null );
-		
+		return this.promise
+				.then( data => {
+							if( strKey === null ) {
+								return data;
+							} else {
+								return objectrummage( strKey, data );
+							}
+						},
+						e => { console.error( 'Couldn\'t get propery "' + strKey + '": ', e.message ) }
+				);
+
 	}
 
 }

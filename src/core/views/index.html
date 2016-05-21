@@ -34,9 +34,14 @@
                 }
             );
 
-            System.import( './js/app.js' ).then( null, console.error.bind( console ) );
+            System.import( './js/app.js' );
         </script>
+	    <link href="./css/theme.min.css" type="text/css" rel="stylesheet">
+	    <link href="./css/cards.min.css" type="text/css" rel="stylesheet">
+	    <link href="./css/extensions.min.css" type="text/css" rel="stylesheet">
+	    <link href="./css/interactions.min.css" type="text/css" rel="stylesheet">
     </head>
     <body>
+        <morsel-course><div class="loader">Loading...</div></morsel-course>
     </body>
 </html>

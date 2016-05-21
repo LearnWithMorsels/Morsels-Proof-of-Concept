@@ -177,7 +177,7 @@ gulp.task( 'core-js', () => {
 							}
 					)
 			)
-			//.pipe( uglify( { preserveComments: 'license' } ) )
+			.pipe( uglify( { preserveComments: 'license' } ) )
 			.pipe( sourcemaps.write( './' ) )
 			.pipe( gulp.dest( './build/js' ) );
 } );

@@ -9,13 +9,13 @@ export class SectionModel extends MorselsModel {
 		this.template = 'section.hbs';
 		this.properties = properties;
 
-		super.render( this.template, this.properties )
-				.then( html => { this.html = html } )
-				.then( html => { console.info( html ) } );
-
 		for( var card of properties._cards ) {
-			var objCard = new CardModel( card._card, card );
+			//var objCard = new CardModel( card._card, card );
 		}
+
+		super.render()
+				.then( html => { this.html = html } )
+				.then( () => console.info( 'this.html: ' + this.html ) );
 	}
 	
 }
