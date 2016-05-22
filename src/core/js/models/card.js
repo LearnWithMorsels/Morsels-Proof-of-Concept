@@ -8,6 +8,7 @@ export class Card extends MorselsModel {
 	 * @param {Object} properties
 	 * @param {Section} parent
 	 * @param {number} index
+	 * @returns {Promise}
 	 */
 	constructor( properties, parent, index ) {
 
@@ -19,12 +20,13 @@ export class Card extends MorselsModel {
 		this.children = [];
 		this.element = $( '<div class="morsel-card"/>' ).css( 'z-index', 100 - index );
 		//this.element = $( '<div class="morsel-card"/>' );
+		this.isRendered = false;
 
 		this.parent.element.append( this.element );
 
-		super.render()
+		return super.render()
 				.then( html => this.element.html( html ) )
-				//.then( () => this.parent.element.append( this.element ) )
+				.then( () => this.isRendered = true )
 				.then( () => this.setupDraggable() );
 
 	}
@@ -34,7 +36,7 @@ export class Card extends MorselsModel {
 	 */
 	setupDraggable() {
 
-		var dragging = false,
+		let dragging = false,
 				startPos = {},
 				dragPos = {},
 				displace = {},
@@ -56,7 +58,8 @@ export class Card extends MorselsModel {
 				dragPos = { x: e.pageX, y: e.pageY };
 				displace = { x: dragPos.x - startPos.x, y: dragPos.y - startPos.y };
 				rotation = -( ( displace.x / ( windowSize.w / 2 ) ) * ( displace.y / ( windowSize.h / 2 ) ) ) * 15;
-				mdlCard.css( 'transform', 'translate(' + displace.x + 'px, ' + displace.y + 'px) rotate(' + rotation + 'deg)' );
+				//mdlCard.css( 'transform', 'translate(' + displace.x + 'px, ' + displace.y + 'px) rotate(' + rotation + 'deg)' );
+				mdlCard.css( 'transform', 'translate(' + displace.x + 'px, ' + displace.y + 'px)' );
 				dismissOnEnd = ( displace.x > ( windowSize.w / 2 ) ); // Only when displacing/swiping right
 			}
 		} ).on( 'touchend mouseup', () => {

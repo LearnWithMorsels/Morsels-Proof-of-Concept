@@ -28,14 +28,14 @@ export function objectrummage( mxdKey, objIn ) {
 
 	if( Array.isArray( mxdKey ) ) {
 		if( mxdKey.length > 1 ) {
-			var thisLevel = mxdKey.shift();
+			let thisKey = mxdKey.shift();
 
-			return objectrummage( mxdKey, objIn[thisLevel] );
+			return objectrummage( mxdKey, objIn[thisKey] );
 		} else {
 			return objIn[mxdKey[0]] || null;
 		}
 	} else if( mxdKey.indexOf( '.' ) > -1 ) {
-		var arrKeys = mxdKey.split( '.' ),
+		let arrKeys = mxdKey.split( '.' ),
 				thisKey = arrKeys.shift();
 
 		return objectrummage( arrKeys, objIn[thisKey] );

@@ -1,10 +1,13 @@
 import * as $ from 'jquery';
 import * as Handlebars from 'handlebars';
 
-var renderPromise;
+let renderPromise;
 
 export class MorselsModel {
 
+	/**
+	 * The parent object which all courses, sections, cards and activities extend
+	 */
 	constructor() {
 		//console.log( '$', $ );
 		//console.log( 'Handlebars', Handlebars );

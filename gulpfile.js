@@ -58,6 +58,22 @@ gulp.task( 'templates', () => {
 									}
 							)
 					),
+			activities = gulp.src( './src/activities/*/templates/**/*.hbs' )
+					.pipe(
+							foreach(
+									function( stream, file ) {
+										return appOverrides( stream, file, 'activities' );
+									}
+							)
+					)
+					.pipe(
+							rename(
+									function( path ) {
+										path.dirname = 'activities/' + path.dirname.replace( /\/templates$/, '' );
+										return path;
+									}
+							)
+					),
 			cards = gulp.src( './src/cards/*/templates/**/*.hbs' )
 					.pipe(
 							foreach(
@@ -89,25 +105,9 @@ gulp.task( 'templates', () => {
 										return path;
 									}
 							)
-					),
-			interactions = gulp.src( './src/interactions/*/templates/**/*.hbs' )
-					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'interactions' );
-									}
-							)
-					)
-					.pipe(
-							rename(
-									function( path ) {
-										path.dirname = 'interactions/' + path.dirname.replace( /\/templates$/, '' );
-										return path;
-									}
-							)
 					);
 
-	return merge( core, cards )
+	return merge( core, activities, cards, extensions )
 			.pipe( gulp.dest( './build/templates' ) );
 } );
 
@@ -120,8 +120,8 @@ gulp.task( 'watch-templates', () => {
 				'./src/app/cards/*/templates/**/*.hbs',
 				'./src/extensions/*/templates/**/*.hbs',
 				'./src/app/extensions/*/templates/**/*.hbs',
-				'./src/interactions/*/templates/**/*.hbs',
-				'./src/app/interactions/*/templates/**/*.hbs'
+				'./src/activities/*/templates/**/*.hbs',
+				'./src/app/activities/*/templates/**/*.hbs'
 			], ['templates'] );
 } );
 
@@ -131,6 +131,22 @@ gulp.task( 'core-js', () => {
 							foreach(
 									function( stream, file ) {
 										return appOverrides( stream, file );
+									}
+							)
+					),
+			activities = gulp.src( './src/activities/*/js/**/*.js' )
+					.pipe(
+							foreach(
+									function( stream, file ) {
+										return appOverrides( stream, file, 'activities' );
+									}
+							)
+					)
+					.pipe(
+							rename(
+									function( path ) {
+										path.dirname = 'activities/' + path.dirname.replace( /\/js$/, '' );
+										return path;
 									}
 							)
 					),
@@ -165,25 +181,9 @@ gulp.task( 'core-js', () => {
 										return path;
 									}
 							)
-					),
-			interactions = gulp.src( './src/interactions/*/js/**/*.js' )
-					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'interactions' );
-									}
-							)
-					)
-					.pipe(
-							rename(
-									function( path ) {
-										path.dirname = 'interactions/' + path.dirname.replace( /\/js$/, '' );
-										return path;
-									}
-							)
 					);
 
-	return merge( core, cards, extensions, interactions )
+	return merge( core, activities, cards, extensions )
 			.pipe( sourcemaps.init() )
 			.pipe(
 					babel(
@@ -221,6 +221,10 @@ gulp.task( 'css', () => {
 	var theme = gulp.src( './src/theme/' + objConfig.theme + '/sass/**/*.scss' )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) ),
+			activities = gulp.src( './src/activities/*/sass/**/*.scss' )
+					.pipe( sourcemaps.init() )
+					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
+					.pipe( concat( 'activities.min.css' ) ),
 			cards = gulp.src( './src/cards/*/sass/**/*.scss' )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
@@ -228,13 +232,9 @@ gulp.task( 'css', () => {
 			extensions = gulp.src( './src/extensions/*/sass/**/*.scss' )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
-					.pipe( concat( 'extensions.min.css' ) ),
-			interactions = gulp.src( './src/interactions/*/sass/**/*.scss' )
-					.pipe( sourcemaps.init() )
-					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
-					.pipe( concat( 'interactions.min.css' ) );
+					.pipe( concat( 'extensions.min.css' ) );
 
-	return merge( theme, cards, extensions, interactions )
+	return merge( theme, activities, cards, extensions )
 			.pipe( concat( 'course.min.css' ) )
 			.pipe( addsrc(
 					[

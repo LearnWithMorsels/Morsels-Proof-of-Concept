@@ -16,6 +16,9 @@
 		height: 100%;
 		margin: 0 auto 16px;
 
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+
 		transition: box-shadow 250ms, transform 250ms, z-index 250ms;
 
 		-webkit-touch-callout: none;

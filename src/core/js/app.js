@@ -15,7 +15,7 @@ import {Config} from './models/config';
 import {Course} from './models/course';
 import * as crossroads from 'crossroads';
 
-var objConfig = new Config();
+let objConfig = new Config();
 
 objConfig.onLoad(
     ( data ) => {

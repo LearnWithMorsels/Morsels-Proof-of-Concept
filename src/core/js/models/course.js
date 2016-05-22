@@ -27,7 +27,7 @@ export class Course extends MorselsModel {
 							.then( course => {
 								this.element.html( '' );
 
-								for( var section of course._sections ) {
+								for( let section of course._sections ) {
 									this.children.push( new Section( section, this ) );
 								}
 
