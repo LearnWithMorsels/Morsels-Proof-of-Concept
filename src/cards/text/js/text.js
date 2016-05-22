@@ -1,1 +1,3 @@
-console.log( 'TEXT CARD' );
+import {Card} from '../../models/card';
+
+export class TextCard extends Card {}

@@ -1,1 +1,0 @@
-console.log( 'MCQ INTERACTION - APP' );

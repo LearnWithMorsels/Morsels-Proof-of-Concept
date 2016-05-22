@@ -1,1 +1,0 @@
-console.log( 'TEXT CARD - APP' );
