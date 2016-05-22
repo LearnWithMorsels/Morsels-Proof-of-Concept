@@ -51,7 +51,7 @@ export class Card extends MorselsModel {
 			dragging = true;
 			startPos = { x: e.pageX, y: e.pageY };
 			windowSize = { w: window.innerWidth, h: window.innerHeight };
-		} ).on( 'touchmove mousemove', e => {
+		} ).on( 'touchstart mousedown', '.mdl-card button', e => e.stopPropagation() ).on( 'touchmove mousemove', e => {
 			if( dragging ) {
 				e.preventDefault();
 				e = ( e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0] ) || e;
