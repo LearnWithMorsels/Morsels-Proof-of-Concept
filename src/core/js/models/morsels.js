@@ -1,7 +1,9 @@
-import * as $ from 'jquery';
-import * as Handlebars from 'handlebars';
+//import * as $ from 'jquery';
+//import * as Handlebars from 'handlebars';
 
 let renderPromise;
+
+var templates = {};
 
 export class MorselsModel {
 
@@ -50,18 +52,20 @@ export class MorselsModel {
 	render() {
 		this.preRender();
 
-		return new Promise( ( resolve, reject ) => {
-					fetch( 'templates/' + this.template )
-							.then( response => response.text() )
-							.then( template => Handlebars.compile( template ) )
-							.then( handlebar => handlebar( this.properties ),
-									e => console.error( 'Failed to render "' + this.template + '": ', e.message ) )
-							//.then( html => this.element.innerHTML = html )
-							//.then( html => console.log( this.element, this.template, this.properties ) )
-							.then( html => resolve( html ) )
-							.catch( e => reject( e ) );
-				}
-		);
+		if( !templates[this.template] ) {
+			templates[this.template] = new Promise(
+					( resolve, reject ) =>
+							fetch( 'templates/' + this.template )
+									.then( response => response.text() )
+									.then( template => Handlebars.compile( template ) )
+									.then( html => resolve( html ) )
+									.catch( e => reject( e ) )
+			);
+		}
+
+		return templates[this.template]
+				.then( handlebar => handlebar( this.properties ),
+						e => console.error( 'Failed to render "' + this.template + '": ', e.message ) );
 	}
 
 }
