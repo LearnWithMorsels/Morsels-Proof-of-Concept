@@ -1,4 +1,3 @@
-//import * as $ from 'jquery';
 import {MorselsModel} from './morsels';
 import {Card} from './card';
 
@@ -17,7 +16,7 @@ export class Section extends MorselsModel {
 		this.properties = properties;
 		this.parent = parent;
 		this.children = [];
-		this.element = $( '<div class="morsel-section"/>' );
+		this.element = jQuery( '<div class="morsel-section"/>' );
 		this.isRendered = false;
 
 		this.parent.element.append( this.element );

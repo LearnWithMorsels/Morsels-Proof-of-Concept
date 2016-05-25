@@ -204,17 +204,20 @@ gulp.task( 'watch-core-js', () => {
 gulp.task( 'vendor-js', () => {
 	return gulp.src( [
 		'./node_modules/babel-polyfill/dist/polyfill.min.js',
+		'./node_modules/systemjs/dist/system.js',
+		'./node_modules/signals/dist/signals.min.js',
 		'./node_modules/crossroads/dist/crossroads.min.js',
 		'./node_modules/handlebars/dist/handlebars.js',
+		'./node_modules/handlebars.binding/dist/handlebars.binding.min.js',
 		'./node_modules/jquery/dist/jquery.min.js',
-		'./node_modules/material-design-lite/dist/material.min.js',
-		'./node_modules/signals/dist/signals.min.js',
-		'./node_modules/systemjs/dist/system.js'
+		'./node_modules/material-design-lite/dist/material.min.js'
 	] )
-	//.pipe( using() )
-	//.pipe( sourcemaps.init() )
-	//.pipe( sourcemaps.write( './' ) )
+			//.pipe( using() )
+			.pipe( sourcemaps.init() )
+			// .pipe( concat( 'vendor.js' ) )
+			.pipe( sourcemaps.write( './' ) )
 			.pipe( gulp.dest( './build/js/vendor' ) );
+			//.pipe( gulp.dest( './build/js' ) );
 } );
 
 gulp.task( 'css', () => {

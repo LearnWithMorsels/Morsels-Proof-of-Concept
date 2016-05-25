@@ -1,5 +1,5 @@
-//import * as $ from 'jquery';
-//import * as Handlebars from 'handlebars';
+import * as Handlebars from 'handlebars';
+import * as HandlebarsBinding from 'handlebarsbinding';
 
 let templates = {};
 
@@ -9,9 +9,10 @@ export class MorselsModel {
 	 * The parent object which all courses, sections, cards and activities extend
 	 */
 	constructor() {
-		//console.log( '$', $ );
-		//console.log( 'Handlebars', Handlebars );
-		//console.log( 'crossroads', crossroads );
+		// console.log( '$', $ );
+		// console.log( 'Handlebars', Handlebars );
+		// console.log( 'HandlebarsBinding', HandlebarsBinding );
+		// HandlebarsBinding.default( Handlebars );
 
 		/**
 		 * Is the model complete

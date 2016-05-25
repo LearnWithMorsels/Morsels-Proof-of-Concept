@@ -1,4 +1,3 @@
-//import * as $ from 'jquery';
 import {MorselsModel} from './morsels';
 
 export class Card extends MorselsModel {
@@ -18,8 +17,8 @@ export class Card extends MorselsModel {
 		this.properties = properties;
 		this.parent = parent;
 		this.children = [];
-		this.element = $( '<div class="morsel-card"/>' ).css( 'z-index', 100 - index );
-		//this.element = $( '<div class="morsel-card"/>' );
+		this.element = jQuery( '<div class="morsel-card"/>' ).css( 'z-index', 100 - index );
+		//this.element = jQuery( '<div class="morsel-card"/>' );
 		this.isRendered = false;
 
 		this.parent.element.append( this.element );
@@ -41,6 +40,7 @@ export class Card extends MorselsModel {
 				dragPos = {},
 				displace = {},
 				windowSize = {},
+				flipped = false,
 				dismissOnEnd = false,
 				rotation = 0,
 				mdlCard = this.element.find( '.mdl-card' );
@@ -57,19 +57,52 @@ export class Card extends MorselsModel {
 				e = ( e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0] ) || e;
 				dragPos = { x: e.pageX, y: e.pageY };
 				displace = { x: dragPos.x - startPos.x, y: dragPos.y - startPos.y };
-				rotation = -( ( displace.x / ( windowSize.w / 2 ) ) * ( displace.y / ( windowSize.h / 2 ) ) ) * 15;
-				//mdlCard.css( 'transform', 'translate(' + displace.x + 'px, ' + displace.y + 'px) rotate(' + rotation + 'deg)' );
-				mdlCard.css( 'transform', 'translate(' + displace.x + 'px, ' + displace.y + 'px)' );
-				dismissOnEnd = ( displace.x > ( windowSize.w / 2 ) ); // Only when displacing/swiping right
+				// if( flipped ) {
+				// 	if( displace.x > 0 ) {
+				// 		rotation = ( ( displace.x / mdlCard.width() ) * 180 ) - 180;
+				// 		mdlCard.css( 'transform', 'rotateY(' + rotation + 'deg)' );
+				// 	}
+				// } else {
+					//if( displace.x > 0 ) {
+						//rotation = -( ( displace.x / ( windowSize.w / 2 ) ) * ( displace.y / ( windowSize.h / 2 ) ) ) * 15; // Rotate on dismiss
+						mdlCard.css( 'transform', 'translate(' + displace.x + 'px, ' + displace.y + 'px)' );
+						dismissOnEnd = ( Math.abs( displace.x ) > ( windowSize.w / 4 ) );
+					// } else {
+					// 	flipped = true;
+					// 	rotation = ( displace.x / mdlCard.width() ) * 180;
+					// 	mdlCard.css( 'transform', 'rotateY(' + rotation + 'deg)' );
+					// }
+				//}
 			}
 		} ).on( 'touchend mouseup', () => {
-			mdlCard.removeClass( 'mdl-shadow--8dp dragging' ).addClass( 'mdl-shadow--2dp' );
-			if( dismissOnEnd ) {
-				mdlCard.css( 'transform', 'translate(' + ( displace.x * 3 ) + 'px, ' + ( displace.y * 3 ) + 'px) rotate(' + rotation + 'deg)' );
-			} else {
-				mdlCard.css( 'transform', 'none' );
-			}
 			dragging = false;
+			mdlCard.removeClass( 'mdl-shadow--8dp dragging' ).addClass( 'mdl-shadow--2dp' );
+			// if( flipped ) {
+			// 	if( rotation >= 90 ) {
+			// 		console.log( 'A' );
+			// 		mdlCard.css( 'transform', 'none' );
+			// 	} else {
+			// 		console.log( 'B' );
+			// 		mdlCard.css( 'transform', 'rotateY(-180deg)' );
+			// 	}
+			// } else {
+				/*if( rotation <= -90 ) {
+					console.log( 'C' );
+					mdlCard.css( 'transform', 'rotateY(-180deg)' );
+				} else */if( dismissOnEnd ) {
+					console.log( 'D' );
+					mdlCard.css( 'transform', 'translate(' + ( displace.x * 3 ) + 'px, ' + ( displace.y * 3 ) + 'px)' );
+					this.element.height( this.element.height() );
+				setTimeout(
+						() => {
+							this.element.height( 0 );
+						}, 1
+				);
+				} else {
+					console.log( 'E' );
+					mdlCard.css( 'transform', 'none' );
+				}
+			//}
 		} );
 
 	}

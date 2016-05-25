@@ -11,9 +11,16 @@
  * -------------------{ BITE-SIZED ELEARNING }-------------------
  */
 
+import $ from 'jquery';
+import jQuery from 'jquery';
 import {Config} from './models/config';
 import {Course} from './models/course';
-import * as crossroads from 'crossroads';
+//import * as crossroads from 'crossroads';
+
+// export for others scripts to use
+//window.$ = $;
+window.jQuery = jQuery;
+
 
 let objConfig = new Config();
 
@@ -23,11 +30,4 @@ objConfig.onLoad(
     }
 );
 
-//objConfig.get( 'theme' ).then( theme => { console.log( 'Theme: ' + theme ) } );
-
 objConfig.defaultLanguage().then( language => { new Course( language ) } );
-
-
-
-//var XFoo = document.registerElement('morsel-course');
-// document.body.appendChild(new XFoo());

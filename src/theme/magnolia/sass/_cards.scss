@@ -1,19 +1,25 @@
 .morsel-card {
-	//width: 16px;
-	//height: 100%;
+	padding: 16px;
 
-	//display: inline-block;
-
-	position: relative;
+	//position: relative;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 
 	overflow: visible;
 
 	vertical-align: top;
 
+	transition: height 250ms;
+
+	perspective: 800px;
+
 	.mdl-card {
 		//max-width: 100%;
 		min-height: 0;
-		height: 100%;
+		max-height: 100%;
 		margin: 0 auto 16px;
 
 		-webkit-transform: translate3d(0, 0, 0);
@@ -77,8 +83,6 @@
 				right: 16px;
 			}
 		}
-
-		+ .mdl-card {}
 
 		&.dragging {
 			transition: box-shadow 100ms;

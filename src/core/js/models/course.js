@@ -1,4 +1,3 @@
-//import * as $ from 'jquery';
 import {MorselsModel} from './morsels';
 import {Section} from './section';
 
@@ -14,7 +13,7 @@ export class Course extends MorselsModel {
 
 		super();
 
-		this.element = $( '#morsel-course' );
+		this.element = jQuery( '#morsel-course' );
 		this.children = [];
 
 		/**
@@ -31,7 +30,7 @@ export class Course extends MorselsModel {
 									this.children.push( new Section( section, this ) );
 								}
 
-								return course
+								return course;
 							} )
 							//.then( course => super.render() )
 							.then( course => resolve( course ) )
