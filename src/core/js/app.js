@@ -18,7 +18,7 @@ import {Course} from './models/course';
 //import * as crossroads from 'crossroads';
 import * as Handlebars from 'handlebars';
 //import {Binding, update} from 'handlebarsbinding';
-import * as HandlebarsBinding from 'handlebarsbinding';
+import HandlebarsBinding from 'handlebarsbinding';
 
 // export for others scripts to use
 //window.$ = $;
