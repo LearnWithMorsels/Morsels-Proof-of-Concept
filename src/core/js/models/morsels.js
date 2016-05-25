@@ -1,9 +1,7 @@
 //import * as $ from 'jquery';
 //import * as Handlebars from 'handlebars';
 
-let renderPromise;
-
-var templates = {};
+let templates = {};
 
 export class MorselsModel {
 
