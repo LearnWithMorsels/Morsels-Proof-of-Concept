@@ -90,7 +90,7 @@ export class Card extends MorselsModel {
 					console.log( 'C' );
 					mdlCard.css( 'transform', 'rotateY(-180deg)' );
 				} else */if( dismissOnEnd ) {
-					console.log( 'D' );
+					// console.log( 'D' );
 					mdlCard.css( 'transform', 'translate(' + ( displace.x * 3 ) + 'px, ' + ( displace.y * 3 ) + 'px)' );
 					this.element.height( this.element.height() );
 				setTimeout(

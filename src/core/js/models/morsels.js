@@ -1,5 +1,5 @@
-import * as Handlebars from 'handlebars';
-import * as HandlebarsBinding from 'handlebarsbinding';
+//import * as Handlebars from 'handlebars';
+//import * as HandlebarsBinding from 'handlebarsbinding';
 
 let templates = {};
 
