@@ -1,6 +1,14 @@
 {
 	"theme": "magnolia",
-	"appColour": "216A95",
+	"appColour": "607D8B",
+	"icons": {
+		"mdpi": "",
+		"hdpi": "",
+		"xhdpi": "",
+		"xxhdpi": "",
+		"xxxhdpi": "",
+		"web": ""
+	},
 	"languages": {
 		"primary": "en",
 		"selector": {

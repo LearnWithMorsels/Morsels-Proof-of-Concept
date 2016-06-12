@@ -34,7 +34,7 @@ export class Card extends MorselsModel {
 
 	onRender( funDo ) {
 		this.promise
-				.then( () => funDo.call( this ) );
+				.then( () => funDo.call( this.parent ) );
 	}
 
 	/**

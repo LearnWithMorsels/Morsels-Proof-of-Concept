@@ -72,35 +72,43 @@ gulp.task( 'watch-index', () => {
 gulp.task( 'templates', () => {
 	var core = gulp.src( './src/core/views/templates/**/*.hbs' )
 					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'core/views/templates' );
-									}
-							)
+						foreach(
+							function( stream, file ) {
+								return appOverrides( stream, file, 'core/views/templates' );
+							}
+						)
+					)
+					.pipe(
+						rename(
+							function( path ) {
+								path.dirname += '/core';
+								return path;
+							}
+						)
 					),
 			activities = gulp.src( './src/activities/*/templates/**/*.hbs' )
 					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'activities' );
-									}
-							)
+						foreach(
+							function( stream, file ) {
+								return appOverrides( stream, file, 'activities' );
+							}
+						)
 					)
 					.pipe(
-							rename(
-									function( path ) {
-										path.dirname = 'activities/' + path.dirname.replace( /\/templates$/, '' );
-										return path;
-									}
-							)
+						rename(
+							function( path ) {
+								path.dirname = 'activities/' + path.dirname.replace( /\/templates$/, '' );
+								return path;
+							}
+						)
 					),
 			cards = gulp.src( './src/cards/*/templates/**/*.hbs' )
 					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'cards' );
-									}
-							)
+						foreach(
+							function( stream, file ) {
+								return appOverrides( stream, file, 'cards' );
+							}
+						)
 					)
 					.pipe(
 							rename(
@@ -112,24 +120,39 @@ gulp.task( 'templates', () => {
 					),
 			extensions = gulp.src( './src/extensions/*/templates/**/*.hbs' )
 					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'extensions' );
-									}
-							)
+						foreach(
+							function( stream, file ) {
+								return appOverrides( stream, file, 'extensions' );
+							}
+						)
 					)
 					.pipe(
-							rename(
-									function( path ) {
-										path.dirname = 'extensions/' + path.dirname.replace( /\/templates$/, '' );
-										return path;
-									}
-							)
+						rename(
+							function( path ) {
+								path.dirname = 'extensions/' + path.dirname.replace( /\/templates$/, '' );
+								return path;
+							}
+						)
+					),
+			theme = gulp.src( './src/theme/*/templates/**/*.hbs' )
+					.pipe(
+						foreach(
+							function( stream, file ) {
+								return appOverrides( stream, file, 'theme' );
+							}
+						)
+					)
+					.pipe(
+						rename(
+							function( path ) {
+								path.dirname = 'theme/' + path.dirname.replace( new RegExp( objConfig.theme + '\/templates$' ), '' );
+								return path;
+							}
+						)
 					);
 
-	return mergeStream( core, activities, cards, extensions )
-			.pipe( gulp.dest( './build/templates' ) )
-        	.pipe( browserSync.stream( { match: '**/*.hbs' } ) );
+	return mergeStream( core, activities, cards, extensions, theme )
+			.pipe( gulp.dest( './build/templates' ) );
 
 	// return mergeStream( core, activities, cards, extensions )
 	// 		.pipe( handlebars() )
@@ -158,7 +181,7 @@ gulp.task( 'watch-templates', () => {
 				'./src/app/extensions/*/templates/**/*.hbs',
 				'./src/activities/*/templates/**/*.hbs',
 				'./src/app/activities/*/templates/**/*.hbs'
-			], ['templates'] );
+			], ['templates'], browserSync.reload );
 } );
 
 gulp.task( 'core-js', () => {
@@ -230,12 +253,11 @@ gulp.task( 'core-js', () => {
 			)
 			.pipe( uglify( {preserveComments: 'license'} ) )
 			.pipe( sourcemaps.write( './' ) )
-			.pipe( gulp.dest( './build/js' ) )
-        	.pipe( browserSync.stream( { match: '**/*.js' } ) );
+			.pipe( gulp.dest( './build/js' ) );
 } );
 
 gulp.task( 'watch-core-js', () => {
-	return gulp.watch( './src/core/js/**/*.js', ['core-js'] );
+	return gulp.watch( './src/core/js/**/*.js', ['core-js'], browserSync.reload );
 } );
 
 gulp.task( 'vendor-js', () => {
@@ -253,8 +275,7 @@ gulp.task( 'vendor-js', () => {
 			.pipe( sourcemaps.init() )
 			// .pipe( concat( 'vendor.js' ) )
 			.pipe( sourcemaps.write( './' ) )
-			.pipe( gulp.dest( './build/js/vendor' ) )
-        	.pipe( browserSync.stream( { match: '**/*.js' } ) );
+			.pipe( gulp.dest( './build/js/vendor' ) );
 			//.pipe( gulp.dest( './build/js' ) );
 } );
 
@@ -315,12 +336,11 @@ gulp.task( 'watch-config', () => {
 gulp.task( 'data', () => {
 	return gulp.src( './src/app/course/*.json' )
 			.pipe( extend( './src/app/course/' + objConfig.languages.primary + '.json' ) )
-			.pipe( gulp.dest( './build/app/course' ) )
-        	.pipe( browserSync.stream( { match: '**/*.json' } ) );
+			.pipe( gulp.dest( './build/app/course' ) );
 } );
 
 gulp.task( 'watch-data', () => {
-	return gulp.watch( './src/app/course/*.json', ['data'] );
+	return gulp.watch( './src/app/course/*.json', ['data'], browserSync.reload );
 } );
 
 gulp.task( 'docs', () => {
@@ -336,14 +356,12 @@ gulp.task( 'browser-sync', function() {
 			}
     	}
 	);
-    // gulp.watch("app/scss/*.scss", ['sass']);
-    // gulp.watch("app/*.html").on('change', browserSync.reload);
 } );
 
 gulp.task( 'js', ['core-js', 'vendor-js'] );
 
 gulp.task( 'watch', ['default', 'watch-index', 'watch-templates', 'watch-core-js', 'watch-css', 'watch-resources', 'watch-config', 'watch-data'] );
 
-gulp.task( 'dev', ['default', 'browser-sync', 'watch'] );
+gulp.task( 'dev', ['default', 'watch', 'browser-sync'] );
 
 gulp.task( 'default', ['index', 'templates', 'js', 'css', 'resources', 'config', 'data'] );

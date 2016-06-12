@@ -1,7 +1,6 @@
-import {MorselsModel} from './morsels';
 import {Section} from './section';
 
-export class Course extends MorselsModel {
+export class Course {
 
 	/**
 	 * Retrieve the course details
@@ -9,26 +8,21 @@ export class Course extends MorselsModel {
 	 * @returns {Promise} The promise
 	 * @constructor
 	 */
-	constructor( element, strLanguage ) {
-
-		super();
+	constructor( parent, element, language ) {
 
 		this.element = jQuery( element );
 		this.children = [];
-
-
-
-
-
-
+		this.parent = parent;
+		this.properites = {};
 
 		/**
 		 * The promise for retrieving the JSON file
 		 * @type {Promise}
 		 */
 		this.promise = new Promise( ( resolve, reject ) => {
-					fetch( 'app/course/' + strLanguage + '.json' )
+					fetch( 'app/course/' + language + '.json' )
 							.then( response => response.json() )
+							.then( course => this.properites = course )
 							.then( course => {
 								this.element.html( '' );
 
@@ -38,18 +32,6 @@ export class Course extends MorselsModel {
 
 								return course;
 							} )
-							/*.then( course => {
-								new Promise(
-										( resolve, reject ) =>
-												fetch( 'templates/' + this.template )
-														.then( response => response.text() )
-														.then( template => Handlebars.compile( template ) )
-														.then( html => resolve( html ) )
-														.catch( e => reject( e ) )
-								);
-
-								return course;
-							} )*/
 							.then( course => resolve( course ) )
 							.catch( e => reject( e ) )
 				}
