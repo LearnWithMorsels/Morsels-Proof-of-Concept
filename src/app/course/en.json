@@ -48,6 +48,49 @@
 						"title": "2. Michael Schumacher",
 						"subtitle": "Active: 1991&ndash;2006, 2010&ndash;2012",
 						"body": "<p>Simply the best and fastest. Surely faster than anybody after him, in his prime. Still in his fourties could come back to have some fun and have decent races, which is pretty spectacular demonstration of his talent and consistency. Especially when you think that many other drivers in their later 30s are called \"non-prime anymore\".</p>"
+					},
+					"_interaction": {
+						"_type": "truefalse",
+						"title": "Want to know more?",
+						"icon": "info",
+						"_content": {
+							"title": "Fact and fiction",
+							"body": "Sort the facts from the fiction.",
+							"instruction": "Drag the facts into the right box."
+						},
+						"_items": [
+							{
+								"title": "One",
+								"_isCorrect": false
+							},
+							{
+								"title": "Two",
+								"_isCorrect": false
+							},
+							{
+								"title": "Three",
+								"_isCorrect": false
+							},
+							{
+								"title": "Four",
+								"_isCorrect": true
+							}
+						],
+						"_options": {
+							"_selectable": 1,
+							"_attempts": 3
+						},
+						"_feedback": {
+							"_correct": {
+								"title": "Well done!",
+								"body": "You added up."
+							},
+							"_incorrect": {
+								"title": "Not quite!",
+								"body": "You can't add up.",
+								"_notes": ["adding"]
+							}
+						}
 					}
 				},
 				{
@@ -69,6 +112,8 @@
 					},
 					"_interaction": {
 						"_type": "mcq",
+						"title": "Let's find out",
+						"icon": "chevron_right",
 						"_content": {
 							"title": "Simple maths question",
 							"body": "What is 2 + 2?",

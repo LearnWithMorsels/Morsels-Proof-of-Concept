@@ -1,6 +1,8 @@
 import {MorselsModel} from './morsels';
 import {Card} from './card';
 
+let allChildrenRendered = false;
+
 export class Section extends MorselsModel {
 
 	/**
@@ -28,35 +30,39 @@ export class Section extends MorselsModel {
 					for( let card in properties._cards ) {
 						var newCard = new Card( properties._cards[card], this, card );
 						this.children.push( newCard );
-						newCard.then( () => this.checkAllChildrenRendered );
+						newCard.onRender( this.checkAllChildrenRendered );
 					}
 				} );
 
 	}
 
 	checkAllChildrenRendered() {
-		console.log( 'abc' );
-		let allRendered = true,
-				intTallestCard = 0;
-
-		for( let card of this.children ) {
-			if( !card.isRendered ) {
-				allRendered = false;
-				break;
-			}
-		}
-
-		console.log( allRendered );
-
-		if( allRendered ) {
-			for( let card of this.children ) {
-				if( card.element.height() > intTallestCard ) {
-					intTallestCard = card.element.height();
+		if( !allChildrenRendered ) {
+			let allRendered = true,
+					intTallestCard = 0;
+			
+			for( let card of this.parent.children ) {
+				if( !card.isRendered ) {
+					allRendered = false;
+					break;
 				}
 			}
 
-			for( let card of this.children ) {
-				card.element.height( intTallestCard );
+			if( allRendered ) {
+				allChildrenRendered = true;
+
+				for( let card of this.parent.children ) {
+					let mdlCard = card.element.find( '.mdl-card' ),
+							mdlCardHeight = mdlCard.height();
+					if( mdlCardHeight > intTallestCard ) {
+						intTallestCard = mdlCardHeight;
+					}
+				}
+
+				for( let card of this.parent.children ) {
+					let mdlCard = card.element.find( '.mdl-card' );
+					mdlCard.height( intTallestCard );
+				}
 			}
 		}
 	}

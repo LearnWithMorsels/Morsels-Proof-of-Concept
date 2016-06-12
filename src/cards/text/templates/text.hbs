@@ -13,19 +13,15 @@
     </div>
     {{#if _interaction}}
     <div class="mdl-card__actions mdl-card--border">
-        <!--<a class="android-link mdl-button mdl-js-button mdl-typography--text-uppercase" href="" data-upgraded=",MaterialButton">
-            Download now
-            <i class="material-icons">chevron_right</i>
-        </a>-->
-        Let's find out
+        {{_interaction.title}}
         <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-            <i class="material-icons">chevron_right</i>
+            <i class="material-icons">{{_interaction.icon}}</i>
         </button>
     </div>
     {{/if}}
-    <!--<div class="mdl-card__menu">
+    <div class="mdl-card__menu">
         <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons">share</i>
+            <i class="material-icons">star_border</i>
         </button>
-    </div>-->
+    </div>
 </div>

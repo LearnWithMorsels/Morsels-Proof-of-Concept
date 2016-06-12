@@ -3,10 +3,14 @@ const fs = require( 'fs' ),
 		addsrc = require( 'gulp-add-src' ),
 		babel = require( 'gulp-babel' ),
 		change = require( 'gulp-change' ),
+		declare = require( 'gulp-declare' ),
+		compileHandlebars = require( 'gulp-compile-handlebars' ),
 		concat = require( 'gulp-concat' ),
 		foreach = require( 'gulp-foreach' ),
+		handlebars = require( 'gulp-handlebars' ),
 		jsdoc = require( 'gulp-jsdoc3' ),
 		jshint = require( 'gulp-jshint' ),
+		merge = require( 'merge' ),
 		extend = require( 'gulp-multi-extend' ),
 		rename = require( 'gulp-rename' ),
 		replace = require( 'gulp-replace' ),
@@ -14,10 +18,12 @@ const fs = require( 'fs' ),
 		sourcemaps = require( 'gulp-sourcemaps' ),
 		uglify = require( 'gulp-uglify' ),
 		using = require( 'gulp-using' ),
-		merge = require( 'merge-stream' ),
+		mergeStream = require( 'merge-stream' ),
+		wrap = require( 'gulp-wrap' )
 		browserSync = require( 'browser-sync' ).create();
 
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
+		objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json',
 		appOverrides = function( stream, file, folder ) {
 			var strFile = file.history[0].replace( new RegExp( '^' + file.base ), '' ).replace( /^\//, '' ),
 					regex = new RegExp( '\/' + ( folder ? folder + '\/' : '' ) + '$' ),
@@ -42,12 +48,25 @@ var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 		};
 
 gulp.task( 'index', () => {
-	return gulp.src( './src/core/views/index.html' )
+	return gulp.src( './src/core/views/index.hbs' )
+			.pipe( compileHandlebars( {
+				config: objConfig,
+				content: objPrimaryContent
+			}, {
+				ignorePartials: false,
+				//batch : ['./src/partials'],
+				helpers : {
+					/*capitals : function(str){
+						return str.toUpperCase();
+					}*/
+				}
+			} ) )
+			.pipe( rename( 'index.html' ) )
 			.pipe( gulp.dest( './build' ) );
 } );
 
 gulp.task( 'watch-index', () => {
-	return gulp.watch( './src/core/views/index.html', ['index'] );
+	return gulp.watch( './src/core/views/index.hbs', ['index'] );
 } );
 
 gulp.task( 'templates', () => {
@@ -108,9 +127,24 @@ gulp.task( 'templates', () => {
 							)
 					);
 
-	return merge( core, activities, cards, extensions )
+	return mergeStream( core, activities, cards, extensions )
 			.pipe( gulp.dest( './build/templates' ) )
         	.pipe( browserSync.stream( { match: '**/*.hbs' } ) );
+
+	// return mergeStream( core, activities, cards, extensions )
+	// 		.pipe( handlebars() )
+	// 		.pipe( wrap( 'Handlebars.template(<%= contents %>)' ) )
+	// 		.pipe(
+	// 			declare(
+	// 				{
+	// 					namespace: 'Morsels.views',
+	// 					noRedeclare: true, // Avoid duplicate declarations 
+	// 				}
+	// 			)
+	// 		)
+	// 		.pipe( addsrc.prepend( './node_modules/handlebars/dist/handlebars.js' ) )
+	// 		.pipe( concat( 'views.js' ) )
+	// 		.pipe( gulp.dest( './build/js/' ) );
 } );
 
 gulp.task( 'watch-templates', () => {
@@ -185,7 +219,7 @@ gulp.task( 'core-js', () => {
 							)
 					);
 
-	return merge( core, activities, cards, extensions )
+	return mergeStream( core, activities, cards, extensions )
 			.pipe( sourcemaps.init() )
 			.pipe(
 					babel(
@@ -241,7 +275,7 @@ gulp.task( 'css', () => {
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'extensions.min.css' ) );
 
-	return merge( theme, activities, cards, extensions )
+	return mergeStream( theme, activities, cards, extensions )
 			.pipe( concat( 'course.min.css' ) )
 			.pipe( addsrc(
 					[

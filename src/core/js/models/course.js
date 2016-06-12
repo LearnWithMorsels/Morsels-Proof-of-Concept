@@ -9,12 +9,18 @@ export class Course extends MorselsModel {
 	 * @returns {Promise} The promise
 	 * @constructor
 	 */
-	constructor( strLanguage ) {
+	constructor( element, strLanguage ) {
 
 		super();
 
-		this.element = jQuery( '#morsel-course' );
+		this.element = jQuery( element );
 		this.children = [];
+
+
+
+
+
+
 
 		/**
 		 * The promise for retrieving the JSON file
@@ -32,7 +38,18 @@ export class Course extends MorselsModel {
 
 								return course;
 							} )
-							//.then( course => super.render() )
+							/*.then( course => {
+								new Promise(
+										( resolve, reject ) =>
+												fetch( 'templates/' + this.template )
+														.then( response => response.text() )
+														.then( template => Handlebars.compile( template ) )
+														.then( html => resolve( html ) )
+														.catch( e => reject( e ) )
+								);
+
+								return course;
+							} )*/
 							.then( course => resolve( course ) )
 							.catch( e => reject( e ) )
 				}

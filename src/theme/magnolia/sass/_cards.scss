@@ -1,7 +1,6 @@
 .morsel-card {
-	padding: 16px;
+	padding: 16px 16px 21px;
 
-	//position: relative;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -12,26 +11,28 @@
 
 	vertical-align: top;
 
-	transition: height 250ms;
+	transition: z-index 250ms;
 
-	perspective: 800px;
+	z-index: 1;
 
 	.mdl-card {
-		//max-width: 100%;
-		min-height: 0;
+		width: 100%;
+		max-width: 400px;
 		max-height: 100%;
 		margin: 0 auto 16px;
 
-		-webkit-transform: translate3d(0, 0, 0);
-		transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0) scale(0.975) translateY(5px);
+		transform-origin: 50% 100%;
 
-		transition: box-shadow 250ms, transform 250ms, z-index 250ms;
+		transition: box-shadow 250ms, transform 250ms, opacity 250ms, z-index 250ms;
 
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
+
+		opacity: 0;
 
 		z-index: 1;
 
@@ -84,10 +85,39 @@
 			}
 		}
 
+		.mdl-card__menu {
+			.mdl-button {
+			}
+				color: #FFF;
+		}
+
 		&.dragging {
 			transition: box-shadow 100ms;
 
 			z-index: 2;
+		}
+	}
+
+	&.dismissed {
+		//height: 0;
+
+		z-index: 0 !important;
+	}
+
+	&:first-child,
+	&.dismissed + .morsel-card {
+		.mdl-card {
+			transform: none;
+
+			opacity: 1;
+		}
+
+		+ .morsel-card {
+			.mdl-card {
+				//transform: scale(0.975) translateY(5px);
+
+				opacity: 1
+			}
 		}
 	}
 }
