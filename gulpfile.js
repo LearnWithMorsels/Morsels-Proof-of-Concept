@@ -14,7 +14,8 @@ const fs = require( 'fs' ),
 		sourcemaps = require( 'gulp-sourcemaps' ),
 		uglify = require( 'gulp-uglify' ),
 		using = require( 'gulp-using' ),
-		merge = require( 'merge-stream' );
+		merge = require( 'merge-stream' ),
+		browserSync = require( 'browser-sync' ).create();
 
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 		appOverrides = function( stream, file, folder ) {
@@ -108,7 +109,8 @@ gulp.task( 'templates', () => {
 					);
 
 	return merge( core, activities, cards, extensions )
-			.pipe( gulp.dest( './build/templates' ) );
+			.pipe( gulp.dest( './build/templates' ) )
+        	.pipe( browserSync.stream( { match: '**/*.hbs' } ) );
 } );
 
 gulp.task( 'watch-templates', () => {
@@ -194,7 +196,8 @@ gulp.task( 'core-js', () => {
 			)
 			.pipe( uglify( {preserveComments: 'license'} ) )
 			.pipe( sourcemaps.write( './' ) )
-			.pipe( gulp.dest( './build/js' ) );
+			.pipe( gulp.dest( './build/js' ) )
+        	.pipe( browserSync.stream( { match: '**/*.js' } ) );
 } );
 
 gulp.task( 'watch-core-js', () => {
@@ -216,7 +219,8 @@ gulp.task( 'vendor-js', () => {
 			.pipe( sourcemaps.init() )
 			// .pipe( concat( 'vendor.js' ) )
 			.pipe( sourcemaps.write( './' ) )
-			.pipe( gulp.dest( './build/js/vendor' ) );
+			.pipe( gulp.dest( './build/js/vendor' ) )
+        	.pipe( browserSync.stream( { match: '**/*.js' } ) );
 			//.pipe( gulp.dest( './build/js' ) );
 } );
 
@@ -248,7 +252,8 @@ gulp.task( 'css', () => {
 					]
 			) )
 			.pipe( sourcemaps.write( './' ) )
-			.pipe( gulp.dest( './build/css' ) );
+			.pipe( gulp.dest( './build/css' ) )
+        	.pipe( browserSync.stream( { match: '**/*.css' } ) );
 } );
 
 gulp.task( 'watch-css', () => {
@@ -276,7 +281,8 @@ gulp.task( 'watch-config', () => {
 gulp.task( 'data', () => {
 	return gulp.src( './src/app/course/*.json' )
 			.pipe( extend( './src/app/course/' + objConfig.languages.primary + '.json' ) )
-			.pipe( gulp.dest( './build/app/course' ) );
+			.pipe( gulp.dest( './build/app/course' ) )
+        	.pipe( browserSync.stream( { match: '**/*.json' } ) );
 } );
 
 gulp.task( 'watch-data', () => {
@@ -285,11 +291,25 @@ gulp.task( 'watch-data', () => {
 
 gulp.task( 'docs', () => {
 	return gulp.src( './src/core/js/**/*.js' )
-			.pipe( jsdoc( {opts: {destination: './docs/core/'}} ) );
+			.pipe( jsdoc( { opts: { destination: './docs/core/' } } ) );
+} );
+
+gulp.task( 'browser-sync', function() {
+    browserSync.init(
+		{
+			server: {
+				baseDir: './build'
+			}
+    	}
+	);
+    // gulp.watch("app/scss/*.scss", ['sass']);
+    // gulp.watch("app/*.html").on('change', browserSync.reload);
 } );
 
 gulp.task( 'js', ['core-js', 'vendor-js'] );
 
 gulp.task( 'watch', ['default', 'watch-index', 'watch-templates', 'watch-core-js', 'watch-css', 'watch-resources', 'watch-config', 'watch-data'] );
+
+gulp.task( 'dev', ['default', 'browser-sync', 'watch'] );
 
 gulp.task( 'default', ['index', 'templates', 'js', 'css', 'resources', 'config', 'data'] );
