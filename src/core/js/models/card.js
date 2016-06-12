@@ -1,4 +1,5 @@
 import {MorselsModel} from './morsels';
+import {objectrummage} from '../tools/objectrummage';
 
 export class Card extends MorselsModel {
 
@@ -33,8 +34,19 @@ export class Card extends MorselsModel {
 	}
 
 	onRender( funDo ) {
+
 		this.promise
 				.then( () => funDo.call( this.parent ) );
+		
+	}
+
+	update( property, value ) {
+
+		this.properties = objectrummage( property, this.properties, value );
+
+		super.render()
+				.then( html => this.element.html( html ) );
+
 	}
 
 	/**

@@ -24,13 +24,19 @@
  * objectrummage( 'b.2.iii' myObject ); // Returns 3
  * objectrummage( 'c.foo' myObject ); // Returns 'bar'
  */
-export function objectrummage( mxdKey, objIn ) {
+export function objectrummage( mxdKey, objIn, newValue = null ) {
 
 	if( Array.isArray( mxdKey ) ) {
 		if( mxdKey.length > 1 ) {
 			let thisKey = mxdKey.shift();
 
 			return objectrummage( mxdKey, objIn[thisKey] );
+		} else if( newValue ) {
+			if( objIn[mxdKey[0]] ) {
+				objIn[mxdKey[0]] = newValue;
+			}
+
+			return objIn;
 		} else {
 			return objIn[mxdKey[0]] || null;
 		}
@@ -39,6 +45,12 @@ export function objectrummage( mxdKey, objIn ) {
 				thisKey = arrKeys.shift();
 
 		return objectrummage( arrKeys, objIn[thisKey] );
+	} else if( newValue ) {
+		if( objIn[mxdKey] ) {
+			objIn[mxdKey] = newValue;
+		}
+
+		return objIn;
 	} else {
 		return objIn[mxdKey] || null;
 	}

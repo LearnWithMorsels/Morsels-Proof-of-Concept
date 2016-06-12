@@ -20,7 +20,7 @@ export class Section {
 
 		this.parent.element.append( this.element );
 
-		$( window ).on( 'resize', this.matchCardHeights );
+		//$( window ).on( 'resize', this.matchCardHeights );
 
 		for( let card in properties._cards ) {
 			var newCard = new Card( properties._cards[card], this, card );
