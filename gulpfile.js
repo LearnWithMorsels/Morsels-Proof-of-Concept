@@ -135,7 +135,9 @@ gulp.task( 'watch-templates', () => {
 
 gulp.task( 'core-js', () => {
 	var core = gulp.src( './src/core/js/**/*.js' )
-					.pipe( fileOverride( 'core/js', 'app/core/js' ) ),
+					.pipe( using() )
+					.pipe( fileOverride( 'core/js', 'app/core/js' ) )
+					.pipe( using() ),
 			activities = gulp.src( './src/activities/*/js/**/*.js' )
 					.pipe( fileOverride( 'activities/*/js', 'app/activities/$1/js' ) )
 					.pipe(
