@@ -6,6 +6,7 @@ const fs = require( 'fs' ),
 		declare = require( 'gulp-declare' ),
 		compileHandlebars = require( 'gulp-compile-handlebars' ),
 		concat = require( 'gulp-concat' ),
+		fileOverride = require( 'gulp-file-override' ),
 		foreach = require( 'gulp-foreach' ),
 		handlebars = require( 'gulp-handlebars' ),
 		jsdoc = require( 'gulp-jsdoc3' ),
@@ -19,33 +20,11 @@ const fs = require( 'fs' ),
 		uglify = require( 'gulp-uglify' ),
 		using = require( 'gulp-using' ),
 		mergeStream = require( 'merge-stream' ),
-		wrap = require( 'gulp-wrap' )
+		wrap = require( 'gulp-wrap' ),
 		browserSync = require( 'browser-sync' ).create();
 
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
-		objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json',
-		appOverrides = function( stream, file, folder ) {
-			var strFile = file.history[0].replace( new RegExp( '^' + file.base ), '' ).replace( /^\//, '' ),
-					regex = new RegExp( '\/' + ( folder ? folder + '\/' : '' ) + '$' ),
-					strAppFile = file.base.replace( regex, '' ) + '/app/' + ( folder ? folder + '/' : '' ) + strFile;
-
-			if( fs.existsSync( strAppFile ) ) {
-				console.log( '[ APP ] ' + strAppFile );
-				var strAppFileContents = fs.readFileSync( strAppFile );
-
-				return stream
-						.pipe(
-								change(
-										function() {
-											return strAppFileContents;
-										}
-								)
-						);
-			} else {
-				console.log( '[STOCK] ' + file.history[0] );
-				return stream;
-			}
-		};
+		objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json';
 
 gulp.task( 'index', () => {
 	return gulp.src( './src/core/views/index.hbs' )
@@ -71,13 +50,7 @@ gulp.task( 'watch-index', () => {
 
 gulp.task( 'templates', () => {
 	var core = gulp.src( './src/core/views/templates/**/*.hbs' )
-					.pipe(
-						foreach(
-							function( stream, file ) {
-								return appOverrides( stream, file, 'core/views/templates' );
-							}
-						)
-					)
+					.pipe( fileOverride( 'core/views', 'app/core/views' ) )
 					.pipe(
 						rename(
 							function( path ) {
@@ -87,13 +60,7 @@ gulp.task( 'templates', () => {
 						)
 					),
 			activities = gulp.src( './src/activities/*/templates/**/*.hbs' )
-					.pipe(
-						foreach(
-							function( stream, file ) {
-								return appOverrides( stream, file, 'activities' );
-							}
-						)
-					)
+					.pipe( fileOverride( 'activities/*/templates', 'app/activities/$1/templates' ) )
 					.pipe(
 						rename(
 							function( path ) {
@@ -103,13 +70,7 @@ gulp.task( 'templates', () => {
 						)
 					),
 			cards = gulp.src( './src/cards/*/templates/**/*.hbs' )
-					.pipe(
-						foreach(
-							function( stream, file ) {
-								return appOverrides( stream, file, 'cards' );
-							}
-						)
-					)
+					.pipe( fileOverride( 'cards/*/templates', 'app/cards/$1/templates' ) )
 					.pipe(
 							rename(
 									function( path ) {
@@ -119,13 +80,7 @@ gulp.task( 'templates', () => {
 							)
 					),
 			extensions = gulp.src( './src/extensions/*/templates/**/*.hbs' )
-					.pipe(
-						foreach(
-							function( stream, file ) {
-								return appOverrides( stream, file, 'extensions' );
-							}
-						)
-					)
+					.pipe( fileOverride( 'extensions/*/templates', 'app/extensions/$1/templates' ) )
 					.pipe(
 						rename(
 							function( path ) {
@@ -135,13 +90,7 @@ gulp.task( 'templates', () => {
 						)
 					),
 			theme = gulp.src( './src/theme/*/templates/**/*.hbs' )
-					.pipe(
-						foreach(
-							function( stream, file ) {
-								return appOverrides( stream, file, 'theme' );
-							}
-						)
-					)
+					.pipe( fileOverride( 'theme/*/templates', 'app/theme/$1/templates' ) )
 					.pipe(
 						rename(
 							function( path ) {
@@ -186,21 +135,9 @@ gulp.task( 'watch-templates', () => {
 
 gulp.task( 'core-js', () => {
 	var core = gulp.src( './src/core/js/**/*.js' )
-					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file );
-									}
-							)
-					),
+					.pipe( fileOverride( 'core/js', 'app/core/js' ) ),
 			activities = gulp.src( './src/activities/*/js/**/*.js' )
-					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'activities' );
-									}
-							)
-					)
+					.pipe( fileOverride( 'activities/*/js', 'app/activities/$1/js' ) )
 					.pipe(
 							rename(
 									function( path ) {
@@ -210,13 +147,7 @@ gulp.task( 'core-js', () => {
 							)
 					),
 			cards = gulp.src( './src/cards/*/js/**/*.js' )
-					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'cards' );
-									}
-							)
-					)
+					.pipe( fileOverride( 'cards/*/js', 'app/cards/$1/js' ) )
 					.pipe(
 							rename(
 									function( path ) {
@@ -226,13 +157,7 @@ gulp.task( 'core-js', () => {
 							)
 					),
 			extensions = gulp.src( './src/extensions/*/js/**/*.js' )
-					.pipe(
-							foreach(
-									function( stream, file ) {
-										return appOverrides( stream, file, 'extensions' );
-									}
-							)
-					)
+					.pipe( fileOverride( 'extensions/*/js', 'app/extensions/$1/js' ) )
 					.pipe(
 							rename(
 									function( path ) {
@@ -284,14 +209,17 @@ gulp.task( 'css', () => {
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) ),
 			activities = gulp.src( './src/activities/*/sass/**/*.scss' )
+					.pipe( fileOverride( 'activities/*/sass', 'app/activities/$1/sass' ) )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'activities.min.css' ) ),
 			cards = gulp.src( './src/cards/*/sass/**/*.scss' )
+					.pipe( fileOverride( 'cards/*/sass', 'app/cards/$1/sass' ) )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'cards.min.css' ) ),
 			extensions = gulp.src( './src/extensions/*/sass/**/*.scss' )
+				.pipe( fileOverride( 'extensions/*/sass', 'app/extensions/$1/sass' ) )
 					.pipe( sourcemaps.init() )
 					.pipe( sass( {errLogToConsole: true, outputStyle: 'compressed'} ) )
 					.pipe( concat( 'extensions.min.css' ) );
