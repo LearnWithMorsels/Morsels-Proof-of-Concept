@@ -23,7 +23,7 @@
 //                    packages: {
 //                        js: {
                             depCache: {
-                                app: ['jquery', 'handlebars'],
+                                app: ['jquery', 'handlebarsbinding'],
                                 handlebarsbinding: ['handlebars'],
                                 views: ['handlebars']
                             },
@@ -55,7 +55,13 @@
 
             System.defaultJSExtensions = true;
 
-            System.import( 'app' );
+            System.import( 'app' )
+                    .then(
+                        function () {
+                            //HandlebarsBinding.default( Handlebars );
+                        }
+                    );
+
         </script>
     </head>
     <body>

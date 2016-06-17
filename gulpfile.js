@@ -149,7 +149,7 @@ gulp.task( 'js', () => {
 			.pipe(
 				rename(
 					function( path ) {
-						path.dirname = 'extensions/' + path.dirname;
+						path.dirname = 'extensions/' + path.dirname.replace( /\/js$/, '' );
 						return path;
 					}
 				)
@@ -164,7 +164,7 @@ gulp.task( 'js', () => {
 				}
 			)
 		)
-		.pipe( uglify( {preserveComments: 'license'} ) )
+		.pipe( uglify( { preserveComments: 'license' } ) )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( gulp.dest( './build/js' ) );
 } );
