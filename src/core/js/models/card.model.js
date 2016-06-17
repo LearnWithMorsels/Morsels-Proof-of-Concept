@@ -14,19 +14,16 @@ export class Card extends MorselsModel {
 
 		super();
 
-		this.template = 'cards/' + properties._card + '/' + properties._card + '.hbs';
+		this.view = 'cards/' + properties._card + '/' + properties._card + '.hbs';
 		this.classes = '';
 		this.properties = properties;
 		this.parent = parent;
 		this.children = [];
 		this.element = jQuery( '<div class="morsel-card"/>' ).addClass( this.classes ).css( 'z-index', 100 - index ).on( 'click', '' );
 		this.isRendered = false;
-
-		this.parent.element.append( this.element );
-
 		this.promise = super.render()
-				.then( html => this.element.html( html ) )
 				.then( () => this.isRendered = true )
+				.then( () => this.parent.element.append( this.element ) )
 				.then( () => this.setupDraggable() );
 
 		return this;

@@ -50,12 +50,12 @@ gulp.task( 'index', () => {
 } );
 
 gulp.task( 'views', () => {
-	var core = gulp.src( './src/core/views/**/*.hbs' )
-			.pipe( fileOverride( 'core/views', 'app/core/views' ) )
+	var core = gulp.src( './src/core/views/partials/**/*.hbs' )
+			.pipe( fileOverride( 'core/views/partials', 'app/core/views/partials' ) )
 			.pipe(
 				rename(
 					function( path ) {
-						path.dirname += '/core';
+						path.dirname = '/partials/' + path.dirname;
 						return path;
 					}
 				)
@@ -95,7 +95,7 @@ gulp.task( 'views', () => {
 			.pipe(
 				rename(
 					function( path ) {
-						path.dirname = 'theme/' + path.dirname.replace( new RegExp( objConfig.theme + '\/views$' ), '' );
+						path.dirname = path.dirname.replace( new RegExp( objConfig.theme + '\/views$' ), '' );
 						return path;
 					}
 				)
@@ -246,7 +246,19 @@ gulp.task( 'dev', ['default'],
 		);
 
 		gulp.watch( './src/core/views/index.hbs', ['index'], browserSync.reload );
-		gulp.watch( './src/**/*.hbs', ['views'], browserSync.reload );
+		gulp.watch(
+			[
+				'./src/core/views/partials/**/*.hbs',
+				'./src/activities/*/views/**/*.hbs',
+				'./src/cards/*/views/**/*.hbs',
+				'./src/extensions/*/views/**/*.hbs',
+				'./src/theme/*/views/**/*.hbs',
+				'./src/app/core/views/partials/**/*.hbs',
+				'./src/app/activities/*/views/**/*.hbs',
+				'./src/app/cards/*/views/**/*.hbs',
+				'./src/app/extensions/*/views/**/*.hbs',
+				'./src/app/theme/*/views/**/*.hbs'
+			], ['views'], browserSync.reload );
 		gulp.watch( './src/**/*.js', ['js'], browserSync.reload );
 		gulp.watch( './src/**/*.scss', ['css'] );
 		gulp.watch( './src/app/resources/**/*', ['resources'] );

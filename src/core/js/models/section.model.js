@@ -16,6 +16,7 @@ export class Section {
 		this.parent = parent;
 		this.children = [];
 		this.element = jQuery( '<div class="morsel-section"/>' );
+		this.view = 'section.hbs';
 		this.isRendered = false;
 
 		this.parent.element.append( this.element );
@@ -28,7 +29,7 @@ export class Section {
 			newCard.onRender( this.checkAllChildrenRendered );
 		}
 
-		window.cards = this.children;
+		return this;
 
 	}
 

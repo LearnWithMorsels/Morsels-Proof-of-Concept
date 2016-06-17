@@ -2,24 +2,15 @@ import {Section} from './section.model';
 
 export class Course {
 
-	/**
-	 * Retrieve the course details
-	 * @param strLanguage {string} The language code of the file
-	 * @returns {Promise} The promise
-	 * @constructor
-	 */
-	constructor( parent, element, language ) {
+	constructor( parent, language ) {
 
-		this.element = jQuery( element );
+		this.element = jQuery( '<div class="morsel-course"/>' );
 		this.children = [];
 		this.parent = parent;
-		this.properites = {};
 
-		/**
-		 * The promise for retrieving the JSON file
-		 * @type {Promise}
-		 */
-		this.promise = new Promise( ( resolve, reject ) => {
+		this.parent.element.replaceWith( this.element );
+
+		return new Promise( ( resolve, reject ) => {
 					fetch( 'app/course/' + language + '.json' )
 							.then( response => response.json() )
 							.then( course => this.properites = course )
@@ -36,8 +27,6 @@ export class Course {
 							.catch( e => reject( e ) )
 				}
 		);
-
-		return this.promise;
 
 	}
 

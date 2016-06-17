@@ -1,5 +1,4 @@
-//import * as Handlebars from 'handlebars';
-//import * as HandlebarsBinding from 'handlebarsbinding';
+// import * as Handlebars from 'handlebars';
 
 let templates = {};
 
@@ -9,10 +8,13 @@ export class MorselsModel {
 	 * The parent object which all courses, sections, cards and activities extend
 	 */
 	constructor() {
-		// console.log( '$', $ );
-		// console.log( 'Handlebars', Handlebars );
-		// console.log( 'HandlebarsBinding', HandlebarsBinding );
-		// HandlebarsBinding.default( Handlebars );
+		this.children = [];
+
+		/**
+		 * The jQuery element of the model
+		 * @type {null}
+		 */
+		this.element = $( '<div/>' );
 
 		/**
 		 * Is the model complete
@@ -21,22 +23,22 @@ export class MorselsModel {
 		this.isComplete = false;
 
 		/**
-		 * The jQuery element of the model
-		 * @type {null}
-		 */
-		this.element = null;
-
-		/**
 		 * The template file to use, relative to /app/templates
 		 * @type {null}
 		 */
 		this.template = null;
+
+		this.parent = null;
 
 		/**
 		 * The properties of the model
 		 * @type {{}}
 		 */
 		this.properties = {};
+
+		if( this.parent && this.parent.element ) {
+			//this.parent.element.append( this.element );
+		}
 	}
 
 	/**
@@ -51,20 +53,21 @@ export class MorselsModel {
 	render() {
 		this.preRender();
 
-		if( !templates[this.template] ) {
-			templates[this.template] = new Promise(
+		if( !templates[this.view] ) {
+			templates[this.view] = new Promise(
 					( resolve, reject ) =>
-							fetch( 'views/' + this.template )
+							fetch( 'views/' + this.view )
 									.then( response => response.text() )
 									.then( template => Handlebars.compile( template ) )
-									.then( html => resolve( html ) )
+									.then( handlebar => resolve( handlebar ) )
 									.catch( e => reject( e ) )
 			);
 		}
 
-		return templates[this.template]
+		return templates[this.view]
 				.then( handlebar => handlebar( this.properties ),
-						e => console.error( 'Failed to render "' + this.template + '": ', e.message ) );
+						e => console.error( 'Failed to render "' + this.view + '": ', e.message ) )
+				.then( html => this.element.html( html ) );
 	}
 
 }
