@@ -1,4 +1,4 @@
-import {MorselsModel} from './morsels';
+import {MorselsModel} from './morsels.model';
 import {objectrummage} from '../tools/objectrummage';
 
 export class Card extends MorselsModel {

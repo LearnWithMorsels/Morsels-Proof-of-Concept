@@ -54,7 +54,7 @@ export class MorselsModel {
 		if( !templates[this.template] ) {
 			templates[this.template] = new Promise(
 					( resolve, reject ) =>
-							fetch( 'templates/' + this.template )
+							fetch( 'views/' + this.template )
 									.then( response => response.text() )
 									.then( template => Handlebars.compile( template ) )
 									.then( html => resolve( html ) )

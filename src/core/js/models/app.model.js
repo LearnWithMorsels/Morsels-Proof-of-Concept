@@ -1,8 +1,9 @@
-import {MorselsModel} from './morsels';
-import {Config} from './config';
-import {Course} from './course';
+import {MorselsModel} from './morsels.model';
+import {Config} from './config.model';
+import {Course} from './course.model';
 //import {Binding, update} from 'handlebarsbinding';
 import * as HandlebarsBinding from 'handlebarsbinding';
+
 
 export class App extends MorselsModel {
 
@@ -20,7 +21,7 @@ export class App extends MorselsModel {
 
 		//Binding( Handlebars );
 
-		console.log( HandlebarsBinding );
+		//console.log( HandlebarsBinding );
 
 		return super.render()
 				.then( html => this.element.replaceWith( html ) )

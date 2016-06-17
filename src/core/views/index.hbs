@@ -10,11 +10,8 @@
 	    <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
-	    <link href="./css/material.blue_grey-red.min.css" type="text/css" rel="stylesheet">
 	    <link href="./css/course.min.css" type="text/css" rel="stylesheet">
-	    <link href="./css/main.css" type="text/css" rel="stylesheet">
-	    <link href="./css/prism-default.css" type="text/css" rel="stylesheet">
-	    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css" rel="stylesheet">
 	    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css" rel="stylesheet">
 
         <script src="./js/vendor/polyfill.min.js"></script>
@@ -23,9 +20,15 @@
         <script>
             System.config(
                 {
-	                packages: {
-		                js: {
+//                    packages: {
+//                        js: {
+                            depCache: {
+                                app: ['jquery', 'handlebars'],
+                                handlebarsbinding: ['handlebars'],
+                                views: ['handlebars']
+                            },
 			                map: {
+				                app: 'js/app.js',
 				                crossroads: 'js/vendor/crossroads.min.js',
 				                handlebars: 'js/vendor/handlebars.js',
 				                handlebarsbinding: 'js/vendor/handlebars.binding.min.js',
@@ -45,12 +48,14 @@
 					                exports: '$'
 				                }
 			                }
-		                }
-	                }
+//		                }
+//                    }
                 }
             );
 
-            System.import( './js/app.js' );
+            System.defaultJSExtensions = true;
+
+            System.import( 'app' );
         </script>
     </head>
     <body>
