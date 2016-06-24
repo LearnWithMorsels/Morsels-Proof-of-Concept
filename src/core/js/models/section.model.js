@@ -22,7 +22,7 @@ export class Section {
 
 		this.parent.element.append( this.element );
 
-		console.log( Cards );
+		//console.log( Cards );
 
 		//$( window ).on( 'resize', this.matchCardHeights );
 
@@ -31,7 +31,7 @@ export class Section {
 
 			let strCard = this.properties._cards[card]._card;
 			strCard = strCard.charAt( 0 ).toUpperCase() + strCard.slice( 1 );
-			console.log( strCard, Cards[strCard] );
+			//console.log( strCard, Cards[strCard] );
 
 			//let newCard = new ( Cards[strCard] )( properties._cards[card], this, card );
 			let newCard = new ( Cards[strCard] )( properties._cards[card], this );

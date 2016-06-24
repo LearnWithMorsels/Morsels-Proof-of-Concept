@@ -1,13 +1,13 @@
-//( () => {
-//    import {Card} from '../../models/card.model';
+export class Video extends Card {
 
-    export class Video extends Card {
+    constructor( properties, parent ) {
 
-        constructor( properties, parent ) {
+        super( properties, parent );
 
-            super();
+        this.view = 'cards/video/video.hbs';
 
-        }
+        super.render();
 
     }
-//} )();
+
+}

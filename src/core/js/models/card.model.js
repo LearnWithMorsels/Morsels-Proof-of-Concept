@@ -10,11 +10,14 @@ export class Card extends Morsel {
 	 * @param {number} index
 	 * @returns {Promise}
 	 */
-	constructor() {
+	constructor( properties, parent ) {
 
 		super();
 
 		this.isRendered = false;
+		this.parent = parent;
+		this.properties = properties;
+		this.element = jQuery( '<div class="morsel-card"/>' );
 		this.promise = new Promise( ( resolve, reject ) => {} );
 
 		return this;
