@@ -136,14 +136,16 @@ gulp.task( 'js', () => {
 			),
 		cards = gulp.src( './src/cards/*/js/**/*.js' )
 			.pipe( fileOverride( 'cards/*/js', 'app/cards/$1/js' ) )
-			.pipe(
+			.pipe( addsrc.prepend( './src/core/js/cards.js' ) )
+			.pipe( concat( 'cards.js' ) )
+			/*.pipe(
 				rename(
 					function( path ) {
 						path.dirname = 'cards/' + path.dirname.replace( /\/js$/, '' );
 						return path;
 					}
 				)
-			),
+			)*/,
 		extensions = gulp.src( './src/extensions/*/js/**/*.js' )
 			.pipe( fileOverride( 'extensions/*/js', 'app/extensions/$1/js' ) )
 			.pipe(

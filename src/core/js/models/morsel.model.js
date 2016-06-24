@@ -2,7 +2,7 @@
 
 let templates = {};
 
-export class MorselsModel {
+export class Morsel {
 
 	/**
 	 * The parent object which all courses, sections, cards and activities extend
@@ -35,10 +35,6 @@ export class MorselsModel {
 		 * @type {{}}
 		 */
 		this.properties = {};
-
-		if( this.parent && this.parent.element ) {
-			//this.parent.element.append( this.element );
-		}
 	}
 
 	/**

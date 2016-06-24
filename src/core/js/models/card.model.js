@@ -1,7 +1,7 @@
-import {MorselsModel} from './morsels.model';
+import {Morsel} from './morsel.model';
 import {objectrummage} from '../tools/objectrummage';
 
-export class Card extends MorselsModel {
+export class Card extends Morsel {
 
 	/**
 	 * Set up a new card
@@ -14,17 +14,18 @@ export class Card extends MorselsModel {
 
 		super();
 
-		this.view = 'cards/' + properties._card + '/' + properties._card + '.hbs';
+		//this.view = 'cards/' + properties._card + '/' + properties._card + '.hbs';
 		this.classes = '';
-		this.properties = properties;
-		this.parent = parent;
+		//this.properties = properties;
+		//this.parent = parent;
 		this.children = [];
-		this.element = jQuery( '<div class="morsel-card"/>' ).addClass( this.classes ).css( 'z-index', 100 - index ).on( 'click', '' );
+		//this.element = jQuery( '<div class="morsel-card"/>' ).addClass( this.classes ).css( 'z-index', 100 - index ).on( 'click', '' );
+		this.element = jQuery( '<div class="morsel-card"/>' ).addClass( this.classes );
 		this.isRendered = false;
-		this.promise = super.render()
+		/*this.promise = super.render()
 				.then( () => this.isRendered = true )
 				.then( () => this.parent.element.append( this.element ) )
-				.then( () => this.setupDraggable() );
+				.then( () => this.setupDraggable() );*/
 
 		return this;
 
