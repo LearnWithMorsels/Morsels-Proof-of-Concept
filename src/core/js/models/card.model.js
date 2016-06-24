@@ -10,32 +10,31 @@ export class Card extends Morsel {
 	 * @param {number} index
 	 * @returns {Promise}
 	 */
-	constructor( properties, parent, index ) {
+	constructor() {
 
 		super();
 
-		//this.view = 'cards/' + properties._card + '/' + properties._card + '.hbs';
-		this.classes = '';
-		//this.properties = properties;
-		//this.parent = parent;
-		this.children = [];
-		//this.element = jQuery( '<div class="morsel-card"/>' ).addClass( this.classes ).css( 'z-index', 100 - index ).on( 'click', '' );
-		this.element = jQuery( '<div class="morsel-card"/>' ).addClass( this.classes );
 		this.isRendered = false;
-		/*this.promise = super.render()
-				.then( () => this.isRendered = true )
-				.then( () => this.parent.element.append( this.element ) )
-				.then( () => this.setupDraggable() );*/
+		this.promise = new Promise( ( resolve, reject ) => {} );
 
 		return this;
+
+	}
+
+	render() {
+
+		this.promise = super.render()
+			.then( () => this.isRendered = true )
+			.then( () => this.parent.element.append( this.element ) )
+			.then( () => this.setupDraggable() );
 
 	}
 
 	onRender( funDo ) {
 
 		this.promise
-				.then( () => funDo.call( this.parent ) );
-		
+			.then( () => funDo.call( this.parent ) );
+
 	}
 
 	update( property, value ) {
