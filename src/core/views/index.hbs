@@ -20,37 +20,33 @@
         <script>
             System.config(
                 {
-//                    packages: {
-//                        js: {
-                            depCache: {
-                                app: ['jquery', 'handlebarsbinding'],
-                                handlebarsbinding: ['handlebars'],
-                                views: ['handlebars']
-                            },
-			                map: {
-				                app: 'js/app.js',
-				                crossroads: 'js/vendor/crossroads.min.js',
-				                eventemitter3: 'js/vendor/eventemitter3.js',
-				                handlebars: 'js/vendor/handlebars.js',
-				                handlebarsbinding: 'js/vendor/handlebars.binding.min.js',
-				                jquery: 'js/vendor/jquery.min.js',
-				                signals: 'js/vendor/signals.min.js'
-			                },
-			                meta: {
-				                crossroads: {
-					                exports: 'crossroads',
-					                format: 'global'
-				                },
-				                handlebars: {
-					                exports: 'Handlebars',
-					                format: 'global'
-				                },
-				                jquery: {
-					                exports: '$'
-				                }
-			                }
-//		                }
-//                    }
+                    depCache: {
+                        app: ['jquery', 'handlebarsbinding'],
+                        handlebarsbinding: ['handlebars'],
+                        views: ['handlebars']
+                    },
+                    map: {
+                        app: 'js/app.js',
+                        crossroads: 'js/vendor/crossroads.min.js',
+                        eventemitter3: 'js/vendor/eventemitter3.js',
+                        handlebars: 'js/vendor/handlebars.js',
+                        handlebarsbinding: 'js/vendor/handlebars.binding.min.js',
+                        jquery: 'js/vendor/jquery.min.js',
+                        signals: 'js/vendor/signals.min.js'
+                    },
+                    meta: {
+                        crossroads: {
+                            exports: 'crossroads',
+                            format: 'global'
+                        },
+                        handlebars: {
+                            exports: 'Handlebars',
+                            format: 'global'
+                        },
+                        jquery: {
+                            exports: '$'
+                        }
+                    }
                 }
             );
 
@@ -93,9 +89,9 @@
             </main>
         </div>
 
-        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="language-selector">
-            <li class="mdl-menu__item">EN</li>
-            <li class="mdl-menu__item">FR</li>
+        <ul id="language-selector-options" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="language-selector">
+            <li class="mdl-menu__item" data-language="en">EN</li>
+            <li class="mdl-menu__item" data-language="fr">FR</li>
         </ul>
 
     </body>

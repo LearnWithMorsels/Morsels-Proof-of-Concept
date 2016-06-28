@@ -34,13 +34,15 @@ export class Section {
 			//console.log( strCard, Cards[strCard] );
 
 			//let newCard = new ( Cards[strCard] )( properties._cards[card], this, card );
-			console.log( Cards );
-			console.log( strCard );
+			//console.log( Cards );
+			//console.log( strCard );
 			let newCard = new ( Cards[strCard] )( properties._cards[card], this );
 			this.children.push( newCard );
 			newCard.element.css( 'z-index', this.properties._cards.length - card );
 			newCard.onRender( this.checkAllChildrenRendered );
 		}
+
+		eventemitter.emit( 'sectionAdded', this );
 
 		return this;
 

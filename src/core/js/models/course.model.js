@@ -10,6 +10,8 @@ export class Course {
 
 		this.parent.element.replaceWith( this.element );
 
+		this.addEventListeners();
+
 		return new Promise( ( resolve, reject ) => {
 					fetch( 'app/course/' + language + '.json' )
 							.then( response => response.json() )
@@ -21,11 +23,25 @@ export class Course {
 									this.children.push( new Section( section, this ) );
 								}
 
+								eventemitter.emit( 'appReady', this, course );
+
 								return course;
 							} )
 							.then( course => resolve( course ) )
 							.catch( e => reject( e ) )
 				}
+		);
+
+	}
+
+	addEventListeners() {
+
+		eventemitter.on(
+			'sectionAdded',
+			function( alpha ) {
+				//console.log( 'Section added', this, alpha );
+			},
+			this
 		);
 
 	}
