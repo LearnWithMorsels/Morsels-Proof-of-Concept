@@ -1,3 +1,5 @@
+//import {Card} from '../../../core/models/card.model';
+
 export class Text extends Card {
 
     constructor( properties, parent ) {

@@ -1,4 +1,5 @@
-const fs = require( 'fs' ),
+const del = require( 'del' ),
+	fs = require( 'fs' ),
 	gulp = require( 'gulp' ),
 	addsrc = require( 'gulp-add-src' ),
 	babel = require( 'gulp-babel' ),
@@ -23,10 +24,10 @@ const fs = require( 'fs' ),
 	wrap = require( 'gulp-wrap' ),
 	browserSync = require( 'browser-sync' ).create();
 
-var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
+let objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json';
 
-gulp.task( 'index', () => {
+gulp.task( 'app:index', () => {
 	return gulp.src( './src/core/views/index.hbs' )
 		.pipe(
 			handlebars(
@@ -49,8 +50,8 @@ gulp.task( 'index', () => {
 		.pipe( gulp.dest( './build' ) );
 } );
 
-gulp.task( 'views', () => {
-	var core = gulp.src( './src/core/views/partials/**/*.hbs' )
+gulp.task( 'app:views', () => {
+	let core = gulp.src( './src/core/views/partials/**/*.hbs' )
 			.pipe( fileOverride( 'core/views/partials', 'app/core/views/partials' ) )
 			.pipe(
 				rename(
@@ -119,43 +120,28 @@ gulp.task( 'views', () => {
 	// 		.pipe( gulp.dest( './build/js/' ) );
 } );
 
-gulp.task( 'js', () => {
-	var core = gulp.src( './src/core/js/**/*.js' )
-			.pipe( using() )
-			.pipe( fileOverride( 'core/js', 'app/core/js' ) )
-			.pipe( using() ),
+gulp.task( 'app:js', () => {
+	let core = gulp.src(
+		[
+			'./src/core/js/**/*.js',
+			'!./src/core/js/activities.js',
+			'!./src/core/js/cards.js',
+			'!./src/core/js/extensions.js'
+		]
+	)
+			.pipe( fileOverride( 'core/js', 'app/core/js' ) ),
 		activities = gulp.src( './src/activities/*/js/**/*.js' )
 			.pipe( fileOverride( 'activities/*/js', 'app/activities/$1/js' ) )
-			.pipe(
-				rename(
-					function( path ) {
-						path.dirname = 'activities/' + path.dirname.replace( /\/js$/, '' );
-						return path;
-					}
-				)
-			),
+			.pipe( addsrc.prepend( './src/core/js/activities.js' ) )
+			.pipe( concat( 'activities.js' ) ),
 		cards = gulp.src( './src/cards/*/js/**/*.js' )
 			.pipe( fileOverride( 'cards/*/js', 'app/cards/$1/js' ) )
 			.pipe( addsrc.prepend( './src/core/js/cards.js' ) )
-			.pipe( concat( 'cards.js' ) )
-			/*.pipe(
-				rename(
-					function( path ) {
-						path.dirname = 'cards/' + path.dirname.replace( /\/js$/, '' );
-						return path;
-					}
-				)
-			)*/,
+			.pipe( concat( 'cards.js' ) ),
 		extensions = gulp.src( './src/extensions/*/js/**/*.js' )
 			.pipe( fileOverride( 'extensions/*/js', 'app/extensions/$1/js' ) )
-			.pipe(
-				rename(
-					function( path ) {
-						path.dirname = 'extensions/' + path.dirname.replace( /\/js$/, '' );
-						return path;
-					}
-				)
-			);
+			.pipe( addsrc.prepend( './src/core/js/extensions.js' ) )
+			.pipe( concat( 'extensions.js' ) );
 
 	return mergeStream( core, activities, cards, extensions )
 		.pipe( sourcemaps.init() )
@@ -171,24 +157,29 @@ gulp.task( 'js', () => {
 		.pipe( gulp.dest( './build/js' ) );
 } );
 
-gulp.task( 'vendor', () => {
-	return gulp.src( [
-		'./node_modules/babel-polyfill/dist/polyfill.min.js',
-		'./node_modules/systemjs/dist/system.js',
-		'./node_modules/signals/dist/signals.min.js',
-		'./node_modules/crossroads/dist/crossroads.min.js',
-		'./node_modules/handlebars/dist/handlebars.js',
-		'./node_modules/handlebars.binding/dist/handlebars.binding.min.js',
-		'./node_modules/jquery/dist/jquery.min.js',
-		'./node_modules/material-design-lite/dist/material.min.js'
-	] )
-		.pipe( using() )
+gulp.task( 'app:vendor', () => {
+	return gulp.src( './node_modules/eventemitter3/index.js' )
+		.pipe( rename( 'eventemitter3.js' ) )
+		.pipe(
+			addsrc(
+				[
+					'./node_modules/babel-polyfill/dist/polyfill.min.js',
+					'./node_modules/crossroads/dist/crossroads.min.js',
+					'./node_modules/jquery/dist/jquery.min.js',
+					'./node_modules/handlebars/dist/handlebars.js',
+					'./node_modules/handlebars.binding/dist/handlebars.binding.min.js',
+					'./node_modules/material-design-lite/dist/material.min.js',
+					'./node_modules/signals/dist/signals.min.js',
+					'./node_modules/systemjs/dist/system.js'
+				]
+			)
+		)
 		.pipe( sourcemaps.init() )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( gulp.dest( './build/js/vendor' ) );
 } );
 
-gulp.task( 'css', () => {
+gulp.task( 'app:scss', () => {
 	return gulp.src(
 		[
 			'./src/theme/' + objConfig.theme + '/sass/**/*.scss',
@@ -209,17 +200,17 @@ gulp.task( 'css', () => {
 		.pipe( browserSync.stream( { match: '**/*.css' } ) );
 } );
 
-gulp.task( 'resources', () => {
+gulp.task( 'app:resources', () => {
 	return gulp.src( './src/app/resources/**/*' )
 		.pipe( gulp.dest( './build/app/resources' ) );
 } );
 
-gulp.task( 'config', () => {
+gulp.task( 'app:config', () => {
 	return gulp.src( './src/app/config.json' )
 		.pipe( gulp.dest( './build/app' ) );
 } );
 
-gulp.task( 'data', () => {
+gulp.task( 'app:data', () => {
 	return gulp.src( './src/app/course/*.json' )
 		.pipe( extend( './src/app/course/' + objConfig.languages.primary + '.json' ) )
 		.pipe( gulp.dest( './build/app/course' ) );
@@ -230,7 +221,13 @@ gulp.task( 'docs', () => {
 		.pipe( jsdoc( { opts: { destination: './docs/core/' } } ) );
 } );
 
-gulp.task( 'dev', ['default'],
+gulp.task( 'clean', () => {
+	return del(
+		[ './build/**/*' ]
+	);
+});
+
+gulp.task( 'dev', ['build'],
 	() => {
 		browserSync.init(
 			{
@@ -247,7 +244,7 @@ gulp.task( 'dev', ['default'],
 			}
 		);
 
-		gulp.watch( './src/core/views/index.hbs', ['index'], browserSync.reload );
+		gulp.watch( './src/core/views/index.hbs', ['app:index'], browserSync.reload );
 		gulp.watch(
 			[
 				'./src/core/views/partials/**/*.hbs',
@@ -260,13 +257,13 @@ gulp.task( 'dev', ['default'],
 				'./src/app/cards/*/views/**/*.hbs',
 				'./src/app/extensions/*/views/**/*.hbs',
 				'./src/app/theme/*/views/**/*.hbs'
-			], ['views'], browserSync.reload );
-		gulp.watch( './src/**/*.js', ['js'], browserSync.reload );
-		gulp.watch( './src/**/*.scss', ['css'] );
-		gulp.watch( './src/app/resources/**/*', ['resources'] );
-		gulp.watch( './src/app/config.json', ['config'], browserSync.reload );
-		gulp.watch( './src/app/course/*.json', ['data'], browserSync.reload );
+			], ['app:views'], browserSync.reload );
+		gulp.watch( './src/**/*.js', ['app:js'], browserSync.reload );
+		gulp.watch( './src/**/*.scss', ['app:scss'] );
+		gulp.watch( './src/app/resources/**/*', ['app:resources'] );
+		gulp.watch( './src/app/config.json', ['app:config'], browserSync.reload );
+		gulp.watch( './src/app/course/*.json', ['app:data'], browserSync.reload );
 	}
 );
 
-gulp.task( 'default', ['index', 'views', 'js', 'vendor', 'css', 'resources', 'config', 'data'] );
+gulp.task( 'build', ['app:index', 'app:views', 'app:scss', 'app:resources', 'app:config', 'app:data', 'app:js', 'app:vendor'] );
