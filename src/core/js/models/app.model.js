@@ -26,13 +26,13 @@ export class App {
 		eventemitter.on(
 			'appReady',
 			function( alpha, beta ) {
-				console.log( 'App ready', this, alpha, beta );
+				//console.log( 'App ready', this, alpha, beta );
 			},
 			this
 		).on(
 			'languageChanged',
 			function( language ) {
-				console.log( 'Change language to ' + language );
+				//console.log( 'Change language to ' + language );
 			},
 			this
 		);

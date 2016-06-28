@@ -40,9 +40,15 @@ export class Section {
 			this.children.push( newCard );
 			newCard.element.css( 'z-index', this.properties._cards.length - card );
 			newCard.onRender( this.checkAllChildrenRendered );
+			newCard.onRender( () => {
+				newCard.properties._content.title = 'NEW TITLE';
+				//newCard.render();
+			} );
 		}
 
 		eventemitter.emit( 'sectionAdded', this );
+
+		//super.render();
 
 		return this;
 

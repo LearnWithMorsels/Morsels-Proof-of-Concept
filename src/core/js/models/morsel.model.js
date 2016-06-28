@@ -22,6 +22,8 @@ export class Morsel {
 		 */
 		this.isComplete = false;
 
+		this.html = '';
+
 		/**
 		 * The template file to use, relative to /app/templates
 		 * @type {null}
@@ -50,6 +52,7 @@ export class Morsel {
 		this.preRender();
 
 		if( !templates[this.view] ) {
+			//console.warn( this.view + ' not cached' );
 			templates[this.view] = new Promise(
 					( resolve, reject ) =>
 							fetch( 'views/' + this.view )
@@ -58,11 +61,14 @@ export class Morsel {
 									.then( handlebar => resolve( handlebar ) )
 									.catch( e => reject( e ) )
 			);
+		} else {
+			//console.info( this.view + ' cached' );
 		}
 
 		return templates[this.view]
 				.then( handlebar => handlebar( this.properties ),
 						e => console.error( 'Failed to render "' + this.view + '": ', e.message ) )
+				.then( html => this.html = html )
 				.then( html => this.element.html( html ) );
 	}
 
