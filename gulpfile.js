@@ -1,3 +1,5 @@
+"use strict";
+
 const del = require( 'del' ),
 	fs = require( 'fs' ),
 	gulp = require( 'gulp' ),
@@ -247,16 +249,17 @@ gulp.task( 'dev', ['build'],
 		gulp.watch( './src/core/views/index.hbs', ['app:index'], browserSync.reload );
 		gulp.watch(
 			[
-				'./src/core/views/partials/**/*.hbs',
-				'./src/activities/*/views/**/*.hbs',
-				'./src/cards/*/views/**/*.hbs',
-				'./src/extensions/*/views/**/*.hbs',
-				'./src/theme/*/views/**/*.hbs',
-				'./src/app/core/views/partials/**/*.hbs',
-				'./src/app/activities/*/views/**/*.hbs',
-				'./src/app/cards/*/views/**/*.hbs',
-				'./src/app/extensions/*/views/**/*.hbs',
-				'./src/app/theme/*/views/**/*.hbs'
+				// './src/core/views/partials/**/*.hbs',
+				// './src/activities/*/views/**/*.hbs',
+				// './src/cards/*/views/**/*.hbs',
+				// './src/extensions/*/views/**/*.hbs',
+				// './src/theme/*/views/**/*.hbs',
+				// './src/app/core/views/partials/**/*.hbs',
+				// './src/app/activities/*/views/**/*.hbs',
+				// './src/app/cards/*/views/**/*.hbs',
+				// './src/app/extensions/*/views/**/*.hbs',
+				// './src/app/theme/*/views/**/*.hbs'
+				'./src/**/*.hbs'
 			], ['app:views'], browserSync.reload );
 		gulp.watch( './src/**/*.js', ['app:js'], browserSync.reload );
 		gulp.watch( './src/**/*.scss', ['app:scss'] );
