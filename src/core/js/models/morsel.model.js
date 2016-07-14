@@ -47,10 +47,7 @@ export class Morsel {
 		this.properties = {};
 
 		this.addEventListeners();
-
-		Handlebars.registerHelper( 'morselHTML', () => {
-			return this.element[0].outerHTML;
-		} );
+		
 	}
 
 	/**
