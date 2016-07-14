@@ -39,13 +39,13 @@ export class Course extends Morsel {
 
 		this.eventemitter.on(
 			'postRenderSection',
-			function( section ) {
+			( section ) => {
 				console.log( 'Section rendered (course)', section );
 			},
 			this
 		).on(
 			'postRenderCourse',
-			function( course ) {
+			( course ) => {
 				console.log( 'Course rendered (course)', course );
 			},
 			this

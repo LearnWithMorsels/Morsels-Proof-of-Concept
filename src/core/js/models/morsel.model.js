@@ -11,7 +11,6 @@ export class Morsel {
 	 */
 	constructor() {
 		this.children = [];
-		this.childrenElement = null;
 		this.childrenElementID = idhandler.get();
 
 		this.allChildrenRendered = false;
@@ -41,23 +40,17 @@ export class Morsel {
 
 		this.ns = '';
 
-		this.postRenderMethods = [];
-
 		/**
 		 * The properties of the model
 		 * @type {{}}
 		 */
 		this.properties = {};
 
-		//console.log( this.childrenElementID );
-
 		this.addEventListeners();
 
 		Handlebars.registerHelper( 'morselHTML', () => {
 			return this.element[0].outerHTML;
 		} );
-
-		//this.render();
 	}
 
 	/**
@@ -74,22 +67,11 @@ export class Morsel {
 
 		scope.preRender();
 
-		//console.info( 'BEFORE RENDER: ' + scope.view, scope.element[0].outerHTML );
-
 		if( !templates[scope.view] ) {
 			templates[scope.view] = new Promise( ( resolve, reject ) =>
 				fetch( 'views/' + scope.view )
 					.then( response => response.text() )
 					.then( template => Handlebars.compile( template ) )
-					/*.then( template => {
-						//scope.childrenElementID = idhandler.get();
-
-						Handlebars.registerHelper( 'childrenElements', () => {
-							return '<div data-childrenid="' + scope.childrenElementID + '"></div>';
-						} );
-
-						return Handlebars.compile( template );
-					} )*/
 					.then( handlebar => resolve( handlebar ) )
 					.catch( e => reject( e ) )
 			);
@@ -123,20 +105,8 @@ export class Morsel {
 				}
 			} )
 			.then( () => {
-				console.info( 'postRender' + scope.ns );
 				scope.eventemitter.emit( 'postRender' + scope.ns, scope );
-				if( scope.parent &&
-						scope.parent.update ) {
-					//scope.parent.update();
-				}
-			} )
-			.then( () => {
-				for( let postRenderMethod of scope.postRenderMethods ) {
-					//postRenderMethod.call( scope.parent );
-				}
 			} );
-			//.then( () => console.info( 'AFTER RENDER:  ' + scope.view, scope.element[0].outerHTML ) )
-			//.then( () => { if( scope.parent && scope.parent.update ) { scope.parent.update(); } } );
 	}
 
 	update( scope ) {
@@ -150,14 +120,6 @@ export class Morsel {
 		}
 
 		return this.render( scope );
-
-	}
-
-	postRender( funDo, scope ) {
-
-		scope = scope || this;
-
-		scope.postRenderMethods.push( funDo );
 
 	}
 

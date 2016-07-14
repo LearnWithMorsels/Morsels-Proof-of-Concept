@@ -13,8 +13,6 @@ export class Card extends Morsel {
 
 		super();
 
-		//console.log( 'Card initiated' );
-
 		this.properties = properties;
 		this.parent = parent;
 		this.ns = 'Card';
@@ -30,7 +28,7 @@ export class Card extends Morsel {
 	 */
 	setupDraggable() {
 
-		if( this.element.next().length > 0 ) {
+		//if( this.element.next().length > 0 ) {
 			let dragging = false,
 					startPos = {},
 					dragPos = {},
@@ -101,7 +99,7 @@ export class Card extends Morsel {
 					}
 				//}
 			} );
-		}
+		//}
 
 	}
 
@@ -109,9 +107,10 @@ export class Card extends Morsel {
 
 		this.eventemitter.on(
 			'postRenderCard',
-			function( card ) {
+			( card ) => {
 				console.log( 'Card rendered (card)', card );
 				//this.parent.update();
+				this.setupDraggable();
 			},
 			this
 		);

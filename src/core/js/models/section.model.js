@@ -61,7 +61,7 @@ export class Section extends Morsel {
 
 		this.eventemitter.on(
 			'postRenderCard',
-			function( card ) {
+			( card ) => {
 				console.log( 'Card rendered (section)', card );
 
 				if( this.checkAllChildrenRendered() ) {
@@ -72,7 +72,7 @@ export class Section extends Morsel {
 			this
 		).on(
 			'postRenderSection',
-			function( section ) {
+			( section ) => {
 				console.log( 'Section rendered (section)', section );
 			},
 			this

@@ -1,7 +1,6 @@
 import { Morsel } from './morsel.model';
 import { Config } from './config.model';
 import { Course } from './course.model';
-//import EventEmitter from '../vendor/eventemitter3';
 
 export class App extends Morsel {
 
@@ -17,23 +16,11 @@ export class App extends Morsel {
 
 		this.config = new Config();
 
-		//let EE = new EventEmitter();
-		//window.eventemitter = EE;
-		//window.eventemitter = new EventEmitter();
-
-		//config.defaultLanguage()
-		//	.then( language => {
-		//		this.children = [new Course( this, language )]
-		//	} )
-		//	.then( () => this.update );
-
-		//this.render();
-
-		this.eventemitter.emit( 'languageChanged' );
-
-		this.postRender( () => {
-			//console.log( 'postRender app' );
-		} );
+		this.config.defaultLanguage()
+			.then( language => {
+				this.children = [new Course( this, language )];
+				this.render();
+			} );
 
 	}
 
@@ -41,25 +28,22 @@ export class App extends Morsel {
 
 		this.eventemitter.on(
 			'languageChanged',
-			function( language ) {
-				//console.log( 'Change language to ' + language );
+			( language ) => {
+				console.log( 'Change language to ' + language );
 
-				this.config.defaultLanguage()
-					.then( language => {
-						this.children = [new Course( this, language )];
-						this.render();
-					} );
+				this.children = [new Course( this, language )];
+				this.update();
 			},
 			this
 		).on(
 			'postRenderApp',
-			function( app ) {
+			( app ) => {
 				console.log( 'App rendered (app)', app );
 			},
 			this
 		).on(
 			'postRenderCourse',
-			function( course ) {
+			( course ) => {
 				console.log( 'Course rendered (app)', course );
 			},
 			this
@@ -69,15 +53,9 @@ export class App extends Morsel {
 			'click',
 			'[data-language]',
 			( e ) => {
-				this.load( $( e.target ).attr( 'data-language' ) );
+				this.eventemitter.emit( 'languageChanged', $( e.target ).attr( 'data-language' ) );
 			}
 		);
-
-	}
-
-	load( language ) {
-
-		//this.course = new Course( this, language );
 
 	}
 
