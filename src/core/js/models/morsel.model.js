@@ -1,4 +1,6 @@
 // import * as Handlebars from 'handlebars';
+import { idhandler } from '../tools/idhandler';
+import EventEmitter from '../vendor/eventemitter3';
 
 let templates = {};
 
@@ -9,6 +11,10 @@ export class Morsel {
 	 */
 	constructor() {
 		this.children = [];
+		this.childrenElement = null;
+		this.childrenElementID = idhandler.get();
+
+		this.allChildrenRendered = false;
 
 		/**
 		 * The jQuery element of the model
@@ -16,13 +22,14 @@ export class Morsel {
 		 */
 		this.element = $( '<div/>' );
 
+		this.eventemitter = new EventEmitter();
+
 		/**
 		 * Is the model complete
 		 * @type {boolean}
 		 */
 		this.isComplete = false;
-
-		this.html = '';
+		this.isRendered = false;
 
 		/**
 		 * The template file to use, relative to /app/templates
@@ -32,11 +39,25 @@ export class Morsel {
 
 		this.parent = null;
 
+		this.ns = '';
+
+		this.postRenderMethods = [];
+
 		/**
 		 * The properties of the model
 		 * @type {{}}
 		 */
 		this.properties = {};
+
+		//console.log( this.childrenElementID );
+
+		this.addEventListeners();
+
+		Handlebars.registerHelper( 'morselHTML', () => {
+			return this.element[0].outerHTML;
+		} );
+
+		//this.render();
 	}
 
 	/**
@@ -48,28 +69,120 @@ export class Morsel {
 	 * Render the template of the model with the properties
 	 * @returns {Promise}
 	 */
-	render() {
-		this.preRender();
+	render( scope ) {
+		scope = scope || this;
 
-		if( !templates[this.view] ) {
-			//console.warn( this.view + ' not cached' );
-			templates[this.view] = new Promise(
-					( resolve, reject ) =>
-							fetch( 'views/' + this.view )
-									.then( response => response.text() )
-									.then( template => Handlebars.compile( template ) )
-									.then( handlebar => resolve( handlebar ) )
-									.catch( e => reject( e ) )
+		scope.preRender();
+
+		//console.info( 'BEFORE RENDER: ' + scope.view, scope.element[0].outerHTML );
+
+		if( !templates[scope.view] ) {
+			templates[scope.view] = new Promise( ( resolve, reject ) =>
+				fetch( 'views/' + scope.view )
+					.then( response => response.text() )
+					.then( template => Handlebars.compile( template ) )
+					/*.then( template => {
+						//scope.childrenElementID = idhandler.get();
+
+						Handlebars.registerHelper( 'childrenElements', () => {
+							return '<div data-childrenid="' + scope.childrenElementID + '"></div>';
+						} );
+
+						return Handlebars.compile( template );
+					} )*/
+					.then( handlebar => resolve( handlebar ) )
+					.catch( e => reject( e ) )
 			);
-		} else {
-			//console.info( this.view + ' cached' );
 		}
 
-		return templates[this.view]
-				.then( handlebar => handlebar( this.properties ),
-						e => console.error( 'Failed to render "' + this.view + '": ', e.message ) )
-				.then( html => this.html = html )
-				.then( html => this.element.html( html ) );
+		return templates[scope.view]
+			.then( handlebar => handlebar( scope ),
+				e => console.error( 'Failed to render "' + scope.view + '": ', e.message ) )
+			.then( html => scope.element.html( html ) )
+			.then( () => scope.isRendered = true )
+			.then( () => {
+				if( scope.children.length ) {
+					//console.log( scope );
+					//console.log( 'A', scope.element );
+					//console.log( 'B', scope.element[0].outerHTML );
+					//console.log( 'C', '[data-childrenid="' + scope.childrenElementID + '"]' );
+
+					for( let child in scope.children ) {
+						let childElement = scope.element.find( '[data-childrenid="' + scope.childrenElementID + '"]' );
+						//console.log( 'D', childElement.length );
+						if( childElement.length &&
+								scope.children[child].element ) {
+							//console.log( 'D1' );
+							childElement.replaceWith( scope.children[child].element );
+						} else if( child > 0 ) {
+							//console.log( 'D2' );
+							scope.children[child - 1].element.after( scope.children[child].element );
+						}
+						//console.log( 'E', scope.element[0].outerHTML );
+					}
+				}
+			} )
+			.then( () => {
+				console.info( 'postRender' + scope.ns );
+				scope.eventemitter.emit( 'postRender' + scope.ns, scope );
+				if( scope.parent &&
+						scope.parent.update ) {
+					//scope.parent.update();
+				}
+			} )
+			.then( () => {
+				for( let postRenderMethod of scope.postRenderMethods ) {
+					//postRenderMethod.call( scope.parent );
+				}
+			} );
+			//.then( () => console.info( 'AFTER RENDER:  ' + scope.view, scope.element[0].outerHTML ) )
+			//.then( () => { if( scope.parent && scope.parent.update ) { scope.parent.update(); } } );
 	}
+
+	update( scope ) {
+
+		scope = scope || this;
+
+		if( !templates[scope.view] ) {
+			console.warn( 'Not rendered yet' );
+
+			return this.render( scope );
+		}
+
+		return this.render( scope );
+
+	}
+
+	postRender( funDo, scope ) {
+
+		scope = scope || this;
+
+		scope.postRenderMethods.push( funDo );
+
+	}
+
+	checkAllChildrenRendered() {
+
+		if( !this.allChildrenRendered ) {
+			let allRendered = true;
+
+			for( let child of this.children ) {
+				if( !child.isRendered ) {
+					allRendered = false;
+					break;
+				}
+			}
+
+			if( allRendered ) {
+				this.allChildrenRendered = true;
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	addEventListeners() {}
 
 }

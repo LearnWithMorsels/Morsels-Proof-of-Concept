@@ -1,18 +1,18 @@
 <div class="mdl-card mdl-shadow--2dp">
-    <div class="mdl-card__title{{#if _content.headerImage}} mdl-card__title-image-background{{/if}}"{{#if _content.headerImage}} style="background-image: url('./app/resources/{{_content.headerImage}}');"{{/if}}>
-        <h2 class="mdl-card__title-text">{{_content.title}}</h2>
+    <div class="mdl-card__title{{#if properties._content.headerImage}} mdl-card__title-image-background{{/if}}"{{#if properties._content.headerImage}} style="background-image: url('./app/resources/{{properties._content.headerImage}}');"{{/if}}>
+        <h2 class="mdl-card__title-text">{{properties._content.title}}</h2>
     </div>
     <div class="mdl-card__supporting-text">
-        {{#if _content.subtitle}}
-            <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{_content.subtitle}}}</h4>
+        {{#if properties._content.subtitle}}
+            <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>
         {{/if}}
-        {{{_content.body}}}
+        {{{properties._content.body}}}
     </div>
-    {{#if _activity}}
+    {{#if properties._activity}}
     <div class="mdl-card__actions mdl-card--border">
-        {{_activity.title}}
+        {{properties._activity.title}}
         <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-            <i class="material-icons">{{_activity.icon}}</i>
+            <i class="material-icons">{{properties._activity.icon}}</i>
         </button>
     </div>
     {{/if}}

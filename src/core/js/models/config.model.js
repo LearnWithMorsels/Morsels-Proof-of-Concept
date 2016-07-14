@@ -75,7 +75,7 @@ export class Config {
 								return objectrummage( strKey, data );
 							}
 						},
-						e => { console.error( 'Couldn\'t get propery "' + strKey + '": ', e.message ) }
+						e => { console.error( 'Couldn\'t get property "' + strKey + '": ', e.message ) }
 				);
 
 	}

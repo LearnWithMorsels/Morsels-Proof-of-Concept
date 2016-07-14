@@ -1,9 +1,7 @@
-import {Card} from './card.model';
+import {Morsel} from './morsel.model';
 import * as Cards from '../cards';
 
-let allChildrenRendered = false;
-
-export class Section {
+export class Section extends Morsel {
 
 	/**
 	 * Create a section of the course to insert cards into
@@ -13,64 +11,28 @@ export class Section {
 	 */
 	constructor( properties, parent ) {
 
+		super();
+
 		this.properties = properties;
 		this.parent = parent;
 		this.children = [];
+		this.ns = 'Section';
 		this.element = jQuery( '<div class="morsel-section"/>' );
+		this.promise = new Promise( ( resolve, reject ) => {} );
 		this.view = 'section.hbs';
-		this.isRendered = false;
-
-		this.parent.element.append( this.element );
-
-		//console.log( Cards );
-
-		//$( window ).on( 'resize', this.matchCardHeights );
 
 		for( let card in this.properties._cards ) {
-			//var newCard = new Card( properties._cards[card], this, card );
-
 			let strCard = this.properties._cards[card]._card;
 			strCard = strCard.charAt( 0 ).toUpperCase() + strCard.slice( 1 );
-			//console.log( strCard, Cards[strCard] );
 
-			//let newCard = new ( Cards[strCard] )( properties._cards[card], this, card );
-			//console.log( Cards );
-			//console.log( strCard );
 			let newCard = new ( Cards[strCard] )( properties._cards[card], this );
 			this.children.push( newCard );
 			newCard.element.css( 'z-index', this.properties._cards.length - card );
-			newCard.onRender( this.checkAllChildrenRendered );
-			newCard.onRender( () => {
-				newCard.properties._content.title = 'NEW TITLE';
-				//newCard.render();
-			} );
 		}
 
-		eventemitter.emit( 'sectionAdded', this );
-
-		//super.render();
+		this.render();
 
 		return this;
-
-	}
-
-	checkAllChildrenRendered() {
-
-		if( !allChildrenRendered ) {
-			let allRendered = true;
-			
-			for( let card of this.children ) {
-				if( !card.isRendered ) {
-					allRendered = false;
-					break;
-				}
-			}
-
-			if( allRendered ) {
-				allChildrenRendered = true;
-				this.matchCardHeights();
-			}
-		}
 
 	}
 
@@ -93,6 +55,29 @@ export class Section {
 			mdlCard.height( intTallestCard );
 		}
 
+	}
+	
+	addEventListeners() {
+
+		this.eventemitter.on(
+			'postRenderCard',
+			function( card ) {
+				console.log( 'Card rendered (section)', card );
+
+				if( this.checkAllChildrenRendered() ) {
+					this.matchCardHeights();
+					this.update();
+				}
+			},
+			this
+		).on(
+			'postRenderSection',
+			function( section ) {
+				console.log( 'Section rendered (section)', section );
+			},
+			this
+		);
+	
 	}
 	
 }

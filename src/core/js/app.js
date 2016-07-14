@@ -10,6 +10,9 @@
  * -------------------{ BITE-SIZED ELEARNING }-----------------
  */
 
-import {App} from './models/app.model';
+import { App } from './models/app.model';
+import EventEmitter from './vendor/eventemitter3';
+
+//window.eventemitter = new EventEmitter();
 
 new App( '#morsel-course' );

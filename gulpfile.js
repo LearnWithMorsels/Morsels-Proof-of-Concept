@@ -1,6 +1,7 @@
 "use strict";
 
-const del = require( 'del' ),
+//CONST
+var del = require( 'del' ),
 	fs = require( 'fs' ),
 	gulp = require( 'gulp' ),
 	addsrc = require( 'gulp-add-src' ),
@@ -11,7 +12,7 @@ const del = require( 'del' ),
 	concat = require( 'gulp-concat' ),
 	fileOverride = require( 'gulp-file-override' ),
 	foreach = require( 'gulp-foreach' ),
-	precompileHandlebars = require( 'gulp-handlebars' ),
+	//precompileHandlebars = require( 'gulp-handlebars' ),
 	jsdoc = require( 'gulp-jsdoc3' ),
 	jshint = require( 'gulp-jshint' ),
 	merge = require( 'merge' ),
@@ -26,7 +27,8 @@ const del = require( 'del' ),
 	wrap = require( 'gulp-wrap' ),
 	browserSync = require( 'browser-sync' ).create();
 
-let objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
+//LET
+var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json';
 
 gulp.task( 'app:index', () => {
@@ -247,20 +249,7 @@ gulp.task( 'dev', ['build'],
 		);
 
 		gulp.watch( './src/core/views/index.hbs', ['app:index'], browserSync.reload );
-		gulp.watch(
-			[
-				// './src/core/views/partials/**/*.hbs',
-				// './src/activities/*/views/**/*.hbs',
-				// './src/cards/*/views/**/*.hbs',
-				// './src/extensions/*/views/**/*.hbs',
-				// './src/theme/*/views/**/*.hbs',
-				// './src/app/core/views/partials/**/*.hbs',
-				// './src/app/activities/*/views/**/*.hbs',
-				// './src/app/cards/*/views/**/*.hbs',
-				// './src/app/extensions/*/views/**/*.hbs',
-				// './src/app/theme/*/views/**/*.hbs'
-				'./src/**/*.hbs'
-			], ['app:views'], browserSync.reload );
+		gulp.watch( './src/**/*.hbs', ['app:views'], browserSync.reload );
 		gulp.watch( './src/**/*.js', ['app:js'], browserSync.reload );
 		gulp.watch( './src/**/*.scss', ['app:scss'] );
 		gulp.watch( './src/app/resources/**/*', ['app:resources'] );

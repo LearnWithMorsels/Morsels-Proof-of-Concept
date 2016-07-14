@@ -1,5 +1,5 @@
-import {Morsel} from './morsel.model';
-import {objectrummage} from '../tools/objectrummage';
+import { Morsel } from './morsel.model';
+import { objectrummage } from '../tools/objectrummage';
 
 export class Card extends Morsel {
 
@@ -7,45 +7,21 @@ export class Card extends Morsel {
 	 * Set up a new card
 	 * @param {Object} properties
 	 * @param {Section} parent
-	 * @param {number} index
 	 * @returns {Promise}
 	 */
 	constructor( properties, parent ) {
 
 		super();
 
-		this.isRendered = false;
-		this.parent = parent;
+		//console.log( 'Card initiated' );
+
 		this.properties = properties;
+		this.parent = parent;
+		this.ns = 'Card';
 		this.element = jQuery( '<div class="morsel-card"/>' );
 		this.promise = new Promise( ( resolve, reject ) => {} );
 
 		return this;
-
-	}
-
-	render() {
-
-		this.promise = super.render()
-			.then( () => this.isRendered = true )
-			.then( () => this.parent.element.append( this.element ) )
-			.then( () => this.setupDraggable() );
-
-	}
-
-	onRender( funDo ) {
-
-		this.promise
-			.then( () => funDo.call( this.parent ) );
-
-	}
-
-	update( property, value ) {
-
-		this.properties = objectrummage( property, this.properties, value );
-
-		super.render()
-				.then( html => this.element.html( html ) );
 
 	}
 
@@ -126,6 +102,19 @@ export class Card extends Morsel {
 				//}
 			} );
 		}
+
+	}
+
+	addEventListeners() {
+
+		this.eventemitter.on(
+			'postRenderCard',
+			function( card ) {
+				console.log( 'Card rendered (card)', card );
+				//this.parent.update();
+			},
+			this
+		);
 
 	}
 

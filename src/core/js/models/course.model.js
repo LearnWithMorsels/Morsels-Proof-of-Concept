@@ -1,45 +1,52 @@
-import {Section} from './section.model';
+import { Morsel } from './morsel.model';
+import { Section } from './section.model';
 
-export class Course {
+export class Course extends Morsel {
 
 	constructor( parent, language ) {
 
-		this.element = jQuery( '<div class="morsel-course"/>' );
-		this.children = [];
+		super();
+
 		this.parent = parent;
+		this.children = [];
+		this.ns = 'Course';
+		this.element = jQuery( '<div class="morsel-course"/>' );
+		this.promise = new Promise( ( resolve, reject ) => {} );
+		this.view = 'course.hbs';
 
-		this.parent.element.replaceWith( this.element );
+		new Promise( ( resolve, reject ) => {
+				fetch( 'app/course/' + language + '.json' )
+					.then( response => response.json() )
+					.then( course => {
+						for( let section of course._sections ) {
+							this.children.push( new Section( section, this ) );
+						}
 
-		this.addEventListeners();
+						this.update();
 
-		return new Promise( ( resolve, reject ) => {
-					fetch( 'app/course/' + language + '.json' )
-							.then( response => response.json() )
-							.then( course => this.properites = course )
-							.then( course => {
-								this.element.html( '' );
-
-								for( let section of course._sections ) {
-									this.children.push( new Section( section, this ) );
-								}
-
-								eventemitter.emit( 'appReady', this, course );
-
-								return course;
-							} )
-							.then( course => resolve( course ) )
-							.catch( e => reject( e ) )
-				}
+						return course;
+					} )
+					.then( course => resolve( course ) )
+					.catch( e => reject( e ) )
+			}
 		);
+
+		this.render();
 
 	}
 
 	addEventListeners() {
 
-		eventemitter.on(
-			'sectionAdded',
-			function( alpha ) {
-				//console.log( 'Section added', this, alpha );
+		this.eventemitter.on(
+			'postRenderSection',
+			function( section ) {
+				console.log( 'Section rendered (course)', section );
+			},
+			this
+		).on(
+			'postRenderCourse',
+			function( course ) {
+				console.log( 'Course rendered (course)', course );
 			},
 			this
 		);
