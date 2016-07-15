@@ -4,6 +4,7 @@
 var del = require( 'del' ),
 	fs = require( 'fs' ),
 	gulp = require( 'gulp' ),
+	path = require( 'path' ),
 	addsrc = require( 'gulp-add-src' ),
 	babel = require( 'gulp-babel' ),
 	change = require( 'gulp-change' ),
