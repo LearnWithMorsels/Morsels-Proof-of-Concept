@@ -59,9 +59,9 @@ gulp.task( 'app:views', () => {
 			.pipe( fileOverride( 'core/views/partials', 'app/core/views/partials' ) )
 			.pipe(
 				rename(
-					function( path ) {
-						path.dirname = '/partials/' + path.dirname;
-						return path;
+					function( filepath ) {
+						filepath.dirname = path.sep + 'partials' + path.sep + filepath.dirname;
+						return filepath;
 					}
 				)
 			),
@@ -69,9 +69,9 @@ gulp.task( 'app:views', () => {
 			.pipe( fileOverride( 'activities/*/views', 'app/activities/$1/views' ) )
 			.pipe(
 				rename(
-					function( path ) {
-						path.dirname = 'activities/' + path.dirname.replace( /\/views$/, '' );
-						return path;
+					function( filepath ) {
+						filepath.dirname = 'activities' + path.sep + filepath.dirname.replace( new RegExp( '\\' + path.sep + 'views$' ), '' );
+						return filepath;
 					}
 				)
 			),
@@ -79,9 +79,9 @@ gulp.task( 'app:views', () => {
 			.pipe( fileOverride( 'cards/*/views', 'app/cards/$1/views' ) )
 			.pipe(
 				rename(
-					function( path ) {
-						path.dirname = 'cards/' + path.dirname.replace( /\/views$/, '' );
-						return path;
+					function( filepath ) {
+						filepath.dirname = 'cards' + path.sep + filepath.dirname.replace( new RegExp( '\\' + path.sep + 'views$' ), '' );
+						return filepath;
 					}
 				)
 			),
@@ -89,9 +89,9 @@ gulp.task( 'app:views', () => {
 			.pipe( fileOverride( 'extensions/*/views', 'app/extensions/$1/views' ) )
 			.pipe(
 				rename(
-					function( path ) {
-						path.dirname = 'extensions/' + path.dirname.replace( /\/views$/, '' );
-						return path;
+					function( filepath ) {
+						filepath.dirname = 'extensions' + path.sep + filepath.dirname.replace( new RegExp( '\\' + path.sep + 'views$' ), '' );
+						return filepath;
 					}
 				)
 			),
@@ -99,9 +99,9 @@ gulp.task( 'app:views', () => {
 			.pipe( fileOverride( 'theme/*/views', 'app/theme/$1/views' ) )
 			.pipe(
 				rename(
-					function( path ) {
-						path.dirname = path.dirname.replace( new RegExp( objConfig.theme + '\/views$' ), '' );
-						return path;
+					function( filepath ) {
+						filepath.dirname = filepath.dirname.replace( new RegExp( objConfig.theme + '\\' + path.sep + 'views$' ), '' );
+						return filepath;
 					}
 				)
 			);
