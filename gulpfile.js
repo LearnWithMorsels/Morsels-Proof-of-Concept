@@ -1,6 +1,5 @@
 "use strict";
 
-//CONST
 var del = require( 'del' ),
 	fs = require( 'fs' ),
 	gulp = require( 'gulp' ),
@@ -12,7 +11,6 @@ var del = require( 'del' ),
 	concat = require( 'gulp-concat' ),
 	fileOverride = require( 'gulp-file-override' ),
 	foreach = require( 'gulp-foreach' ),
-	//precompileHandlebars = require( 'gulp-handlebars' ),
 	jsdoc = require( 'gulp-jsdoc3' ),
 	jshint = require( 'gulp-jshint' ),
 	merge = require( 'merge' ),
@@ -27,7 +25,6 @@ var del = require( 'del' ),
 	wrap = require( 'gulp-wrap' ),
 	browserSync = require( 'browser-sync' ).create();
 
-//LET
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
 	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json';
 
@@ -38,15 +35,6 @@ gulp.task( 'app:index', () => {
 				{
 					config: objConfig,
 					content: objPrimaryContent
-				},
-				{
-					ignorePartials: false,
-					//batch : ['./src/partials'],
-					helpers : {
-						/*capitals : function(str){
-						 return str.toUpperCase();
-						 }*/
-					}
 				}
 			)
 		)
@@ -108,20 +96,6 @@ gulp.task( 'app:views', () => {
 
 	return mergeStream( core, activities, cards, extensions, theme )
 		.pipe( gulp.dest( './build/views' ) );
-
-	// return mergeStream( core, activities, cards, extensions, theme )
-	// 		.pipe( precompileHandlebars() )
-	// 		.pipe( wrap( 'Handlebars.template(<%= contents %>)' ) )
-	// 		.pipe(
-	// 			declare(
-	// 				{
-	// 					namespace: 'Morsels.views',
-	// 					noRedeclare: true
-	// 				}
-	// 			)
-	// 		)
-	// 		.pipe( concat( 'views.js' ) )
-	// 		.pipe( gulp.dest( './build/js/' ) );
 } );
 
 gulp.task( 'app:js', () => {
@@ -241,7 +215,7 @@ gulp.task( 'dev', ['build'],
 				],
 				server: {
 					baseDir: './build',
-					//directory: true,
+					directory: false,
 					index: 'index.html',
 					logLevel: 'debug'
 				}
