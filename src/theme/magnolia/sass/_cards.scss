@@ -86,9 +86,11 @@
 		}
 
 		.mdl-card__menu {
-			.mdl-button {
-			}
-				color: #FFF;
+			color: #FFF;
+
+			z-index: 1;
+
+			.mdl-button {}
 		}
 
 		&.dragging {

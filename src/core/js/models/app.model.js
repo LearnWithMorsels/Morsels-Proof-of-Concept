@@ -22,6 +22,8 @@ export class App extends Morsel {
 				this.render();
 			} );
 
+		this.addEventListeners();
+
 	}
 
 	addEventListeners() {

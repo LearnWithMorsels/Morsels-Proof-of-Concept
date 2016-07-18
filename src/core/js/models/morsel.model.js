@@ -29,6 +29,7 @@ export class Morsel {
 		 */
 		this.isComplete = false;
 		this.isRendered = false;
+		this.isStarred = false;
 
 		/**
 		 * The template file to use, relative to /app/templates
@@ -45,8 +46,6 @@ export class Morsel {
 		 * @type {{}}
 		 */
 		this.properties = {};
-
-		this.addEventListeners();
 		
 	}
 
@@ -81,23 +80,15 @@ export class Morsel {
 			.then( () => scope.isRendered = true )
 			.then( () => {
 				if( scope.children.length ) {
-					//console.log( scope );
-					//console.log( 'A', scope.element );
-					//console.log( 'B', scope.element[0].outerHTML );
-					//console.log( 'C', '[data-childrenid="' + scope.childrenElementID + '"]' );
-
 					for( let child in scope.children ) {
 						let childElement = scope.element.find( '[data-childrenid="' + scope.childrenElementID + '"]' );
-						//console.log( 'D', childElement.length );
+
 						if( childElement.length &&
 								scope.children[child].element ) {
-							//console.log( 'D1' );
 							childElement.replaceWith( scope.children[child].element );
 						} else if( child > 0 ) {
-							//console.log( 'D2' );
 							scope.children[child - 1].element.after( scope.children[child].element );
 						}
-						//console.log( 'E', scope.element[0].outerHTML );
 					}
 				}
 			} )

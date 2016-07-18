@@ -17,8 +17,8 @@
     </div>
     {{/if}}
     <div class="mdl-card__menu">
-        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons">star_border</i>
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect toggle-starred">
+            <i class="material-icons">{{#if isStarred}}star{{else}}star_border{{/if}}</i>
         </button>
     </div>
 </div>

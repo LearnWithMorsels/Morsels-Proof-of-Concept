@@ -19,6 +19,8 @@ export class Card extends Morsel {
 		this.element = jQuery( '<div class="morsel-card"/>' );
 		this.promise = new Promise( ( resolve, reject ) => {} );
 
+		this.addEventListeners();
+
 		return this;
 
 	}
@@ -65,6 +67,11 @@ export class Card extends Morsel {
 	}
 
 	addEventListeners() {
+
+		this.element.on( 'click', '.toggle-starred', () => {
+			this.isStarred = !this.isStarred;
+			this.update();
+		} );
 
 		this.eventemitter.on(
 			'postRenderCard',

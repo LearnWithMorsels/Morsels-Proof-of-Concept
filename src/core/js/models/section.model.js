@@ -32,7 +32,7 @@ export class Section extends Morsel {
 
 		this.render();
 
-		return this;
+		this.addEventListeners();
 
 	}
 

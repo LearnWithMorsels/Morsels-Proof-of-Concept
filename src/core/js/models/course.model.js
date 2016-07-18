@@ -33,6 +33,8 @@ export class Course extends Morsel {
 
 		this.render();
 
+		this.addEventListeners();
+
 	}
 
 	addEventListeners() {
