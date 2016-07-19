@@ -1,7 +1,7 @@
 {
 	"title": "My First Course",
 	"description": "A test course using the Morsels framework",
-	"_sections": [
+	"_stacks": [
 		{
 			"title": "F1",
 			"_content": {

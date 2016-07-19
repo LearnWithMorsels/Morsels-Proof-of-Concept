@@ -1,5 +1,5 @@
 import { Morsel } from './morsel.model';
-import { Section } from './section.model';
+import { Stack } from './stack.model';
 
 export class Course extends Morsel {
 
@@ -18,8 +18,8 @@ export class Course extends Morsel {
 				fetch( 'app/course/' + language + '.json' )
 					.then( response => response.json() )
 					.then( course => {
-						for( let section of course._sections ) {
-							this.children.push( new Section( section, this ) );
+						for( let stack of course._stacks ) {
+							this.children.push( new Stack( stack, this ) );
 						}
 
 						this.update();

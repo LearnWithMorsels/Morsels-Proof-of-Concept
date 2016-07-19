@@ -1,7 +1,7 @@
 {
 	"title": "Mon Premier Cours",
 	"description": "Un cours d'essai en utilisant le cadre Morsels",
-	"_sections": [
+	"_stacks": [
 		{
 			"title": "Formula uno",
 			"_cards": [

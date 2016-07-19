@@ -1,7 +1,8 @@
-import {Morsel} from './morsel.model';
+import { Morsel } from './morsel.model';
+import { StackTop } from './stacktop.model';
 import * as Cards from '../cards';
 
-export class Section extends Morsel {
+export class Stack extends Morsel {
 
 	/**
 	 * Create a section of the course to insert cards into
@@ -16,10 +17,18 @@ export class Section extends Morsel {
 		this.properties = properties;
 		this.parent = parent;
 		this.children = [];
-		this.ns = 'Section';
-		this.element = jQuery( '<div class="morsel-section"/>' );
+		this.ns = 'Stack';
+		this.element = jQuery( '<div class="morsel-stack"/>' );
 		this.promise = new Promise( ( resolve, reject ) => {} );
-		this.view = 'section.hbs';
+		this.view = 'stack.hbs';
+
+
+		let stackTop = new StackTop( properties, this );
+		this.children.push( stackTop );
+		stackTop.element.css( 'z-index', this.properties._cards.length + 1 );
+
+
+
 
 		for( let card in this.properties._cards ) {
 			let strCard = this.properties._cards[card]._card;
@@ -71,9 +80,9 @@ export class Section extends Morsel {
 			},
 			this
 		).on(
-			'postRenderSection',
-			( section ) => {
-				console.log( 'Section rendered (section)', section );
+			'postRenderStack',
+			( stack ) => {
+				console.log( 'Stack rendered (stack)', stack );
 			},
 			this
 		);
