@@ -1,1 +1,1 @@
-import {Card} from './models/card.model';
+import { Card } from './models/card.model';

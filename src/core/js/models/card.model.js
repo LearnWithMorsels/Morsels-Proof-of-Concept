@@ -1,14 +1,8 @@
 import { Morsel } from './morsel.model';
-import { objectrummage } from '../tools/objectrummage';
+import * as Activities from '../activities';
 
 export class Card extends Morsel {
 
-	/**
-	 * Set up a new card
-	 * @param {Object} properties
-	 * @param {Section} parent
-	 * @returns {Promise}
-	 */
 	constructor( properties, parent ) {
 
 		super();
@@ -17,11 +11,25 @@ export class Card extends Morsel {
 		this.parent = parent;
 		this.ns = 'Card';
 		this.element = jQuery( '<div class="morsel-card"/>' );
-		this.promise = new Promise( ( resolve, reject ) => {} );
 
 		this.addEventListeners();
+		this.addActivities();
 
-		return this;
+	}
+
+	addActivities() {
+
+		if( this.properties._activities &&
+				this.properties._activities._items &&
+				this.properties._activities._items.length ) {
+			for( let activity of this.properties._activities._items ) {
+				let strActivity = activity._type;
+				strActivity = strActivity.charAt( 0 ).toUpperCase() + strActivity.slice( 1 );
+
+				let newActivity = new ( Activities[strActivity] )( activity, this );
+				this.children.push( newActivity );
+			}
+		}
 
 	}
 
@@ -29,6 +37,8 @@ export class Card extends Morsel {
 	 * Set up the draggable action of the cards
 	 */
 	setupDraggable() {
+
+		//console.log( 'setupDraggable', this.element[0].outerHTML );
 
 		let dragging = false,
 				startPos = {},
@@ -59,6 +69,7 @@ export class Card extends Morsel {
 			if( dismissOnEnd ) {
 				mdlCard.css( 'transform', 'translate(' + ( displace.x * 4 ) + 'px, ' + ( displace.y * 4 ) + 'px)' );
 				this.element.addClass( 'dismissed' );
+				this.isComplete = true;
 			} else {
 				mdlCard.css( 'transform', 'none' ).blur();
 			}
@@ -71,12 +82,15 @@ export class Card extends Morsel {
 		this.element.on( 'click', '.toggle-starred', () => {
 			this.isStarred = !this.isStarred;
 			this.update();
+		} ).on( 'click', '.launch-activity', () => {
+			this.isActivity = true;
+			this.update();
 		} );
 
 		this.eventemitter.on(
 			'postRenderCard',
 			( card ) => {
-				console.log( 'Card rendered (card)', card );
+				//console.log( 'Card rendered (card)', card );
 				this.setupDraggable();
 				if( this.parent.checkAllChildrenRendered() ) {
 					//this.parent.matchCardHeights();

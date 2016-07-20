@@ -35,7 +35,7 @@ export class Morsel {
 		 * The template file to use, relative to /app/templates
 		 * @type {null}
 		 */
-		this.template = null;
+		this.view = null;
 
 		this.parent = null;
 
@@ -77,7 +77,6 @@ export class Morsel {
 			.then( handlebar => handlebar( scope ),
 				e => console.error( 'Failed to render "' + scope.view + '": ', e.message ) )
 			.then( html => scope.element.html( html ) )
-			.then( () => scope.isRendered = true )
 			.then( () => {
 				if( scope.children.length ) {
 					for( let child in scope.children ) {
@@ -92,6 +91,7 @@ export class Morsel {
 					}
 				}
 			} )
+			.then( () => scope.isRendered = true )
 			.then( () => {
 				scope.eventemitter.emit( 'postRender' + scope.ns, scope );
 			} );
@@ -103,8 +103,6 @@ export class Morsel {
 
 		if( !templates[scope.view] ) {
 			console.warn( 'Not rendered yet' );
-
-			return this.render( scope );
 		}
 
 		return this.render( scope );

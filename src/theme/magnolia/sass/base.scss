@@ -11,12 +11,12 @@ body {
 	overflow: hidden;
 }
 
+@import "utilities/animations";
+
 @import "app";
 @import "course";
 @import "stack";
 @import "cards";
-
-
 
 @import "../../../../node_modules/material-design-lite/dist/material.blue_grey-red.min";
 @import "../../../../node_modules/material-design-lite/dist/assets/prism-default";

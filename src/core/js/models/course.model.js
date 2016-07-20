@@ -11,7 +11,6 @@ export class Course extends Morsel {
 		this.children = [];
 		this.ns = 'Course';
 		this.element = jQuery( '<div class="morsel-course"/>' );
-		this.promise = new Promise( ( resolve, reject ) => {} );
 		this.view = 'course.hbs';
 
 		new Promise( ( resolve, reject ) => {
@@ -48,7 +47,7 @@ export class Course extends Morsel {
 		).on(
 			'postRenderCourse',
 			( course ) => {
-				console.log( 'Course rendered (course)', course );
+				//console.log( 'Course rendered (course)', course );
 			},
 			this
 		);

@@ -4,8 +4,6 @@ export class Text extends Card {
 
         super( properties, parent );
 
-        //console.log( 'Text card initiated' );
-
         this.view = 'cards/text/text.hbs';
 
         this.render();

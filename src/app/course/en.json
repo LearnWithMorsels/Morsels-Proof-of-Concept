@@ -6,7 +6,7 @@
 			"title": "F1",
 			"_content": {
 				"title": "The best F1 drivers",
-				"body": "This is a list of the best 5 F1 drivers of all time."
+				"body": "<p>Explore the top 5 F1 drivers of all time.</p>"
 			},
 			"_classes": "",
 			"_cards": [
@@ -49,48 +49,58 @@
 						"subtitle": "Active: 1991&ndash;2006, 2010&ndash;2012",
 						"body": "<p>Simply the best and fastest. Surely faster than anybody after him, in his prime. Still in his fourties could come back to have some fun and have decent races, which is pretty spectacular demonstration of his talent and consistency. Especially when you think that many other drivers in their later 30s are called \"non-prime anymore\".</p>"
 					},
-					"_activity": {
-						"_type": "truefalse",
-						"title": "Want to know more?",
-						"icon": "info",
-						"_content": {
-							"title": "Fact and fiction",
-							"body": "Sort the facts from the fiction.",
-							"instruction": "Drag the facts into the right box."
-						},
+					"_activities": {
+						"title": "Already know MSC?",
+						"_icon": "question_answer",
 						"_items": [
 							{
-								"title": "One",
-								"_isCorrect": false
-							},
-							{
-								"title": "Two",
-								"_isCorrect": false
-							},
-							{
-								"title": "Three",
-								"_isCorrect": false
-							},
-							{
-								"title": "Four",
-								"_isCorrect": true
+								"_type": "mcq",
+								"_content": {
+									"title": "WDC",
+									"body": "<p>How many World Drivers Championships has Michael Schumacher won?</p>",
+									"instruction": "Select from the list below"
+								},
+								"_items": [
+									{
+										"title": "1",
+										"_isCorrect": false
+									},
+									{
+										"title": "3",
+										"_isCorrect": false
+									},
+									{
+										"title": "5",
+										"_isCorrect": false
+									},
+									{
+										"title": "7",
+										"_isCorrect": true
+									}
+								],
+								"_options": {
+									"_selectable": 1,
+									"_removeIncorrectGuesses": false,
+									"_attempts": 3
+								},
+								"_feedback": {
+									"_correct": {
+										"title": "Well done!",
+										"body": "<p>You clearly know MSC.</p>"
+									},
+									"_incorrect": {
+										"title": "Incorrect",
+										"body": "<p>Michael won 7 World Drivers Championships.</p>",
+										"_notes": [
+											"wdc"
+										]
+									},
+									"_common": {
+										"body": "<p>He won two titles with Benetton in 1994 and 1995 before moving to Ferrari where he drove for eleven years.</p><p>His time with Ferrari yielded five consecutive titles between 2000 and 2004.</p>"
+									}
+								}
 							}
-						],
-						"_options": {
-							"_selectable": 1,
-							"_attempts": 3
-						},
-						"_feedback": {
-							"_correct": {
-								"title": "Well done!",
-								"body": "You added up."
-							},
-							"_incorrect": {
-								"title": "Not quite!",
-								"body": "You can't add up.",
-								"_notes": ["adding"]
-							}
-						}
+						]
 					}
 				},
 				{
@@ -110,57 +120,57 @@
 						"title": "Question Time",
 						"body": "<p>OK, so who do you think was the best?</p>"
 					},
-					"_activity": {
-						"_type": "mcq",
+					"_activities": {
 						"title": "Let's find out",
-						"icon": "chevron_right",
-						"_content": {
-							"title": "Simple maths question",
-							"body": "What is 2 + 2?",
-							"instruction": "Please select an answer."
-						},
+						"_icon": "chevron_right",
 						"_items": [
 							{
-								"title": "One",
-								"_isCorrect": false
-							},
-							{
-								"title": "Two",
-								"_isCorrect": false
-							},
-							{
-								"title": "Three",
-								"_isCorrect": false
-							},
-							{
-								"title": "Four",
-								"_isCorrect": true
+								"_type": "mcq",
+								"_content": {
+									"title": "The first winner",
+									"body": "<p>Who won the first Formula 1 WDC in 1950?</p>",
+									"instruction": "Select from the list below"
+								},
+								"_items": [
+									{
+										"title": "Senna",
+										"_isCorrect": false
+									},
+									{
+										"title": "Fangio",
+										"_isCorrect": true
+									},
+									{
+										"title": "Alonso",
+										"_isCorrect": false
+									}
+								],
+								"_feedback": {
+									"_correct": {
+										"title": "Well done!"
+									},
+									"_incorrect": {
+										"title": "Incorrect",
+										"body": "<p>It was Juan Manuel Fangio.</p>",
+										"_notes": [
+											"wdc"
+										]
+									},
+									"_common": {
+										"body": "Adding up can be really easy if you just remember to add up."
+									}
+								}
 							}
-						],
-						"_options": {
-							"_selectable": 1,
-							"_attempts": 3
-						},
-						"_feedback": {
-							"_correct": {
-								"title": "Well done!",
-								"body": "You added up."
-							},
-							"_incorrect": {
-								"title": "Not quite!",
-								"body": "You can't add up.",
-								"_notes": ["adding"]
-							}
-						}
+						]
 					}
 				}
 			]
 		}
 	],
 	"_notes": {
-		"adding": {
-			"title": "Adding Up",
-			"body": "Remember, you can easily add up by adding the numbers."
+		"wdc": {
+			"title": "World Drivers Championships",
+			"body": "<p>The Formula One World Drivers' Championship (WDC) is the most successful Formula One race car driver of the year. The award is given by the Fédération Internationale de l'Automobile (FIA) to the driver who scores the most points during a season. The WDC was first awarded in 1950, to Giuseppe &quot;Nino&quot; Farina.</p>"
 		}
 	}
 }

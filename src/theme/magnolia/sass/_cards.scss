@@ -22,6 +22,8 @@
 		max-height: 100%;
 		margin: 0 auto 16px;
 
+		position: relative;
+
 		transform: translate3d(0, 0, 0) scale(0.975) translateY(5px);
 		transform-origin: 50% 100%;
 
@@ -37,61 +39,85 @@
 
 		z-index: 1;
 
-		.mdl-card__title {
-			&.mdl-card__title-image-background {
-				height: 186px;
+		.card-front {
+
+			.mdl-card__title {
+				&.mdl-card__title-image-background {
+					height: 186px;
+
+					position: relative;
+
+					color: #FFF;
+
+					background: #111 center / cover;
+
+					&::after {
+						position: absolute;
+						top: 0;
+						right: 0;
+						bottom: 0;
+						left: 0;
+
+						/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.45+0,0+46,0+50 */
+						background: -moz-linear-gradient(45deg,  rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 46%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+						background: -webkit-linear-gradient(45deg,  rgba(0,0,0,0.45) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+						background: linear-gradient(45deg,  rgba(0,0,0,0.45) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+						filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#73000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+						z-index: 1;
+
+						content: "";
+					}
+
+					.mdl-card__title-text {
+						position: relative;
+
+						z-index: 2;
+					}
+				}
+			}
+
+			.mdl-card__actions {
+				height: 52px;
+				padding: 16px;
 
 				position: relative;
 
+				z-index: 3;
+
+				.launch-activity {
+					position: absolute;
+					top: -20px;
+					right: 16px;
+				}
+			}
+
+			.mdl-card__menu {
 				color: #FFF;
 
-				background: #111 center / cover;
+				z-index: 1;
 
-				&::after {
+				.mdl-button {}
+			}
+
+				.card-activities-ink {
+					width: 2px;
+					height: 2px;
+
 					position: absolute;
-					top: 0;
-					right: 0;
-					bottom: 0;
-					left: 0;
+					right: 35px;
+					bottom: 50px;
 
-					/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.45+0,0+46,0+50 */
-					background: -moz-linear-gradient(45deg,  rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 46%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-					background: -webkit-linear-gradient(45deg,  rgba(0,0,0,0.45) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-					background: linear-gradient(45deg,  rgba(0,0,0,0.45) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#73000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+					background-color: #FF5252;
 
-					z-index: 1;
+					border-radius: 100%;
 
-					content: "";
+					box-shadow: 0 0 0 0 #FF5252;
+
+					opacity: 0;
+
+					z-index: 3;
 				}
-
-				.mdl-card__title-text {
-					position: relative;
-
-					z-index: 2;
-				}
-			}
-		}
-
-		.mdl-card__actions {
-			height: 52px;
-			padding: 16px;
-
-			position: relative;
-
-			button {
-				position: absolute;
-				top: -20px;
-				right: 16px;
-			}
-		}
-
-		.mdl-card__menu {
-			color: #FFF;
-
-			z-index: 1;
-
-			.mdl-button {}
 		}
 
 		&.dragging {
@@ -99,6 +125,29 @@
 
 			z-index: 2;
 		}
+
+		&.activities {
+			.card-front {
+				//display: none;
+			}
+
+				.card-activities-ink {
+					box-shadow: 0 0 0 1000px #FF5252;
+
+					opacity: 1;
+
+					animation-duration: 800ms;
+					animation-name: fab-button-activity-ink;
+				}
+
+			.card-activities {
+				//display: block;
+			}
+		}
+	}
+
+	.card-activities {
+		display: none;
 	}
 
 	&.dismissed {

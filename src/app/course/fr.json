@@ -3,50 +3,10 @@
 	"description": "Un cours d'essai en utilisant le cadre Morsels",
 	"_stacks": [
 		{
-			"title": "Formula uno",
-			"_cards": [
-				{
-					"title": "Numero 5",
-					"_content": {
-						"title": "Numero 5. Le Niki Lauda"
-					}
-				},
-				{},
-				{},
-				{},
-				{},
-				{
-					"title": "Question",
-					"_content": {
-						"title": "Question de maths simples"
-					},
-					"_activity": {
-						"_content": {
-							"body": "Qu'est-ce que 2 + 2?"
-						},
-						"_items": [
-							{
-								"title": "Un"
-							},
-							{
-								"title": "Deux"
-							},
-							{
-								"title": "Trois"
-							},
-							{
-								"title": "Quatre"
-							}
-						]
-					}
-				}
-			]
+			"_content": {
+				"title": "Les meilleurs pilotes de F1",
+				"body": "<p>Explorez le top 5 des pilotes de F1 de tous les temps.</p>"
+			}
 		}
-	],
-	"_notes": {
-		"adding": {
-			"title": "Additionnant",
-			"body": "Vous pouvez facilement ajouter en ajoutant les numéros"
-		}
-	}
+	]
 }

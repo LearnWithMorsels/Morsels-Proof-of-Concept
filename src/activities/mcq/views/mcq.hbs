@@ -1,0 +1,11 @@
+<p>{{properties._content.title}}</p>
+{{{properties._content.body}}}
+<p>{{properties._content.instruction}}</p>
+{{#each properties._items}}
+    <label><input type="radio" name="mcq">{{title}}</label>
+{{/each}}
+{{#if isSubmitted}}
+    <button type="reset"></button>
+{{else}}
+    <button type="submit"></button>
+{{/if}}

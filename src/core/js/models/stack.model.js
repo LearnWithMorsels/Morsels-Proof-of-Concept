@@ -19,22 +19,17 @@ export class Stack extends Morsel {
 		this.children = [];
 		this.ns = 'Stack';
 		this.element = jQuery( '<div class="morsel-stack"/>' );
-		this.promise = new Promise( ( resolve, reject ) => {} );
 		this.view = 'stack.hbs';
-
 
 		let stackTop = new StackTop( properties, this );
 		this.children.push( stackTop );
 		stackTop.element.css( 'z-index', this.properties._cards.length + 1 );
 
-
-
-
 		for( let card in this.properties._cards ) {
 			let strCard = this.properties._cards[card]._card;
 			strCard = strCard.charAt( 0 ).toUpperCase() + strCard.slice( 1 );
 
-			let newCard = new ( Cards[strCard] )( properties._cards[card], this );
+			let newCard = new ( Cards[strCard] )( this.properties._cards[card], this );
 			this.children.push( newCard );
 			newCard.element.css( 'z-index', this.properties._cards.length - card );
 		}
@@ -82,7 +77,7 @@ export class Stack extends Morsel {
 		).on(
 			'postRenderStack',
 			( stack ) => {
-				console.log( 'Stack rendered (stack)', stack );
+				//console.log( 'Stack rendered (stack)', stack );
 			},
 			this
 		);

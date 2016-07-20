@@ -40,7 +40,7 @@ export class App extends Morsel {
 		).on(
 			'postRenderApp',
 			( app ) => {
-				console.log( 'App rendered (app)', app );
+				//console.log( 'App rendered (app)', app );
 			},
 			this
 		).on(
