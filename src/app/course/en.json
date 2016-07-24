@@ -127,6 +127,7 @@
 					"_activities": {
 						"title": "Let's find out",
 						"_icon": "chevron_right",
+						"_required": true,
 						"_items": [
 							{
 								"_type": "mcq",

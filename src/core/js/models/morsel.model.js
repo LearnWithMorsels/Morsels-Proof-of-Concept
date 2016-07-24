@@ -7,13 +7,55 @@ let templates = {};
 export class Morsel {
 
 	/**
-	 * The parent object which all courses, sections, cards and activities extend
+	 * The parent object which all courses, stacks, cards and activities extend
 	 */
 	constructor() {
+		/**
+		 * The parent object
+		 * @type {App,Course,Stack,Card,Activity}
+		 */
+		this.parent = null;
+
+		/**
+		 * The children of the object
+		 * @type {Array}
+		 */
 		this.children = [];
+
+		/**
+		 * The child property in the course JSON file
+		 * @type {string}
+		 */
+		this.childrenProperty = '_children';
+
+		/**
+		 * A unique ID to use for the rendering of the children elements
+		 * @type {string}
+		 */
 		this.childrenElementID = idhandler.get();
 
+		/**
+		 * If true, all the children elements have been rendered
+		 * @type {boolean}
+		 */
 		this.allChildrenRendered = false;
+
+		/**
+		 * The properties of the model which contains all of the content and children
+		 * @type {{}}
+		 */
+		this.properties = {};
+
+		/**
+		 * The namespace of the events (Capitalised)
+		 * @type {string}
+		 */
+		this.ns = '';
+
+		/**
+		 * The eventemmiter object for this object
+		 */
+		this.eventemitter = new EventEmitter();
 
 		/**
 		 * The jQuery element of the model
@@ -21,53 +63,55 @@ export class Morsel {
 		 */
 		this.element = $( '<div/>' );
 
-		this.eventemitter = new EventEmitter();
-
-		/**
-		 * Is the model complete
-		 * @type {boolean}
-		 */
-		this.isComplete = false;
-		this.isRendered = false;
-		this.isStarred = false;
-
 		/**
 		 * The template file to use, relative to /app/templates
 		 * @type {null}
 		 */
 		this.view = null;
 
-		this.parent = null;
-		
-		this.properties = {};
-
-		this.ns = '';
+		/**
+		 * If TRUE, the object model has been set to "complete"
+		 * @type {boolean}
+		 */
+		this.isComplete = false;
 
 		/**
-		 * The properties of the model
-		 * @type {{}}
+		 * If TRUE, the object view has been rendered
+		 * @type {boolean}
 		 */
-		this.properties = {};
+		this.isRendered = false;
+
+		/**
+		 * If TRUE, the object view has been starred
+		 * @type {boolean}
+		 */
+		this.isStarred = false;
 		
 	}
-	
+
 	setProperties( properties ) {
+
 		this.properties = properties;
 		this.update();
-	}
 
-	/**
-	 * Function to perform before the template renders
-	 */
-	preRender() {}
+		if( this.childProperty ) {
+			for( let child in this.properties[this.childProperty] ) {
+				if( this.children[child] &&
+						this.children[child].setProperties ) {
+					this.children[child].setProperties( this.properties[this.childProperty][child] );
+				}
+			}
+		}
+
+		this.update();
+
+	}
 
 	/**
 	 * Render the template of the model with the properties
 	 * @returns {Promise}
 	 */
 	render() {
-
-		this.preRender();
 
 		if( !templates[this.view] ) {
 			templates[this.view] = new Promise( ( resolve, reject ) =>
@@ -117,18 +161,21 @@ export class Morsel {
 	checkAllChildrenRendered() {
 
 		if( !this.allChildrenRendered ) {
-			let allRendered = true;
+			console.log( this.children.length, this.properties[this.childProperty].length );
+			if( this.children.length === this.properties[this.childProperty].length ) {
+				let allRendered = true;
 
-			for( let child of this.children ) {
-				if( !child.isRendered ) {
-					allRendered = false;
-					break;
+				for( let child of this.children ) {
+					if( !child.isRendered ) {
+						allRendered = false;
+						break;
+					}
 				}
-			}
 
-			if( allRendered ) {
-				this.allChildrenRendered = true;
-				return true;
+				if( allRendered ) {
+					this.allChildrenRendered = true;
+					return true;
+				}
 			}
 		}
 

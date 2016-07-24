@@ -8,16 +8,19 @@ export class Stack extends Morsel {
 	 * Create a section of the course to insert cards into
 	 * @param {Object} properties
 	 * @param {Course} parent The parent course model
-	 * @returns {Promise}
 	 */
 	constructor( properties, parent ) {
 
 		super();
 
-		this.properties = properties;
 		this.parent = parent;
 		this.children = [];
+		this.childProperty = '_cards';
+
+		this.properties = properties;
+
 		this.ns = 'Stack';
+
 		this.element = jQuery( '<div class="morsel-stack"/>' );
 		this.view = 'stack.hbs';
 
@@ -56,22 +59,12 @@ export class Stack extends Morsel {
 		}
 
 	}
-
-	setProperties( properties ) {
-
-		super.setProperties( properties );
-
-		for( let card in this.properties._cards ) {
-			this.children[card].setProperties( this.properties._cards[card] );
-		}
-
-	}
 	
 	addEventListeners() {
 
 		this.eventemitter.on(
 			'postRenderCard',
-			( card ) => {
+			card => {
 				console.log( 'Card rendered (section)', card );
 
 				if( this.checkAllChildrenRendered() ) {
@@ -82,7 +75,7 @@ export class Stack extends Morsel {
 			this
 		).on(
 			'postRenderStack',
-			( stack ) => {
+			stack => {
 				//console.log( 'Stack rendered (stack)', stack );
 			},
 			this

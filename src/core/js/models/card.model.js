@@ -7,9 +7,13 @@ export class Card extends Morsel {
 
 		super();
 
-		this.properties = properties;
 		this.parent = parent;
+		this.childProperty = '_activities';
+
+		this.properties = properties;
+
 		this.ns = 'Card';
+
 		this.element = jQuery( '<div class="morsel-card"/>' );
 
 		this.addEventListeners();
@@ -37,8 +41,6 @@ export class Card extends Morsel {
 	 * Set up the draggable action of the cards
 	 */
 	setupDraggable() {
-
-		//console.log( 'setupDraggable', this.element[0].outerHTML );
 
 		let dragging = false,
 				startPos = {},
@@ -89,8 +91,8 @@ export class Card extends Morsel {
 
 		this.eventemitter.on(
 			'postRenderCard',
-			( card ) => {
-				//console.log( 'Card rendered (card)', card );
+			card => {
+				console.log( 'Card rendered (card)', card );
 				this.setupDraggable();
 				if( this.parent.checkAllChildrenRendered() ) {
 					//this.parent.matchCardHeights();

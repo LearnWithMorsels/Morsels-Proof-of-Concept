@@ -9,8 +9,12 @@ export class Course extends Morsel {
 
 		this.parent = parent;
 		this.children = [];
+		this.childProperty = '_stacks';
+
 		this.properties = properties;
+
 		this.ns = 'Course';
+
 		this.element = jQuery( '<div class="morsel-course"/>' );
 		this.view = 'course.hbs';
 
@@ -24,29 +28,17 @@ export class Course extends Morsel {
 
 	}
 
-	setProperties( properties ) {
-
-		super.setProperties( properties );
-
-		for( let stack in this.properties._stacks ) {
-			this.children[stack].setProperties( this.properties._stacks[stack] );
-		}
-
-		this.update();
-
-	}
-
 	addEventListeners() {
 
 		this.eventemitter.on(
 			'postRenderSection',
-			( section ) => {
+			section => {
 				console.log( 'Section rendered (course)', section );
 			},
 			this
 		).on(
 			'postRenderCourse',
-			( course ) => {
+			course => {
 				//console.log( 'Course rendered (course)', course );
 			},
 			this

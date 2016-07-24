@@ -10,9 +10,12 @@ export class App extends Morsel {
 
 		this.parent = parent;
 		this.children = [];
+
 		this.ns = 'App';
+
 		this.element = jQuery( element );
 		this.view = 'app.hbs';
+		
 		this.languages = [];
 
 		this.config = new Config();
@@ -39,14 +42,11 @@ export class App extends Morsel {
 		if( !this.languages[language] ) {
 			this.languages[language] = new Promise( ( resolve, reject ) => {
 					fetch( 'app/course/' + language + '.json' )
-						//.then( response => resolve( response.json() ) )
 						.then( response => resolve( response.json() ) )
 						.catch( e => reject( e ) )
 				}
 			);
 		}
-
-		console.log( this.languages[language] );
 
 		return this.languages[language];
 
@@ -56,12 +56,7 @@ export class App extends Morsel {
 
 		this.eventemitter.on(
 			'languageChanged',
-			( language ) => {
-				console.log( 'Change language to ' + language );
-
-				//this.children = [new Course( this, language )];
-				//this.update();
-
+			language => {
 				this.loadLanguageCourse( language )
 					.then( course => {
 						this.children[0].setProperties( course );
@@ -70,13 +65,13 @@ export class App extends Morsel {
 			this
 		).on(
 			'postRenderApp',
-			( app ) => {
+			app => {
 				//console.log( 'App rendered (app)', app );
 			},
 			this
 		).on(
 			'postRenderCourse',
-			( course ) => {
+			course => {
 				console.log( 'Course rendered (app)', course );
 			},
 			this
@@ -85,7 +80,7 @@ export class App extends Morsel {
 		$( '#language-selector-options' ).on(
 			'click',
 			'[data-language]',
-			( e ) => {
+			e => {
 				this.eventemitter.emit( 'languageChanged', $( e.target ).attr( 'data-language' ) );
 			}
 		);
