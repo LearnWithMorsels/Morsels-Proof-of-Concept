@@ -223,13 +223,13 @@ gulp.task( 'dev', ['build'],
 			}
 		);
 
-		gulp.watch( './src/core/views/index.hbs', ['app:index'], browserSync.reload );
-		gulp.watch( './src/**/*.hbs', ['app:views'], browserSync.reload );
-		gulp.watch( './src/**/*.js', ['app:js'], browserSync.reload );
+		gulp.watch( './src/core/views/index.hbs', ['app:index'] ).on( 'change', browserSync.reload );
+		gulp.watch( './src/**/*.hbs', ['app:views'] ).on( 'change', browserSync.reload );
+		gulp.watch( './src/**/*.js', ['app:js'] ).on( 'change', browserSync.reload );
 		gulp.watch( './src/**/*.scss', ['app:scss'] );
 		gulp.watch( './src/app/resources/**/*', ['app:resources'] );
-		gulp.watch( './src/app/config.json', ['app:config'], browserSync.reload );
-		gulp.watch( './src/app/course/*.json', ['app:data'], browserSync.reload );
+		gulp.watch( './src/app/config.json', ['app:config'] ).on( 'change', browserSync.reload );
+		gulp.watch( './src/app/course/*.json', ['app:data'] ).on( 'change', browserSync.reload );
 	}
 );
 
