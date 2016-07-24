@@ -1,5 +1,4 @@
 import { Morsel } from './morsel.model';
-import { StackTop } from './stacktop.model';
 import * as Cards from '../cards';
 
 export class Stack extends Morsel {
@@ -24,13 +23,13 @@ export class Stack extends Morsel {
 		this.element = jQuery( '<div class="morsel-stack"/>' );
 		this.view = 'stack.hbs';
 
-		for( let card in this.properties._cards ) {
-			let strCard = this.properties._cards[card]._card;
+		for( let card in this.properties[this.childProperty] ) {
+			let strCard = this.properties[this.childProperty][card]._card;
 			strCard = strCard.charAt( 0 ).toUpperCase() + strCard.slice( 1 );
 
-			let newCard = new ( Cards[strCard] )( this.properties._cards[card], this );
+			let newCard = new ( Cards[strCard] )( this.properties[this.childProperty][card], this );
 			this.children.push( newCard );
-			newCard.element.css( 'z-index', this.properties._cards.length - card );
+			newCard.element.css( 'z-index', this.properties[this.childProperty].length - card );
 		}
 
 		this.render();

@@ -3,6 +3,20 @@
 	"description": "A test course using the Morsels framework",
 	"_stacks": [
 		{
+			"title": "Morsels",
+			"_classes": "",
+			"_cards": [
+				{
+					"_card": "title",
+					"_content": {
+						"title": "Morsels",
+						"subtitle": "A quick explanation",
+						"body": "<p><i class=\"material-icons\">access_time</i> 2 minutes</p>"
+					}
+				}
+			]
+		},
+		{
 			"title": "F1",
 			"_classes": "",
 			"_cards": [
@@ -11,7 +25,6 @@
 					"_content": {
 						"image": "//upload.wikimedia.org/wikipedia/en/4/45/F1_logo.svg",
 						"title": "The best F1 drivers",
-						"subtitle": "1950&ndash;2016",
 						"body": "<p>Explore the top 5 F1 drivers of all time.</p>"
 					}
 				},

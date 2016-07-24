@@ -1,11 +1,11 @@
 <div class="mdl-card mdl-shadow--2dp">
     <div class="card-front">
+        {{#if properties._content.image}}
+            <img src="{{properties._content.image}}">
+        {{/if}}
         <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">{{properties._content.title}}</h2>
         </div>
-        {{#if properties._content.image}}
-                <img src="{{properties._content.image}}">
-        {{/if}}
         <div class="mdl-card__supporting-text">
             {{#if properties._content.subtitle}}
                 <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>

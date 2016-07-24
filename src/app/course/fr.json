@@ -5,6 +5,15 @@
 		{
 			"_cards": [
 				{
+					"_content": {
+						"subtitle": "Une explication rapide"
+					}
+				}
+			]
+		},
+		{
+			"_cards": [
+				{
 					"_card": "title",
 					"_content": {
 						"title": "Les meilleurs pilotes de F1",

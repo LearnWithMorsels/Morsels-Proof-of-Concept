@@ -27,7 +27,7 @@ export class Activity extends Morsel {
 		this.eventemitter.on(
 			'postRenderActivity',
 			( card ) => {
-				console.log( 'Activity rendered (activity)', card );
+				//console.log( 'Activity rendered (activity)', card );
 				this.parent.update();
 			},
 			this

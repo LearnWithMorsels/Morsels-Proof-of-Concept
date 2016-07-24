@@ -1,4 +1,4 @@
-import {objectrummage} from '../tools/objectrummage';
+import { objectrummage } from '../tools/objectrummage';
 
 export class Config {
 

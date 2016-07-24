@@ -1,4 +1,3 @@
-// import * as Handlebars from 'handlebars';
 import { idhandler } from '../tools/idhandler';
 import EventEmitter from '../vendor/eventemitter3';
 
@@ -41,6 +40,12 @@ export class Morsel {
 		this.allChildrenRendered = false;
 
 		/**
+		 * If true, all the children elements have been completed
+		 * @type {boolean}
+		 */
+		this.allChildrenComplete = false;
+
+		/**
 		 * The properties of the model which contains all of the content and children
 		 * @type {{}}
 		 */
@@ -68,6 +73,12 @@ export class Morsel {
 		 * @type {null}
 		 */
 		this.view = null;
+
+		/**
+		 * If TRUE, the object is active within the view
+		 * @type {boolean}
+		 */
+		this.isActive = true;
 
 		/**
 		 * If TRUE, the object model has been set to "complete"
@@ -141,6 +152,15 @@ export class Morsel {
 					}
 				}
 			} )
+			.then( () => {
+				let classes = [].concat( this.properties._classes ? this.properties._classes.split( ' ' ) : [] );
+
+				classes.push( this.isActive ? 'active' : 'not-active' );
+				classes.push( this.isComplete ? 'complete' : 'not-complete' );
+				classes.push( this.isStarred ? 'starred' : 'not-starred' );
+
+				this.element.addClass( classes.join( ' ' ) );
+			} )
 			.then( () => this.isRendered = true )
 			.then( () => {
 				this.eventemitter.emit( 'postRender' + this.ns, this );
@@ -158,10 +178,33 @@ export class Morsel {
 
 	}
 
+	checkAllChildrenComplete() {
+
+		if( !this.allChildrenComplete ) {
+			if( this.children.length === this.properties[this.childProperty].length ) {
+				let allCompleted = true;
+
+				for( let child of this.children ) {
+					if( !child.isComplete ) {
+						allCompleted = false;
+						break;
+					}
+				}
+
+				if( allCompleted ) {
+					this.allChildrenComplete = true;
+					return true;
+				}
+			}
+		}
+
+		return false;
+
+	}
+
 	checkAllChildrenRendered() {
 
 		if( !this.allChildrenRendered ) {
-			console.log( this.children.length, this.properties[this.childProperty].length );
 			if( this.children.length === this.properties[this.childProperty].length ) {
 				let allRendered = true;
 

@@ -21,8 +21,7 @@
             System.config(
                 {
                     depCache: {
-                        app: ['jquery', 'handlebarsbinding'],
-                        handlebarsbinding: ['handlebars'],
+                        app: ['jquery', 'handlebars'],
                         views: ['handlebars']
                     },
                     map: {
@@ -30,7 +29,6 @@
                         crossroads: 'js/vendor/crossroads.min.js',
                         eventemitter3: 'js/vendor/eventemitter3.js',
                         handlebars: 'js/vendor/handlebars.js',
-                        handlebarsbinding: 'js/vendor/handlebars.binding.min.js',
                         jquery: 'js/vendor/jquery.min.js',
                         signals: 'js/vendor/signals.min.js'
                     },
@@ -52,12 +50,7 @@
 
             System.defaultJSExtensions = true;
 
-            System.import( 'app' )
-                    .then(
-                        function() {
-                            //HandlebarsBinding.default( Handlebars );
-                        }
-                    );
+            System.import( 'app' );
 
         </script>
     </head>
@@ -77,22 +70,21 @@
             <div class="mdl-layout__drawer">
                 <span class="mdl-layout-title">Morsels</span>
                 <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href=""><i class="material-icons">check</i>Link</a>
                     <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" href="">Link</a>
+                    <a class="mdl-navigation__link" href=""><i class="material-icons">lock_outline</i>Link</a>
+                    <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" href=""><i class="material-icons">lock_outline</i>Link</a>
                     <a class="mdl-navigation__link" href="">Starred</a>
                 </nav>
             </div>
-            <main class="mdl-layout__content">
-                <div id="morsel-course"><div class="mdl-spinner mdl-js-spinner is-active"></div></div>
+            <main id="morsel-course" class="mdl-layout__content">
+                <div class="mdl-spinner mdl-js-spinner is-active"></div>
             </main>
         </div>
-
         <ul id="language-selector-options" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="language-selector">
-            <li class="mdl-menu__item" data-language="en">EN</li>
-            <li class="mdl-menu__item" data-language="fr">FR</li>
+            <li class="mdl-menu__item" data-language="en"><i class="material-icons">radio_button_checked</i>EN</li>
+            <li class="mdl-menu__item" data-language="fr"><i class="material-icons">radio_button_unchecked</i>FR</li>
+            <li class="mdl-menu__item" data-language="es"><i class="material-icons">radio_button_unchecked</i>ES</li>
         </ul>
-
     </body>
 </html>

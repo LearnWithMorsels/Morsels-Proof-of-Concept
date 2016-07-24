@@ -40,6 +40,11 @@
 		z-index: 1;
 
 		.card-front {
+			> img {
+				margin: 20px auto 0;
+
+				border: 20px transparent solid;
+			}
 
 			.mdl-card__title {
 				&.mdl-card__title-image-background {

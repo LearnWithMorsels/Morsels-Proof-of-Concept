@@ -72,6 +72,7 @@ export class Card extends Morsel {
 				mdlCard.css( 'transform', 'translate(' + ( displace.x * 4 ) + 'px, ' + ( displace.y * 4 ) + 'px)' );
 				this.element.addClass( 'dismissed' );
 				this.isComplete = true;
+				this.eventemitter.emit( 'complete' + this.ns, this );
 			} else {
 				mdlCard.css( 'transform', 'none' ).blur();
 			}
@@ -92,10 +93,20 @@ export class Card extends Morsel {
 		this.eventemitter.on(
 			'postRenderCard',
 			card => {
-				console.log( 'Card rendered (card)', card );
+				//console.log( 'Card rendered (card)', card );
 				this.setupDraggable();
 				if( this.parent.checkAllChildrenRendered() ) {
 					//this.parent.matchCardHeights();
+				}
+			},
+			this
+		).on(
+			'completeCard',
+			card => {
+				//console.log( 'Card rendered (card)', card );
+				if( this.parent.checkAllChildrenComplete() ) {
+					this.parent.isComplete = true;
+					this.parent.update();
 				}
 			},
 			this
