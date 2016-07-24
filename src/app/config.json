@@ -9,6 +9,13 @@
     "xxxhdpi": "",
     "web": ""
   },
+  "enableAppOverwrites": true,
+  "extensions": {
+    "scorm": {
+      "enable": true,
+      "protocol": "1.2"
+    }
+  },
   "languages": {
     "primary": "en-gb",
     "selector": {
@@ -205,6 +212,5 @@
       "zh": "Chinese",
       "zu": "Zulu"
     }
-  },
-  "enableAppOverwrites": true
+  }
 }

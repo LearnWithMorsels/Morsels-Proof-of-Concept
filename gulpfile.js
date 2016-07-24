@@ -108,7 +108,8 @@ gulp.task( 'app:js', () => {
 			'!./src/core/js/extensions.js'
 		]
 	)
-			.pipe( fileOverride( 'core/js', 'app/core/js' ) ),
+			.pipe( fileOverride( 'core/js', 'app/core/js' ) )
+			.pipe( fileOverride( 'extensions/*/js', 'app/extensions/$1/js' ) ),
 		activities = gulp.src( './src/activities/*/js/**/*.js' )
 			.pipe( fileOverride( 'activities/*/js', 'app/activities/$1/js' ) )
 			.pipe( addsrc.prepend( './src/core/js/activities.js' ) )
@@ -185,8 +186,37 @@ gulp.task( 'app:resources', () => {
 } );
 
 gulp.task( 'app:config', () => {
-	return gulp.src( './src/app/config.json' )
-		.pipe( gulp.dest( './build/app' ) );
+	objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) );
+	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json';
+
+	objConfig.properties = {
+		activities: {},
+		cards: {},
+		extensions: {}
+	};
+
+	gulp.src(
+		[
+			'./src/activities/*/properties.json',
+			'./src/cards/*/properties.json',
+			'./src/extensions/*/properties.json'
+		]
+	)
+		.pipe(
+			foreach(
+				( stream, file ) => {
+					let fileProperties = JSON.parse( fs.readFileSync( file.base + file.relative ) ),
+						group = file.base.replace( new RegExp( '\\' + path.sep + '$' ), '' ).split( path.sep ).pop(),
+						item = file.relative.replace( new RegExp( '^\\' + path.sep ), '' ).split( path.sep ).shift();
+					objConfig.properties[group][item] = fileProperties;
+					fs.writeFileSync( './build/app/config.json', JSON.stringify( objConfig ) );
+					return stream;
+				}
+			)
+		);
+
+	/*return gulp.src( './src/app/config.json' )
+		.pipe( gulp.dest( './build/app' ) );*/
 } );
 
 gulp.task( 'app:data', () => {

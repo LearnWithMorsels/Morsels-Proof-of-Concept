@@ -15,7 +15,7 @@ export class App extends Morsel {
 
 		this.element = jQuery( element );
 		this.view = 'app.hbs';
-		
+
 		this.languages = [];
 
 		this.config = new Config();
@@ -29,6 +29,11 @@ export class App extends Morsel {
 
 						return course;
 					} );
+			} );
+
+		this.config.get( 'extensions' )
+			.then( extensions => {
+				console.log( extensions );
 			} );
 
 		this.render();
