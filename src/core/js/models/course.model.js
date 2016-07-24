@@ -3,36 +3,36 @@ import { Stack } from './stack.model';
 
 export class Course extends Morsel {
 
-	constructor( parent, language ) {
+	constructor( properties, parent ) {
 
 		super();
 
 		this.parent = parent;
 		this.children = [];
+		this.properties = properties;
 		this.ns = 'Course';
 		this.element = jQuery( '<div class="morsel-course"/>' );
 		this.view = 'course.hbs';
 
-		new Promise( ( resolve, reject ) => {
-				fetch( 'app/course/' + language + '.json' )
-					.then( response => response.json() )
-					.then( course => {
-						for( let stack of course._stacks ) {
-							this.children.push( new Stack( stack, this ) );
-						}
-
-						this.update();
-
-						return course;
-					} )
-					.then( course => resolve( course ) )
-					.catch( e => reject( e ) )
-			}
-		);
+		for( let stack of this.properties._stacks ) {
+			this.children.push( new Stack( stack, this ) );
+		}
 
 		this.render();
 
 		this.addEventListeners();
+
+	}
+
+	setProperties( properties ) {
+
+		super.setProperties( properties );
+
+		for( let stack in this.properties._stacks ) {
+			this.children[stack].setProperties( this.properties._stacks[stack] );
+		}
+
+		this.update();
 
 	}
 

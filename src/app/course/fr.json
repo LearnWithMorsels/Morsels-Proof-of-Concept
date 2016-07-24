@@ -3,10 +3,22 @@
 	"description": "Un cours d'essai en utilisant le cadre Morsels",
 	"_stacks": [
 		{
-			"_content": {
-				"title": "Les meilleurs pilotes de F1",
-				"body": "<p>Explorez le top 5 des pilotes de F1 de tous les temps.</p>"
-			}
+			"_cards": [
+				{
+					"_card": "title",
+					"_content": {
+						"title": "Les meilleurs pilotes de F1",
+						"body": "<p>Explorez le top 5 des pilotes de F1 de tous les temps.</p>"
+					}
+				},
+				{
+					"title": "Numéro 5",
+					"_content": {
+						"subtitle": "Actif: 1971&ndash;1979, 1982&ndash;1985",
+						"body": "<p>Peut-être pas le pilote le plus \"brut de talent\" de tous les temps, mais son intelligence, la détermination, la compréhension technique et et le style de conduite en douceur aurait pu lui gagné 2 ou 3 autres titres. Il n'a pas toujours choisir les meilleures équipes après avoir quitté Ferrari après 77.</p><p>Schumacher, Prost, Vettel toujours conduit en premier taux voitures gagnantes, Lauda n'a pas.</p>"
+					}
+				}
+			]
 		}
 	]
 }

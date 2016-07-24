@@ -4,12 +4,16 @@
 	"_stacks": [
 		{
 			"title": "F1",
-			"_content": {
-				"title": "The best F1 drivers",
-				"body": "<p>Explore the top 5 F1 drivers of all time.</p>"
-			},
 			"_classes": "",
 			"_cards": [
+				{
+					"_card": "title",
+					"_content": {
+						"title": "The best F1 drivers",
+						"subtitle": "1950&ndash;2016",
+						"body": "<p>Explore the top 5 F1 drivers of all time.</p>"
+					}
+				},
 				{
 					"_card": "text",
 					"title": "Number 5",

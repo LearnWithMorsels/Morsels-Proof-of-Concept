@@ -38,6 +38,8 @@ export class Morsel {
 		this.view = null;
 
 		this.parent = null;
+		
+		this.properties = {};
 
 		this.ns = '';
 
@@ -47,6 +49,11 @@ export class Morsel {
 		 */
 		this.properties = {};
 		
+	}
+	
+	setProperties( properties ) {
+		this.properties = properties;
+		this.update();
 	}
 
 	/**
@@ -58,14 +65,13 @@ export class Morsel {
 	 * Render the template of the model with the properties
 	 * @returns {Promise}
 	 */
-	render( scope ) {
-		scope = scope || this;
+	render() {
 
-		scope.preRender();
+		this.preRender();
 
-		if( !templates[scope.view] ) {
-			templates[scope.view] = new Promise( ( resolve, reject ) =>
-				fetch( 'views/' + scope.view )
+		if( !templates[this.view] ) {
+			templates[this.view] = new Promise( ( resolve, reject ) =>
+				fetch( 'views/' + this.view )
 					.then( response => response.text() )
 					.then( template => Handlebars.compile( template ) )
 					.then( handlebar => resolve( handlebar ) )
@@ -73,39 +79,38 @@ export class Morsel {
 			);
 		}
 
-		return templates[scope.view]
-			.then( handlebar => handlebar( scope ),
-				e => console.error( 'Failed to render "' + scope.view + '": ', e.message ) )
-			.then( html => scope.element.html( html ) )
+		return templates[this.view]
+			.then( handlebar => handlebar( this ),
+				e => console.error( 'Failed to render "' + this.view + '": ', e.message ) )
+			.then( html => this.element.html( html ) )
 			.then( () => {
-				if( scope.children.length ) {
-					for( let child in scope.children ) {
-						let childElement = scope.element.find( '[data-childrenid="' + scope.childrenElementID + '"]' );
+				if( this.children.length ) {
+					for( let child in this.children ) {
+						let childElement = this.element.find( '[data-childrenid="' + this.childrenElementID + '"]' );
 
 						if( childElement.length &&
-								scope.children[child].element ) {
-							childElement.replaceWith( scope.children[child].element );
+								this.children[child].element ) {
+							childElement.replaceWith( this.children[child].element );
 						} else if( child > 0 ) {
-							scope.children[child - 1].element.after( scope.children[child].element );
+							this.children[child - 1].element.after( this.children[child].element );
 						}
 					}
 				}
 			} )
-			.then( () => scope.isRendered = true )
+			.then( () => this.isRendered = true )
 			.then( () => {
-				scope.eventemitter.emit( 'postRender' + scope.ns, scope );
+				this.eventemitter.emit( 'postRender' + this.ns, this );
 			} );
+		
 	}
 
-	update( scope ) {
+	update() {
 
-		scope = scope || this;
-
-		if( !templates[scope.view] ) {
+		if( templates[this.view] ) {
+			return this.render();
+		} else {
 			console.warn( 'Not rendered yet' );
 		}
-
-		return this.render( scope );
 
 	}
 

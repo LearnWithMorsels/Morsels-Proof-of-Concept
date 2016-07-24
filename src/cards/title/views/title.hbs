@@ -1,0 +1,13 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="card-front">
+        <div class="mdl-card__title{{#if properties._content.headerImage}} mdl-card__title-image-background{{/if}}"{{#if properties._content.headerImage}} style="background-image: url('./app/resources/{{properties._content.headerImage}}');"{{/if}}>
+            <h2 class="mdl-card__title-text">{{properties._content.title}}</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            {{#if properties._content.subtitle}}
+                <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>
+            {{/if}}
+            {{{properties._content.body}}}
+        </div>
+    </div>
+</div>

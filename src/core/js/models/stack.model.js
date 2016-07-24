@@ -21,10 +21,6 @@ export class Stack extends Morsel {
 		this.element = jQuery( '<div class="morsel-stack"/>' );
 		this.view = 'stack.hbs';
 
-		let stackTop = new StackTop( properties, this );
-		this.children.push( stackTop );
-		stackTop.element.css( 'z-index', this.properties._cards.length + 1 );
-
 		for( let card in this.properties._cards ) {
 			let strCard = this.properties._cards[card]._card;
 			strCard = strCard.charAt( 0 ).toUpperCase() + strCard.slice( 1 );
@@ -57,6 +53,16 @@ export class Stack extends Morsel {
 		for( let card of this.children ) {
 			let mdlCard = card.element.find( '.mdl-card' );
 			mdlCard.height( intTallestCard );
+		}
+
+	}
+
+	setProperties( properties ) {
+
+		super.setProperties( properties );
+
+		for( let card in this.properties._cards ) {
+			this.children[card].setProperties( this.properties._cards[card] );
 		}
 
 	}

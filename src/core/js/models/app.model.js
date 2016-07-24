@@ -13,16 +13,42 @@ export class App extends Morsel {
 		this.ns = 'App';
 		this.element = jQuery( element );
 		this.view = 'app.hbs';
+		this.languages = [];
 
 		this.config = new Config();
 
 		this.config.defaultLanguage()
 			.then( language => {
-				this.children = [new Course( this, language )];
-				this.render();
+				this.loadLanguageCourse( language )
+					.then( course => {
+						this.children = [new Course( course, this )];
+						this.update();
+
+						return course;
+					} );
 			} );
 
+		this.render();
+
 		this.addEventListeners();
+
+	}
+
+	loadLanguageCourse( language ) {
+
+		if( !this.languages[language] ) {
+			this.languages[language] = new Promise( ( resolve, reject ) => {
+					fetch( 'app/course/' + language + '.json' )
+						//.then( response => resolve( response.json() ) )
+						.then( response => resolve( response.json() ) )
+						.catch( e => reject( e ) )
+				}
+			);
+		}
+
+		console.log( this.languages[language] );
+
+		return this.languages[language];
 
 	}
 
@@ -33,8 +59,13 @@ export class App extends Morsel {
 			( language ) => {
 				console.log( 'Change language to ' + language );
 
-				this.children = [new Course( this, language )];
-				this.update();
+				//this.children = [new Course( this, language )];
+				//this.update();
+
+				this.loadLanguageCourse( language )
+					.then( course => {
+						this.children[0].setProperties( course );
+					} );
 			},
 			this
 		).on(
