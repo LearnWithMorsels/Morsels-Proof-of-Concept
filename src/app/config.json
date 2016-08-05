@@ -17,9 +17,9 @@
     }
   },
   "languages": {
-    "primary": "en-gb",
+    "primary": "en",
     "selector": {
-      "default": "en-gb",
+      "default": "en",
       "items": [
         "fr"
       ]

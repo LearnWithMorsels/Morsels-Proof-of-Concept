@@ -8,21 +8,31 @@ export class App extends Morsel {
 
 		super();
 
-		this.parent = parent;
-		this.children = [];
-
 		this.ns = 'App';
 
 		this.element = jQuery( element );
 		this.view = 'app.hbs';
 
-		this.languages = [];
-
 		this.config = new Config();
+
+		this.languages = {};
+
+		window.Morsels = {
+			app: this,
+			courses: {},
+			currentLanguage: null
+		};
+
+		this.config.get()
+			.then( config => {
+				window.Morsels.config = config
+			} );
 
 		this.config.defaultLanguage()
 			.then( language => {
-				this.loadLanguageCourse( language )
+				window.Morsels.currentLanguage = language;
+
+				this.getCourse( language )
 					.then( course => {
 						this.children = [new Course( course, this )];
 						this.update();
@@ -31,10 +41,7 @@ export class App extends Morsel {
 					} );
 			} );
 
-		this.config.get( 'extensions' )
-			.then( extensions => {
-				console.log( extensions );
-			} );
+		this.loadExtensions();
 
 		this.render();
 
@@ -42,12 +49,16 @@ export class App extends Morsel {
 
 	}
 
-	loadLanguageCourse( language ) {
+	getCourse( language ) {
 
 		if( !this.languages[language] ) {
 			this.languages[language] = new Promise( ( resolve, reject ) => {
-					fetch( 'app/course/' + language + '.json' )
-						.then( response => resolve( response.json() ) )
+					fetch( './app/course/' + language + '.json' )
+						.then( response => response.json() )
+						.then( course => {
+							window.Morsels.courses[language] = course;
+							resolve( course );
+						} )
 						.catch( e => reject( e ) )
 				}
 			);
@@ -57,14 +68,34 @@ export class App extends Morsel {
 
 	}
 
+	loadExtensions() {
+
+		this.config.get( 'extensions' )
+			.then( extensions => {
+				for( let extension in extensions ) {
+					if( extensions.hasOwnProperty( extension ) &&
+							extensions[extension].enable ) {
+						//console.log( extensions[extension] );
+						//console.log( window.Morsels.config.properties.extensions[extension] );
+
+						System.import( './js/extensions/' + extension + '/' + window.Morsels.config.properties.extensions[extension].entry ).then( extension => {
+							new extension.default( extensions[extension] );
+						} );
+					}
+				}
+			} );
+
+	}
+
 	addEventListeners() {
 
 		this.eventemitter.on(
 			'languageChanged',
 			language => {
-				this.loadLanguageCourse( language )
+				this.getCourse( language )
 					.then( course => {
 						this.children[0].setProperties( course );
+						window.Morsels.currentLanguage = language;
 					} );
 			},
 			this

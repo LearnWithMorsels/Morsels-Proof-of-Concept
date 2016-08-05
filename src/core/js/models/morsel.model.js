@@ -126,7 +126,7 @@ export class Morsel {
 
 		if( !templates[this.view] ) {
 			templates[this.view] = new Promise( ( resolve, reject ) =>
-				fetch( 'views/' + this.view )
+				fetch( './views/' + this.view )
 					.then( response => response.text() )
 					.then( template => Handlebars.compile( template ) )
 					.then( handlebar => resolve( handlebar ) )

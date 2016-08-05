@@ -8,7 +8,7 @@ export class Config {
 	 * @constructor
 	 * @returns {Config}
 	 */
-	constructor( configURI = 'app/config.json' ) {
+	constructor( configURI = './app/config.json' ) {
 
 		/**
 		 * The promise to retrieve the JSON file

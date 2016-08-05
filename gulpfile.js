@@ -24,10 +24,14 @@ var del = require( 'del' ),
 	using = require( 'gulp-using' ),
 	mergeStream = require( 'merge-stream' ),
 	wrap = require( 'gulp-wrap' ),
+	zip = require( 'gulp-zip' ),
 	browserSync = require( 'browser-sync' ).create();
 
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
-	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json';
+	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json',
+	timestamp = function() {
+		return new Date().getTime();
+	};
 
 gulp.task( 'app:index', () => {
 	return gulp.src( './src/core/views/index.hbs' )
@@ -99,8 +103,10 @@ gulp.task( 'app:views', () => {
 		.pipe( gulp.dest( './build/views' ) );
 } );
 
-gulp.task( 'app:js', () => {
-	let core = gulp.src(
+gulp.task( 'app:js', ['app:js:core', 'app:js:activities', 'app:js:cards', 'app:js:extensions'] );
+
+gulp.task( 'app:js:core', () => {
+	return gulp.src(
 		[
 			'./src/core/js/**/*.js',
 			'!./src/core/js/activities.js',
@@ -108,22 +114,7 @@ gulp.task( 'app:js', () => {
 			'!./src/core/js/extensions.js'
 		]
 	)
-			.pipe( fileOverride( 'core/js', 'app/core/js' ) )
-			.pipe( fileOverride( 'extensions/*/js', 'app/extensions/$1/js' ) ),
-		activities = gulp.src( './src/activities/*/js/**/*.js' )
-			.pipe( fileOverride( 'activities/*/js', 'app/activities/$1/js' ) )
-			.pipe( addsrc.prepend( './src/core/js/activities.js' ) )
-			.pipe( concat( 'activities.js' ) ),
-		cards = gulp.src( './src/cards/*/js/**/*.js' )
-			.pipe( fileOverride( 'cards/*/js', 'app/cards/$1/js' ) )
-			.pipe( addsrc.prepend( './src/core/js/cards.js' ) )
-			.pipe( concat( 'cards.js' ) ),
-		extensions = gulp.src( './src/extensions/*/js/**/*.js' )
-			.pipe( fileOverride( 'extensions/*/js', 'app/extensions/$1/js' ) )
-			.pipe( addsrc.prepend( './src/core/js/extensions.js' ) )
-			.pipe( concat( 'extensions.js' ) );
-
-	return mergeStream( core, activities, cards, extensions )
+		.pipe( fileOverride( 'core/js', 'app/core/js' ) )
 		.pipe( sourcemaps.init() )
 		.pipe(
 			babel(
@@ -135,6 +126,66 @@ gulp.task( 'app:js', () => {
 		.pipe( uglify( { preserveComments: 'license' } ) )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( gulp.dest( './build/js' ) );
+} );
+
+gulp.task( 'app:js:activities', () => {
+	return gulp.src( './src/activities/*/js/**/*.js' )
+		.pipe( fileOverride( 'activities/*/js', 'app/activities/$1/js' ) )
+		.pipe( addsrc.prepend( './src/core/js/activities.js' ) )
+		.pipe( concat( 'activities.js' ) )
+		.pipe( sourcemaps.init() )
+		.pipe(
+			babel(
+				{
+					presets: ['es2015']
+				}
+			)
+		)
+		.pipe( uglify( { preserveComments: 'license' } ) )
+		.pipe( sourcemaps.write( './' ) )
+		.pipe( gulp.dest( './build/js' ) );
+} );
+
+gulp.task( 'app:js:cards', () => {
+	return gulp.src( './src/cards/*/js/**/*.js' )
+		.pipe( fileOverride( 'cards/*/js', 'app/cards/$1/js' ) )
+		.pipe( addsrc.prepend( './src/core/js/cards.js' ) )
+		.pipe( concat( 'cards.js' ) )
+		.pipe( sourcemaps.init() )
+		.pipe(
+			babel(
+				{
+					presets: ['es2015']
+				}
+			)
+		)
+		.pipe( uglify( { preserveComments: 'license' } ) )
+		.pipe( sourcemaps.write( './' ) )
+		.pipe( gulp.dest( './build/js' ) );
+} );
+
+gulp.task( 'app:js:extensions', ['app:config'], () => {
+	return gulp.src( './src/extensions/*/js/**/*.js' )
+		.pipe( fileOverride( 'extensions/*/js', 'app/extensions/$1/js' ) )
+		.pipe(
+			rename(
+				function( filepath ) {
+					filepath.dirname = filepath.dirname.replace( new RegExp( '\\' + path.sep + 'js$' ), '' );
+					return filepath;
+				}
+			)
+		)
+		.pipe( sourcemaps.init() )
+		.pipe(
+			babel(
+				{
+					presets: ['es2015']
+				}
+			)
+		)
+		.pipe( uglify( { preserveComments: 'license' } ) )
+		.pipe( sourcemaps.write( './' ) )
+		.pipe( gulp.dest( './build/js/extensions' ) );
 } );
 
 gulp.task( 'app:vendor', () => {
@@ -195,7 +246,7 @@ gulp.task( 'app:config', () => {
 		extensions: {}
 	};
 
-	gulp.src(
+	return gulp.src(
 		[
 			'./src/activities/*/properties.json',
 			'./src/cards/*/properties.json',
@@ -214,9 +265,6 @@ gulp.task( 'app:config', () => {
 				}
 			)
 		);
-
-	/*return gulp.src( './src/app/config.json' )
-		.pipe( gulp.dest( './build/app' ) );*/
 } );
 
 gulp.task( 'app:data', () => {
@@ -232,35 +280,42 @@ gulp.task( 'docs', () => {
 
 gulp.task( 'clean', () => {
 	return del(
-		[ './build/**/*' ]
+		['./build/**/*']
 	);
-});
+} );
 
-gulp.task( 'dev', ['build'],
-	() => {
-		browserSync.init(
-			{
-				files: [
-					'./build/css/*.css',
-					'./build/js/**/*.js'
-				],
-				server: {
-					baseDir: './build',
-					directory: false,
-					index: 'index.html',
-					logLevel: 'debug'
-				}
+gulp.task( 'dev', ['build'], () => {
+	browserSync.init(
+		{
+			files: [
+				'./build/css/*.css',
+				'./build/js/**/*.js'
+			],
+			server: {
+				baseDir: './build',
+				directory: false,
+				index: 'index.html',
+				logLevel: 'debug'
 			}
-		);
+		}
+	);
 
-		gulp.watch( './src/core/views/index.hbs', ['app:index'] ).on( 'change', browserSync.reload );
-		gulp.watch( './src/**/*.hbs', ['app:views'] ).on( 'change', browserSync.reload );
-		gulp.watch( './src/**/*.js', ['app:js'] ).on( 'change', browserSync.reload );
-		gulp.watch( './src/**/*.scss', ['app:scss'] );
-		gulp.watch( './src/app/resources/**/*', ['app:resources'] );
-		gulp.watch( './src/app/config.json', ['app:config'] ).on( 'change', browserSync.reload );
-		gulp.watch( './src/app/course/*.json', ['app:data'] ).on( 'change', browserSync.reload );
-	}
-);
+	gulp.watch( './src/core/views/index.hbs', ['app:index'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/**/*.hbs', ['app:views'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/core/**/*.js', ['app:js:core'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/activity/**/*.js', ['app:js:activity'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/cards/**/*.js', ['app:js:cards'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/extensions/**/*.js', ['app:js:extensions'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/**/*.scss', ['app:scss'] );
+	gulp.watch( './src/app/resources/**/*', ['app:resources'] );
+	gulp.watch( './src/app/config.json', ['app:js'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/app/course/*.json', ['app:data'] ).on( 'change', browserSync.reload );
+} );
 
-gulp.task( 'build', ['app:index', 'app:views', 'app:scss', 'app:resources', 'app:config', 'app:data', 'app:js', 'app:vendor'] );
+gulp.task( 'build', ['app:index', 'app:views', 'app:scss', 'app:resources', 'app:data', 'app:js', 'app:vendor'] );
+
+gulp.task( 'package', ['build'], () => {
+	return gulp.src( './build/**/*' )
+		.pipe( zip( 'scorm-package-' + timestamp() + '.zip' ) )
+		.pipe( gulp.dest( './scorm-packages' ) );
+} );

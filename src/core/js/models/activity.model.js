@@ -13,8 +13,6 @@ export class Activity extends Morsel {
 
 		this.addEventListeners();
 
-		return this;
-
 	}
 
 	addEventListeners() {
