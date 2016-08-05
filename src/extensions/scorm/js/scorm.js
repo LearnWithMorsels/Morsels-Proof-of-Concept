@@ -5,17 +5,16 @@ export default class extends Extension {
 
 	constructor( config ) {
 
-		super( config );
+		super();
 
-		console.info( 'SCORM' );
-		console.log( pipwerks );
+		this.config = config;
 
-		var success = pipwerks.SCORM.init();
-		if( success ) {
+		pipwerks.SCORM.version = this.config.version;
+
+		if( pipwerks.SCORM.init() ) {
 			var status = pipwerks.SCORM.get( 'cmi.core.lesson_status' );
 			if( status != 'completed' ) {
-				success = pipwerks.SCORM.set( 'cmi.core.lesson_status', 'completed' );
-				if( success ) {
+				if( pipwerks.SCORM.set( 'cmi.core.lesson_status', 'completed' ) ) {
 					pipwerks.SCORM.quit();
 				}
 			}

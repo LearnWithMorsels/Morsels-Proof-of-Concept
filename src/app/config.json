@@ -12,8 +12,8 @@
   "enableAppOverwrites": true,
   "extensions": {
     "scorm": {
-      "enable": true,
-      "protocol": "1.2"
+      "enable": false,
+      "version": "1.2"
     }
   },
   "languages": {

@@ -75,11 +75,8 @@ export class App extends Morsel {
 				for( let extension in extensions ) {
 					if( extensions.hasOwnProperty( extension ) &&
 							extensions[extension].enable ) {
-						//console.log( extensions[extension] );
-						//console.log( window.Morsels.config.properties.extensions[extension] );
-
-						System.import( './js/extensions/' + extension + '/' + window.Morsels.config.properties.extensions[extension].entry ).then( extension => {
-							new extension.default( extensions[extension] );
+						System.import( './js/extensions/' + extension + '/' + window.Morsels.config.properties.extensions[extension].entry ).then( extensionModel => {
+							new extensionModel.default( extensions[extension] );
 						} );
 					}
 				}
