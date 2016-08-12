@@ -46,6 +46,7 @@
     "gulp-uglify": "^1.5.3",
     "gulp-using": "^0.1.0",
     "gulp-wrap": "^0.13.0",
+    "gulp-xmlpoke": "^0.2.0",
     "gulp-zip": "^3.2.0",
     "handlebars": "^4.0.5",
     "handlebars.binding": "^0.3.6",

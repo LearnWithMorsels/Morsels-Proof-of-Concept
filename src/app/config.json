@@ -9,11 +9,21 @@
     "xxxhdpi": "",
     "web": ""
   },
-  "enableAppOverwrites": true,
-  "extensions": {
+  "lms": {
     "scorm": {
       "enable": false,
       "version": "1.2"
+    },
+    "xapi": {
+      "enable": false,
+      "endpoint": "https://cloud.scorm.com/tc/public/",
+      "username": "<Test User>",
+      "password": "<Test Password>"
+    }
+  },
+  "extensions": {
+    "debug": {
+      "enable": true
     }
   },
   "languages": {

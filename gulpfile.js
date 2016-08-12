@@ -22,6 +22,7 @@ var del = require( 'del' ),
 	sourcemaps = require( 'gulp-sourcemaps' ),
 	uglify = require( 'gulp-uglify' ),
 	using = require( 'gulp-using' ),
+	xmlpoke = require( 'gulp-xmlpoke' ),
 	mergeStream = require( 'merge-stream' ),
 	wrap = require( 'gulp-wrap' ),
 	zip = require( 'gulp-zip' ),
@@ -110,8 +111,7 @@ gulp.task( 'app:js:core', () => {
 		[
 			'./src/core/js/**/*.js',
 			'!./src/core/js/activities.js',
-			'!./src/core/js/cards.js',
-			'!./src/core/js/extensions.js'
+			'!./src/core/js/cards.js'
 		]
 	)
 		.pipe( fileOverride( 'core/js', 'app/core/js' ) )
@@ -188,7 +188,7 @@ gulp.task( 'app:js:extensions', ['app:config'], () => {
 		.pipe( gulp.dest( './build/js/extensions' ) );
 } );
 
-gulp.task( 'app:vendor', () => {
+gulp.task( 'vendor', () => {
 	return gulp.src( './node_modules/eventemitter3/index.js' )
 		.pipe( rename( 'eventemitter3.js' ) )
 		.pipe(
@@ -267,6 +267,52 @@ gulp.task( 'app:config', () => {
 		);
 } );
 
+gulp.task( 'app:lms', ['app:lms:scorm', 'app:lms:xapi'] );
+
+gulp.task( 'app:lms:scorm', ['app:lms:scorm:wrapper', 'app:lms:scorm:definitions'] );
+
+gulp.task( 'app:lms:scorm:wrapper', () => {
+	return gulp.src( './src/core/lms/scorm/SCORM_API_wrapper.js' )
+		.pipe( gulp.dest( './build/lms/scorm' ) );
+} );
+
+gulp.task( 'app:lms:scorm:definitions', () => {
+	if( objConfig.lms &&
+		objConfig.lms.scorm &&
+		objConfig.lms.scorm.enable &&
+		objConfig.lms.scorm.version ) {
+		gulp.src( './src/core/lms/scorm/definitions/' + objConfig.lms.scorm.version + '/imsmanifest.xml' )
+			.pipe(
+				xmlpoke(
+					{
+						replacements: [
+							{
+								xpath: '//ims:organizations/organization/title',
+								namespaces: {
+									'ims': 'http://www.imsproject.org/xsd/imscp_rootv1p1p2'
+								},
+								value: 'TEST'
+							}
+						]
+					}
+				)
+			)
+			/*.pipe(
+				addsrc(
+					[
+						'./src/core/lms/scorm/definitions/' + objConfig.lms.scorm.version + '/*',
+						'!./src/core/lms/scorm/definitions/' + objConfig.lms.scorm.version + '/imsmanifest.xml'
+					]
+				)
+			)*/
+			.pipe( gulp.dest( './build' ) );
+	}
+} );
+
+gulp.task( 'app:lms:xapi', () => {
+	//
+} );
+
 gulp.task( 'app:data', () => {
 	return gulp.src( './src/app/course/*.json' )
 		.pipe( extend( './src/app/course/' + objConfig.languages.primary + '.json' ) )
@@ -308,11 +354,11 @@ gulp.task( 'dev', ['build'], () => {
 	gulp.watch( './src/extensions/**/*.js', ['app:js:extensions'] ).on( 'change', browserSync.reload );
 	gulp.watch( './src/**/*.scss', ['app:scss'] );
 	gulp.watch( './src/app/resources/**/*', ['app:resources'] );
-	gulp.watch( './src/app/config.json', ['app:js'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/app/config.json', ['app:js', 'app:lms'] ).on( 'change', browserSync.reload );
 	gulp.watch( './src/app/course/*.json', ['app:data'] ).on( 'change', browserSync.reload );
 } );
 
-gulp.task( 'build', ['app:index', 'app:views', 'app:scss', 'app:resources', 'app:data', 'app:js', 'app:vendor'] );
+gulp.task( 'build', ['app:index', 'app:views', 'app:scss', 'app:resources', 'app:data', 'app:js', 'vendor', 'app:lms'] );
 
 gulp.task( 'package', ['build'], () => {
 	return gulp.src( './build/**/*' )

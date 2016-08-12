@@ -1,6 +1,8 @@
 import { Morsel } from './morsel.model';
 import { Config } from './config.model';
 import { Course } from './course.model';
+import { SCORM } from '../lms/scorm.js';
+import { xAPI } from '../lms/xapi.js';
 
 export class App extends Morsel {
 
@@ -23,29 +25,34 @@ export class App extends Morsel {
 			currentLanguage: null
 		};
 
-		this.config.get()
-			.then( config => {
-				window.Morsels.config = config
-			} );
+		this.initialiseLMS();
+		this.loadExtensions();
 
 		this.config.defaultLanguage()
-			.then( language => {
-				window.Morsels.currentLanguage = language;
+			.then( language => this.loadCourse );
 
-				this.getCourse( language )
-					.then( course => {
-						this.children = [new Course( course, this )];
-						this.update();
-
-						return course;
-					} );
+		this.config.get()
+			.then( config => {
+				window.Morsels.config = config;
 			} );
-
-		this.loadExtensions();
 
 		this.render();
 
 		this.addEventListeners();
+
+	}
+
+	loadCourse( language ) {
+
+		window.Morsels.currentLanguage = language;
+
+		this.getCourse( language )
+			.then( course => {
+				this.children = [new Course( course, this )];
+				this.update();
+
+				return course;
+			} );
 
 	}
 
@@ -78,6 +85,25 @@ export class App extends Morsel {
 						System.import( './js/extensions/' + extension + '/' + window.Morsels.config.properties.extensions[extension].entry ).then( extensionModel => {
 							new extensionModel.default( extensions[extension] );
 						} );
+					}
+				}
+			} );
+
+	}
+
+	initialiseLMS() {
+
+		this.config.get( 'lms' )
+			.then( lms => {
+				if( lms ) {
+					if( lms.scorm &&
+						lms.scorm.enable ) {
+						new SCORM( lms.scorm );
+					}
+
+					if( lms.xapi &&
+						lms.xapi.enable ) {
+						new xAPI( lms.xapi );
 					}
 				}
 			} );
