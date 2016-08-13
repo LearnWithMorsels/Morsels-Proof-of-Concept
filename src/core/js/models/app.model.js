@@ -29,11 +29,8 @@ export class App extends Morsel {
 		this.loadExtensions();
 
 		this.config.defaultLanguage()
-			.then( language => this.loadCourse );
-
-		this.config.get()
-			.then( config => {
-				window.Morsels.config = config;
+			.then( language => {
+				this.loadCourse( language );
 			} );
 
 		this.render();

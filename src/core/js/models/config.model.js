@@ -17,7 +17,11 @@ export class Config {
 		this.promise = new Promise( ( resolve, reject ) => {
 				fetch( configURI )
 					.then( response => response.json() )
-					.then( data => resolve( data ) )
+					.then( config => {
+						window.Morsels.config = config;
+						return config;
+					} )
+					.then( config => resolve( config ) )
 					.catch( e => reject( e ) )
 			}
 		);
