@@ -18,6 +18,8 @@ export class Course extends Morsel {
 		this.element = jQuery( '<div class="morsel-course"/>' );
 		this.view = 'course.hbs';
 
+		this.render();
+
 		for( let stack in this.properties[this.childProperty] ) {
 			let newStack = new Stack( this.properties[this.childProperty][stack], this );
 			this.children.push( newStack );
@@ -26,8 +28,6 @@ export class Course extends Morsel {
 				newStack.isActive = false;
 			}
 		}
-
-		this.render();
 
 		this.addEventListeners();
 

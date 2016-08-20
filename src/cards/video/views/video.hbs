@@ -1,13 +1,21 @@
 <div class="mdl-card mdl-shadow--2dp{{#if isActivity}} activities{{/if}}">
     <div class="card-front">
-        <div class="mdl-card__title{{#if properties._content.headerImage}} mdl-card__title-image-background{{/if}}"{{#if properties._content.headerImage}} style="background-image: url('./app/resources/{{properties._content.headerImage}}');"{{/if}}>
+        <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">{{properties._content.title}}</h2>
         </div>
-        {{#if properties._content.headerImage}}
-            <!--<div class="mdl-card__media">
-                <img src="./app/resources/{{properties._content.headerImage}}">
-            </div>-->
-        {{/if}}
+        <div class="mdl-card__media">
+            {{#if properties._content._video._local}}
+            <!--<video></video>-->
+            {{else}}
+                {{#if properties._content._video._youtube}}
+                <iframe src="https://www.youtube.com/embed/{{properties._content._video._youtube.id}}?rel=0{{#unless properties._content._video._youtube.showControls}}&amp;controls=0{{/unless}}{{#unless properties._content._video._youtube.showTitle}}&amp;showinfo=0{{/unless}}" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                {{else}}
+                    {{#if properties._content._video._vimeo}}
+                    <iframe src="https://player.vimeo.com/video/{{properties._content._video._vimeo.id}}?color={{global.config.appColour}}{{#unless properties._content._video._vimeo.showTitle}}&amp;title=0{{/unless}}{{#unless properties._content._video._vimeo.showByline}}&amp;byline=0{{/unless}}{{#unless properties._content._video._vimeo.showPortrait}}&amp;portrait=0{{/unless}}" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+        </div>
         <div class="mdl-card__supporting-text">
             {{#if properties._content.subtitle}}
                 <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>

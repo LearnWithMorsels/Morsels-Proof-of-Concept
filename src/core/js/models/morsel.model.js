@@ -9,6 +9,7 @@ export class Morsel {
 	 * The parent object which all courses, stacks, cards and activities extend
 	 */
 	constructor() {
+
 		/**
 		 * The parent object
 		 * @type {App,Course,Stack,Card,Activity}
@@ -135,13 +136,13 @@ export class Morsel {
 		}
 
 		return templates[this.view]
-			.then( handlebar => handlebar( this ),
+			.then( handlebar => handlebar( Object.assign( this, { global: window.Morsels || {} } ) ),
 				e => console.error( 'Failed to render "' + this.view + '": ', e.message ) )
 			.then( html => this.element.html( html ) )
 			.then( () => {
 				if( this.children.length ) {
 					for( let child in this.children ) {
-						let childElement = this.element.find( '[data-childrenid="' + this.childrenElementID + '"]' );
+						let childElement = this.element.find( 'children' );
 
 						if( childElement.length &&
 								this.children[child].element ) {

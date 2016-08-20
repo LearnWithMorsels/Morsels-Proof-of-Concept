@@ -17,11 +17,7 @@ export class Languages extends Morsel {
 
 		this.render();
 
-		console.log( Morsels );
-
 		this.addEventTriggers();
-
-		console.log( this.properties );
 
 	}
 
@@ -40,7 +36,5 @@ export class Languages extends Morsel {
 		);
 	
 	}
-
-	addEventListeners() {}
 	
 }
