@@ -8,8 +8,7 @@
     <meta name="msapplication-navbutton-color" content="#{{config.appColour}}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
     <link href="./css/course.min.css" type="text/css" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css" rel="stylesheet">
@@ -25,12 +24,12 @@
                 views: ['handlebars']
             },
             map: {
-                app: 'js/app.js',
-                crossroads: 'js/vendor/crossroads.min.js',
-                eventemitter3: 'js/vendor/eventemitter3.js',
-                handlebars: 'js/vendor/handlebars.js',
-                jquery: 'js/vendor/jquery.min.js',
-                signals: 'js/vendor/signals.min.js'
+                app: './js/app.js',
+                crossroads: './js/vendor/crossroads.min.js',
+                eventemitter3: './js/vendor/eventemitter3.js',
+                handlebars: './js/vendor/handlebars.js',
+                jquery: './js/vendor/jquery.min.js',
+                signals: './js/vendor/signals.min.js'
             },
             meta: {
                 crossroads: {
@@ -60,10 +59,7 @@
             <div class="mdl-layout__header-row">
                 <span class="mdl-layout-title">Morsels</span>
                 <div class="mdl-layout-spacer"></div>
-                <button id="language-selector"
-                        class="mdl-button mdl-js-button mdl-button--icon">
-                    <i class="material-icons">language</i>
-                </button>
+                <div id="language-selector"></div>
             </div>
             <div aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button"><i
                     class="material-icons"></i></div>
@@ -82,11 +78,5 @@
             <div class="mdl-spinner mdl-js-spinner is-active"></div>
         </main>
     </div>
-    <ul id="language-selector-options" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-        for="language-selector">
-        <li class="mdl-menu__item" data-language="en"><i class="material-icons">radio_button_checked</i>EN</li>
-        <li class="mdl-menu__item" data-language="fr"><i class="material-icons">radio_button_unchecked</i>FR</li>
-        <li class="mdl-menu__item" data-language="es"><i class="material-icons">radio_button_unchecked</i>ES</li>
-    </ul>
 </body>
 </html>

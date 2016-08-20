@@ -1,6 +1,7 @@
 import { Morsel } from './morsel.model';
 import { Config } from './config.model';
 import { Course } from './course.model';
+import { Languages } from './languages.model';
 import { SCORM } from '../lms/scorm.js';
 import { xAPI } from '../lms/xapi.js';
 
@@ -21,21 +22,28 @@ export class App extends Morsel {
 
 		window.Morsels = {
 			app: this,
+			eventemitter: this.eventemitter,
 			courses: {},
 			currentLanguage: null
 		};
 
 		this.initialiseLMS();
 		this.loadExtensions();
+		this.createLanguagesMenu();
+		this.loadDefaultLanguage();
+
+		this.render();
+
+		this.addEventListeners();
+
+	}
+
+	loadDefaultLanguage() {
 
 		this.config.defaultLanguage()
 			.then( language => {
 				this.loadCourse( language );
 			} );
-
-		this.render();
-
-		this.addEventListeners();
 
 	}
 
@@ -70,6 +78,17 @@ export class App extends Morsel {
 
 		return this.languages[language];
 
+	}
+
+	createLanguagesMenu() {
+		this.config.get( 'languages' )
+			.then( languages => {
+				if( languages.selector &&
+					languages.selector.items &&
+					languages.selector.items.length ) {
+					new Languages( languages );
+				}
+			} );
 	}
 
 	loadExtensions() {
@@ -131,14 +150,6 @@ export class App extends Morsel {
 				console.log( 'Course rendered (app)', course );
 			},
 			this
-		);
-
-		$( '#language-selector-options' ).on(
-			'click',
-			'[data-language]',
-			e => {
-				this.eventemitter.emit( 'languageChanged', $( e.target ).attr( 'data-language' ) );
-			}
 		);
 
 	}

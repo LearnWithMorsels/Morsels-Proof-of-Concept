@@ -1,0 +1,9 @@
+<button id="language-selector-button" class="mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">language</i>
+</button>
+<ul id="language-selector-options" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="language-selector-button">
+    <li class="mdl-menu__item" data-language="{{properties.selector.default}}"><!--<i class="material-icons">radio_button_checked</i>-->{{languageName properties.selector.default}}</li>
+    {{#each properties.selector.items}}
+        <li class="mdl-menu__item" data-language="{{this}}"><!--<i class="material-icons">radio_button_unchecked</i>-->{{languageName this}}</li>
+    {{/each}}
+</ul>

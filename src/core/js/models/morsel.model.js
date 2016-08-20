@@ -161,6 +161,9 @@ export class Morsel {
 
 				this.element.addClass( classes.join( ' ' ) );
 			} )
+			.then( () => {
+				componentHandler.upgradeDom();
+			} )
 			.then( () => this.isRendered = true )
 			.then( () => {
 				this.eventemitter.emit( 'postRender' + this.ns, this );
@@ -225,6 +228,8 @@ export class Morsel {
 		return false;
 
 	}
+
+	addEventTriggers() {}
 
 	addEventListeners() {}
 
