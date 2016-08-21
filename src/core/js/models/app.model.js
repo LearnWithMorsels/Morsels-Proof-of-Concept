@@ -22,7 +22,6 @@ export class App extends Morsel {
 
 		window.Morsels = {
 			app: this,
-			eventemitter: this.eventemitter,
 			courses: {},
 			currentLanguage: null
 		};
@@ -136,20 +135,10 @@ export class App extends Morsel {
 						this.children[0].setProperties( course );
 						window.Morsels.currentLanguage = language;
 					} );
-			},
-			this
+			}
 		).on(
 			'postRenderApp',
-			app => {
-				//console.log( 'App rendered (app)', app );
-			},
-			this
-		).on(
-			'postRenderCourse',
-			course => {
-				console.log( 'Course rendered (app)', course );
-			},
-			this
+			app => {}
 		);
 
 	}

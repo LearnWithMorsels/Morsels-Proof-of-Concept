@@ -59,27 +59,4 @@ export class Stack extends Morsel {
 
 	}
 	
-	addEventListeners() {
-
-		this.eventemitter.on(
-			'postRenderCard',
-			card => {
-				console.log( 'Card rendered (section)', card );
-
-				if( this.checkAllChildrenRendered() ) {
-					this.matchCardHeights();
-					this.update();
-				}
-			},
-			this
-		).on(
-			'postRenderStack',
-			stack => {
-				//console.log( 'Stack rendered (stack)', stack );
-			},
-			this
-		);
-	
-	}
-	
 }

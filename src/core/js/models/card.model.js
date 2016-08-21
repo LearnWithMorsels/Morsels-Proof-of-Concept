@@ -72,7 +72,7 @@ export class Card extends Morsel {
 				mdlCard.css( 'transform', 'translate(' + ( displace.x * 4 ) + 'px, ' + ( displace.y * 4 ) + 'px)' );
 				this.element.addClass( 'dismissed' );
 				this.isComplete = true;
-				this.eventemitter.emit( 'complete' + this.ns, this );
+				this.eventemitter.emit( 'completeCard', this );
 			} else {
 				mdlCard.css( 'transform', 'none' ).blur();
 			}
@@ -80,7 +80,7 @@ export class Card extends Morsel {
 
 	}
 
-	addEventListeners() {
+	addEventTriggers() {
 
 		this.element.on( 'click', '.toggle-starred', () => {
 			this.isStarred = !this.isStarred;
@@ -90,26 +90,31 @@ export class Card extends Morsel {
 			this.update();
 		} );
 
+	}
+
+	addEventListeners() {
+
 		this.eventemitter.on(
 			'postRenderCard',
 			card => {
-				//console.log( 'Card rendered (card)', card );
-				this.setupDraggable();
-				if( this.parent.checkAllChildrenRendered() ) {
-					//this.parent.matchCardHeights();
+				card.setupDraggable();
+
+				if( card.parent.checkAllChildrenRendered() ) {
+					card.parent.matchCardHeights();
 				}
-			},
-			this
+			}
 		).on(
 			'completeCard',
 			card => {
-				//console.log( 'Card rendered (card)', card );
-				if( this.parent.checkAllChildrenComplete() ) {
-					this.parent.isComplete = true;
-					this.parent.update();
+				if( card === this ) {
+					console.log( 'Card complete' );
+					if( card.parent.checkAllChildrenComplete() ) {
+						console.log( 'Stack complete' );
+						card.parent.isComplete = true;
+						card.parent.update();
+					}
 				}
-			},
-			this
+			}
 		);
 
 	}

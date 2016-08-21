@@ -123,7 +123,7 @@ gulp.task( 'app:js:core', () => {
 				}
 			)
 		)
-		.pipe( uglify( { preserveComments: 'license' } ) )
+		//.pipe( uglify( { preserveComments: 'license' } ) )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( gulp.dest( './build/js' ) );
 } );
@@ -141,7 +141,7 @@ gulp.task( 'app:js:activities', () => {
 				}
 			)
 		)
-		.pipe( uglify( { preserveComments: 'license' } ) )
+		//.pipe( uglify( { preserveComments: 'license' } ) )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( gulp.dest( './build/js' ) );
 } );
@@ -159,7 +159,7 @@ gulp.task( 'app:js:cards', () => {
 				}
 			)
 		)
-		.pipe( uglify( { preserveComments: 'license' } ) )
+		//.pipe( uglify( { preserveComments: 'license' } ) )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( gulp.dest( './build/js' ) );
 } );
@@ -183,7 +183,7 @@ gulp.task( 'app:js:extensions', ['app:config'], () => {
 				}
 			)
 		)
-		.pipe( uglify( { preserveComments: 'license' } ) )
+		//.pipe( uglify( { preserveComments: 'license' } ) )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( gulp.dest( './build/js/extensions' ) );
 } );

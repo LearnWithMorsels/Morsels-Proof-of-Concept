@@ -24,7 +24,7 @@ export class Morsel {
 		 * The child property in the course JSON file
 		 * @type {string}
 		 */
-		this.childrenProperty = '_children';
+		this.childProperty = '_children';
 
 		/**
 		 * If true, all the children elements have been rendered
@@ -90,7 +90,7 @@ export class Morsel {
 		 * @type {boolean}
 		 */
 		this.isStarred = false;
-		
+
 	}
 
 	setProperties( properties ) {
