@@ -321,7 +321,7 @@ gulp.task( 'app:data', () => {
 
 gulp.task( 'docs', () => {
 	gulp.src( './src/core/js/**/*.js' )
-		.pipe( jsdoc( { opts: { destination: './docs/core/' } } ) );
+		.pipe( jsdoc( { opts: { destination: './docs/jsdocs/core/' } } ) );
 } );
 
 gulp.task( 'archive', () => {
