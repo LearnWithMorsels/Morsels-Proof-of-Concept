@@ -17,13 +17,15 @@
 				{
 					"_card": "video",
 					"_content": {
-						"title": "The Garden",
-						"body": "Here's a video I made.",
 						"_video": {
-							"_youtube": {
-								"id": "tabyvQhQSks",
-								"showTitle": false,
-								"showControls": false
+							"_local": {
+								"poster": "videos/example.png",
+								"_src": {
+									"wemb": "videos/example.webm",
+									"ogv": "videos/example.ogv",
+									"mp4": "videos/example.mp4",
+									"3gp": "videos/example.3gp"
+								}
 							}
 						}
 					}
@@ -49,9 +51,9 @@
 						"_video": {
 							"_vimeo": {
 								"id": "43233380",
-								"showTitle": false,
-								"showByline": false,
-								"showPortrait": false
+								"_showTitle": false,
+								"_showByline": false,
+								"_showPortrait": false
 							}
 						}
 					}
@@ -209,6 +211,72 @@
 								}
 							}
 						]
+					}
+				}
+			]
+		},
+		{
+			"title": "Example cards",
+			"_classes": "",
+			"_cards": [
+				{
+					"_card": "title",
+					"_content": {
+						"image": "//static.twistphp.com/logo/square/256.png",
+						"title": "Title card",
+						"body": "<p>This can be used as a &quot;scene setter&quot; for the stack</p>"
+					}
+				},
+				{
+					"_card": "text",
+					"_content": {
+						"headerImage": "//static.twistphp.com/logo/social/twitter.jpg",
+						"title": "Text card",
+						"body": "<p>A basic card for displaying text.</p>"
+					}
+				},
+				{
+					"_card": "video",
+					"_content": {
+						"title": "Video card (local)",
+						"_video": {
+							"_local": {
+								"poster": "videos/example.png",
+								"_src": {
+									"wemb": "videos/example.webm",
+									"ogv": "videos/example.ogv",
+									"mp4": "videos/example.mp4",
+									"3gp": "videos/example.3gp"
+								}
+							}
+						}
+					}
+				},
+				{
+					"_card": "video",
+					"_content": {
+						"title": "Video card (YouTube)",
+						"_video": {
+							"_youtube": {
+								"id": "tabyvQhQSks",
+								"_showTitle": false,
+								"_showControls": false
+							}
+						}
+					}
+				},
+				{
+					"_card": "video",
+					"_content": {
+						"title": "Video card (Vimeo)",
+						"_video": {
+							"_vimeo": {
+								"id": "43233380",
+								"_showTitle": false,
+								"_showByline": false,
+								"_showPortrait": false
+							}
+						}
 					}
 				}
 			]
