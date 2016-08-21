@@ -3,14 +3,22 @@
         {{#if properties._content.image}}
             <img src="{{properties._content.image}}">
         {{/if}}
+        {{#if properties._content.title}}
         <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">{{properties._content.title}}</h2>
         </div>
+        {{/if}}
+        {{#if properties._content.subtitle}}
         <div class="mdl-card__supporting-text">
-            {{#if properties._content.subtitle}}
-                <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>
-            {{/if}}
+            <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>
             {{{properties._content.body}}}
         </div>
+        {{else}}
+            {{#if properties._content.body}}
+            <div class="mdl-card__supporting-text">
+                {{{properties._content.body}}}
+            </div>
+            {{/if}}
+        {{/if}}
     </div>
 </div>

@@ -1,8 +1,10 @@
 <div class="mdl-card mdl-shadow--2dp{{#if isActivity}} activities{{/if}}">
     <div class="card-front">
+        {{#if properties._content.title}}
         <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">{{properties._content.title}}</h2>
         </div>
+        {{/if}}
         <div class="mdl-card__media">
             {{#if properties._content._video._local}}
             <video width="400" height="225" preload="metadata" poster="./app/resources/{{properties._content._video._local.poster}}" controls>
@@ -29,12 +31,18 @@
                 {{/if}}
             {{/if}}
         </div>
+        {{#if properties._content.subtitle}}
         <div class="mdl-card__supporting-text">
-            {{#if properties._content.subtitle}}
-                <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>
-            {{/if}}
+            <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>
             {{{properties._content.body}}}
         </div>
+        {{else}}
+            {{#if properties._content.body}}
+            <div class="mdl-card__supporting-text">
+                {{{properties._content.body}}}
+            </div>
+            {{/if}}
+        {{/if}}
         {{#if properties._activities}}
         <div class="mdl-card__actions mdl-card--border">
             {{properties._activities.title}}

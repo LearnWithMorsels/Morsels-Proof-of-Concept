@@ -29,7 +29,7 @@ var del = require( 'del' ),
 	browserSync = require( 'browser-sync' ).create();
 
 var objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) ),
-	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json',
+	objPrimaryContent = './src/course/' + objConfig.languages.primary + '.json',
 	timestamp = function() {
 		return new Date().getTime();
 	};
@@ -232,13 +232,13 @@ gulp.task( 'app:scss', () => {
 } );
 
 gulp.task( 'app:resources', () => {
-	return gulp.src( './src/app/resources/**/*' )
+	return gulp.src( './src/course/resources/**/*' )
 		.pipe( gulp.dest( './build/app/resources' ) );
 } );
 
 gulp.task( 'app:config', () => {
 	objConfig = JSON.parse( fs.readFileSync( './src/app/config.json' ) );
-	objPrimaryContent = './src/app/course/' + objConfig.languages.primary + '.json';
+	objPrimaryContent = './src/course/' + objConfig.languages.primary + '.json';
 
 	objConfig.properties = {
 		activities: {},
@@ -298,13 +298,13 @@ gulp.task( 'app:lms:scorm:definitions', () => {
 				)
 			)
 			/*.pipe(
-				addsrc(
-					[
-						'./src/core/lms/scorm/definitions/' + objConfig.lms.scorm.version + '/*',
-						'!./src/core/lms/scorm/definitions/' + objConfig.lms.scorm.version + '/imsmanifest.xml'
-					]
-				)
-			)*/
+			 addsrc(
+			 [
+			 './src/core/lms/scorm/definitions/' + objConfig.lms.scorm.version + '/*',
+			 '!./src/core/lms/scorm/definitions/' + objConfig.lms.scorm.version + '/imsmanifest.xml'
+			 ]
+			 )
+			 )*/
 			.pipe( gulp.dest( './build' ) );
 	}
 } );
@@ -314,14 +314,40 @@ gulp.task( 'app:lms:xapi', () => {
 } );
 
 gulp.task( 'app:data', () => {
-	return gulp.src( './src/app/course/*.json' )
-		.pipe( extend( './src/app/course/' + objConfig.languages.primary + '.json' ) )
+	return gulp.src( './src/course/*.json' )
+		.pipe( extend( './src/course/' + objConfig.languages.primary + '.json' ) )
 		.pipe( gulp.dest( './build/app/course' ) );
 } );
 
 gulp.task( 'docs', () => {
-	return gulp.src( './src/core/js/**/*.js' )
+	gulp.src( './src/core/js/**/*.js' )
 		.pipe( jsdoc( { opts: { destination: './docs/core/' } } ) );
+} );
+
+gulp.task( 'archive', () => {
+	let now = timestamp();
+
+	gulp.src( './src/course/**/*' )
+		.pipe( gulp.dest( './archive/' + now + '/course' ) );
+	return gulp.src( './src/app/**/*' )
+		.pipe( gulp.dest( './archive/' + now + '/app' ) );
+} );
+
+gulp.task( 'new', ['archive'], () => {
+	del(
+		[
+			'./src/course/**/*',
+			'./src/app/**/*'
+		]
+	).then( () => {
+		gulp.src( './src/resources/default-course.json' )
+			.pipe( rename( 'en.json' ) )
+			.pipe( gulp.dest( './src/course' ) );
+
+		gulp.src( './src/resources/default-config.json' )
+			.pipe( rename( 'config.json' ) )
+			.pipe( gulp.dest( './src/app' ) );
+	} );
 } );
 
 gulp.task( 'clean', () => {
@@ -330,7 +356,9 @@ gulp.task( 'clean', () => {
 	);
 } );
 
-gulp.task( 'dev', ['build'], () => {
+gulp.task( 'dev', ['build', 'run'] );
+
+gulp.task( 'run', () => {
 	browserSync.init(
 		{
 			files: [
@@ -353,9 +381,9 @@ gulp.task( 'dev', ['build'], () => {
 	gulp.watch( './src/cards/**/*.js', ['app:js:cards'] ).on( 'change', browserSync.reload );
 	gulp.watch( './src/extensions/**/*.js', ['app:js:extensions'] ).on( 'change', browserSync.reload );
 	gulp.watch( './src/**/*.scss', ['app:scss'] );
-	gulp.watch( './src/app/resources/**/*', ['app:resources'] );
+	gulp.watch( './src/course/resources/**/*', ['app:resources'] );
 	gulp.watch( './src/app/config.json', ['app:js', 'app:lms'] ).on( 'change', browserSync.reload );
-	gulp.watch( './src/app/course/*.json', ['app:data'] ).on( 'change', browserSync.reload );
+	gulp.watch( './src/course/*.json', ['app:data'] ).on( 'change', browserSync.reload );
 } );
 
 gulp.task( 'build', ['app:index', 'app:views', 'app:scss', 'app:resources', 'app:data', 'app:js', 'vendor', 'app:lms'] );

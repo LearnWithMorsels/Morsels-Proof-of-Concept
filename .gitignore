@@ -4,6 +4,7 @@
 *.log
 *.zip
 
+archive
 build
 docs
 node_modules
