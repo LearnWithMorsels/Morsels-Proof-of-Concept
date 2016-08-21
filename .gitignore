@@ -6,6 +6,6 @@
 
 archive
 build
-docs
+docs/jsdocs
 node_modules
 scorm-packages
