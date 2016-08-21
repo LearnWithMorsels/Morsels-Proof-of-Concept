@@ -1,4 +1,3 @@
-import { idhandler } from '../tools/idhandler';
 import EventEmitter from '../vendor/eventemitter3';
 
 let templates = {};
@@ -12,7 +11,6 @@ export class Morsel {
 
 		/**
 		 * The parent object
-		 * @type {App,Course,Stack,Card,Activity}
 		 */
 		this.parent = null;
 
@@ -27,12 +25,6 @@ export class Morsel {
 		 * @type {string}
 		 */
 		this.childrenProperty = '_children';
-
-		/**
-		 * A unique ID to use for the rendering of the children elements
-		 * @type {string}
-		 */
-		this.childrenElementID = idhandler.get();
 
 		/**
 		 * If true, all the children elements have been rendered
