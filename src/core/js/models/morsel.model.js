@@ -113,7 +113,7 @@ export class Morsel {
 
 	/**
 	 * Render the template of the model with the properties
-	 * @returns {Promise}
+	 * @returns {Promise} The render promise
 	 */
 	render() {
 

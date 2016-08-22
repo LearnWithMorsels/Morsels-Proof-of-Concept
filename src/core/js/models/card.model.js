@@ -37,9 +37,6 @@ export class Card extends Morsel {
 
 	}
 
-	/**
-	 * Set up the draggable action of the cards
-	 */
 	setupDraggable() {
 
 		let dragging = false,

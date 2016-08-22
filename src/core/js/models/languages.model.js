@@ -22,7 +22,9 @@ export class Languages extends Morsel {
 	}
 
 	addLanguageNameHelper() {
+
 		Handlebars.registerHelper( 'languageName', options => this.properties.labels[options] || 'UNKNOWN' );
+
 	}
 	
 	addEventTriggers() {

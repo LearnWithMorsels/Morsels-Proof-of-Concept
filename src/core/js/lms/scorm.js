@@ -27,7 +27,7 @@ export class SCORM {
 
 	isComplete() {
 
-		return ( this.status === 'completed' );
+		return this.status === 'completed';
 
 	}
 

@@ -5,7 +5,7 @@ export class Stack extends Morsel {
 
 	/**
 	 * Create a section of the course to insert cards into
-	 * @param {Object} properties
+	 * @param {Object} properties The stack's properties
 	 * @param {Course} parent The parent course model
 	 */
 	constructor( properties, parent ) {

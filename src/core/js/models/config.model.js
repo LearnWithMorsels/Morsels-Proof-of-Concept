@@ -6,7 +6,7 @@ export class Config {
 	 * Create a new config object and retrieve the JSON file
 	 * @param {string} [configURI='app/config.json'] The location of the JSON file
 	 * @constructor
-	 * @returns {Config}
+	 * @returns {Config} The config instance
 	 */
 	constructor( configURI = './app/config.json' ) {
 
@@ -32,20 +32,22 @@ export class Config {
 
 	/**
 	 * Function to perform after the config has loaded
-	 * @param doThis
-	 * @returns {Config}
+	 * @param {function} doThis Function to execute once loaded
+	 * @returns {Config} The config instance
 	 */
 	onLoad( doThis ) {
+
 		this.promise
 				.then( data => doThis,
 						e => console.error( 'Failed to perform onLoad function: ' + e.message ) );
 
 		return this;
+
 	}
 
 	/**
 	 * Get the default language to render
-	 * @returns {Promise}
+	 * @returns {Promise} A promise containing the default language
 	 */
 	defaultLanguage() {
 
@@ -67,7 +69,7 @@ export class Config {
 	/**
 	 * Get a value from the config JSON
 	 * @param {string} strKey The property to retrieve
-	 * @returns {*}
+	 * @returns {Promise} The value requested
 	 */
 	get( strKey = null ) {
 

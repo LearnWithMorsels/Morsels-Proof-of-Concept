@@ -1,9 +1,9 @@
 /**
  * Search a multidimensional object for a key
- * @param mxdKey {string|string[]} The key to search for with levels separated by a full stop
- * @param objIn {Object} The object to rummage through
- * @param newValue {*?} The optional new value to replace
- * @returns {*|null}
+ * @param {string|string[]} mxdKey The key to search for with levels separated by a full stop
+ * @param {Object} objIn The object to rummage through
+ * @param {*?} newValue The optional new value to replace
+ * @returns {*|null} The found value or the altered object
  * @example
  * var myObject = {
  *   a: {},

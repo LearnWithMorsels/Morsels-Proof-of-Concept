@@ -19,8 +19,6 @@ export class Sidebar extends Morsel {
 
 		//this.addEventTriggers();
 
-		console.log( properties._stacks );
-
 	}
 
 	addLanguageNameHelper() {

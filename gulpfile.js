@@ -6,25 +6,20 @@ var del = require( 'del' ),
 	path = require( 'path' ),
 	addsrc = require( 'gulp-add-src' ),
 	babel = require( 'gulp-babel' ),
-	change = require( 'gulp-change' ),
-	declare = require( 'gulp-declare' ),
 	handlebars = require( 'gulp-compile-handlebars' ),
 	concat = require( 'gulp-concat' ),
+	eslint = require( 'gulp-eslint' ),
 	fileOverride = require( 'gulp-file-override' ),
 	foreach = require( 'gulp-foreach' ),
 	jsdoc = require( 'gulp-jsdoc3' ),
-	jshint = require( 'gulp-jshint' ),
-	merge = require( 'merge' ),
 	extend = require( 'gulp-multi-extend' ),
 	rename = require( 'gulp-rename' ),
 	replace = require( 'gulp-replace' ),
 	sass = require( 'gulp-sass' ),
 	sourcemaps = require( 'gulp-sourcemaps' ),
 	uglify = require( 'gulp-uglify' ),
-	using = require( 'gulp-using' ),
 	xmlpoke = require( 'gulp-xmlpoke' ),
 	mergeStream = require( 'merge-stream' ),
-	wrap = require( 'gulp-wrap' ),
 	zip = require( 'gulp-zip' ),
 	browserSync = require( 'browser-sync' ).create();
 
@@ -45,6 +40,11 @@ gulp.task( 'app:index', () => {
 			)
 		)
 		.pipe( rename( 'index.html' ) )
+		.pipe( gulp.dest( './build' ) );
+} );
+
+gulp.task( 'service-worker', () => {
+	return gulp.src( './src/resources/service-worker.js' )
 		.pipe( gulp.dest( './build' ) );
 } );
 
@@ -350,6 +350,44 @@ gulp.task( 'new', ['archive'], () => {
 	} );
 } );
 
+gulp.task( 'test', () => {
+	gulp.src(
+		[
+			'./src/core/js/**/*.js',
+			'./src/cards/**/*.js'
+		]
+	)
+		.pipe(
+			eslint(
+				{
+					parserOptions: {
+						ecmaVersion: 6,
+						sourceType: 'module',
+						ecmaFeatures: {
+							impliedStrict: false
+						}
+					},
+					rules: {
+						'eqeqeq': 2,
+						'no-inner-declarations': 2,
+						'no-irregular-whitespace': 1,
+						'valid-jsdoc': 1,
+						'no-dupe-keys': 1,
+						'valid-typeof': 2,
+						'no-unreachable': 2,
+						'no-alert': 2,
+						'no-eval': 2,
+						quotes: ['error', 'single']
+					},
+					globals: ['jQuery', '$'],
+					envs: ['browser']
+				}
+			)
+		)
+		.pipe( eslint.format() )
+		.pipe( eslint.failAfterError() );
+} );
+
 gulp.task( 'clean', () => {
 	return del(
 		['./build/**/*']
@@ -386,7 +424,7 @@ gulp.task( 'serve', () => {
 	gulp.watch( './src/course/*.json', ['app:data'] ).on( 'change', browserSync.reload );
 } );
 
-gulp.task( 'build', ['app:index', 'app:views', 'app:scss', 'app:resources', 'app:data', 'app:js', 'vendor', 'app:lms'] );
+gulp.task( 'build', ['service-worker', 'app:index', 'app:views', 'app:scss', 'app:resources', 'app:data', 'app:js', 'vendor', 'app:lms'] );
 
 gulp.task( 'package', ['build'], () => {
 	return gulp.src( './build/**/*' )
