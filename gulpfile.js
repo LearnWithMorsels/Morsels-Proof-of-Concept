@@ -356,9 +356,9 @@ gulp.task( 'clean', () => {
 	);
 } );
 
-gulp.task( 'dev', ['build', 'run'] );
+gulp.task( 'dev', ['build', 'serve'] );
 
-gulp.task( 'run', () => {
+gulp.task( 'serve', () => {
 	browserSync.init(
 		{
 			files: [

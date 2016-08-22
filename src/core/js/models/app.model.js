@@ -2,6 +2,7 @@ import { Morsel } from './morsel.model';
 import { Config } from './config.model';
 import { Course } from './course.model';
 import { Languages } from './languages.model';
+import { Sidebar } from './sidebar.model';
 import { SCORM } from '../lms/scorm.js';
 import { xAPI } from '../lms/xapi.js';
 
@@ -28,6 +29,7 @@ export class App extends Morsel {
 
 		this.initialiseLMS();
 		this.loadExtensions();
+		this.createSidebar();
 		this.createLanguagesMenu();
 		this.loadDefaultLanguage();
 
@@ -80,6 +82,7 @@ export class App extends Morsel {
 	}
 
 	createLanguagesMenu() {
+
 		this.config.get( 'languages' )
 			.then( languages => {
 				if( languages.selector &&
@@ -88,6 +91,17 @@ export class App extends Morsel {
 					new Languages( languages );
 				}
 			} );
+
+	}
+
+	createSidebar() {
+
+		this.config.defaultLanguage()
+			.then( language => {
+				this.getCourse( language )
+					.then( course => new Sidebar( course ) );
+			} );
+
 	}
 
 	loadExtensions() {

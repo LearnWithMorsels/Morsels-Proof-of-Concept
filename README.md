@@ -10,10 +10,15 @@
 
 ### Installing
 
-To install, simply run `npm install`.
+To install, simply run `npm install --production`.
 
-### Using
+### Gulp commands
 
-To build a course, run `gulp build`. The course will be compiled to the `build` folder.
-
-To run a local development server and watch tasks, run `gulp dev`. A server will be started on port 3000.
+| Command        | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| `gulp new`     | Back up the current course and create a new one      |
+| `gulp build`   | Builds the course                                    |
+| `gulp serve`   | Serve the built course                               |
+| `gulp dev`     | Build the course and watch the files for development |
+| `gulp archive` | Back up the current course                           |
+| `gulp package` | ZIP up the current course into a SCORM package       |
