@@ -16,7 +16,7 @@
     "html5",
     "es6"
   ],
-  "author": "Andrew Hogsood",
+  "author": "Andrew Hogsood <mail@andrewhosgood.com> (http://andrewhosgood.com)",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/ahosgood/Morsels/issues"
