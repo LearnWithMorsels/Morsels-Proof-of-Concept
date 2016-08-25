@@ -5,32 +5,30 @@
             <h2 class="mdl-card__title-text">{{properties._content.title}}</h2>
         </div>
         {{/if}}
-        <div class="mdl-card__media">
-            {{#if properties._content._video._local}}
-            <video width="400" height="225" preload="metadata" poster="./app/resources/{{properties._content._video._local.poster}}" controls>
-                {{#if properties._content._video._local._src.webm}}
-                <source src="./app/resources/{{properties._content._video._local._src.webm}}" type="video/webm">
-                {{/if}}
-                {{#if properties._content._video._local._src.ogv}}
-                <source src="./app/resources/{{properties._content._video._local._src.ogv}}" type="video/ogg">
-                {{/if}}
-                {{#if properties._content._video._local._src.mp4}}
-                <source src="./app/resources/{{properties._content._video._local._src.mp4}}" type="video/mp4">
-                {{/if}}
-                {{#if properties._content._video._local._src.3gp}}
-                <source src="./app/resources/{{properties._content._video._local._src.3gp}}" type="video/3gp">
-                {{/if}}
-            </video>
+        {{#if properties._content._video._local}}
+        <video width="400" height="225" preload="metadata" poster="./app/resources/{{properties._content._video._local.poster}}" controls>
+            {{#if properties._content._video._local._src.webm}}
+            <source src="./app/resources/{{properties._content._video._local._src.webm}}" type="video/webm">
+            {{/if}}
+            {{#if properties._content._video._local._src.ogv}}
+            <source src="./app/resources/{{properties._content._video._local._src.ogv}}" type="video/ogg">
+            {{/if}}
+            {{#if properties._content._video._local._src.mp4}}
+            <source src="./app/resources/{{properties._content._video._local._src.mp4}}" type="video/mp4">
+            {{/if}}
+            {{#if properties._content._video._local._src.3gp}}
+            <source src="./app/resources/{{properties._content._video._local._src.3gp}}" type="video/3gp">
+            {{/if}}
+        </video>
+        {{else}}
+            {{#if properties._content._video._youtube}}
+            <iframe src="https://www.youtube.com/embed/{{properties._content._video._youtube.id}}?rel=0{{#unless properties._content._video._youtube._showControlsControls}}&amp;controls=0{{/unless}}{{#unless properties._content._video._youtube._showControlsTitle}}&amp;showinfo=0{{/unless}}" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
             {{else}}
-                {{#if properties._content._video._youtube}}
-                <iframe src="https://www.youtube.com/embed/{{properties._content._video._youtube.id}}?rel=0{{#unless properties._content._video._youtube._showControlsControls}}&amp;controls=0{{/unless}}{{#unless properties._content._video._youtube._showControlsTitle}}&amp;showinfo=0{{/unless}}" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                {{else}}
-                    {{#if properties._content._video._vimeo}}
-                    <iframe src="https://player.vimeo.com/video/{{properties._content._video._vimeo.id}}?color={{global.config.appColour}}{{#unless properties._content._video._vimeo._showControlsTitle}}&amp;title=0{{/unless}}{{#unless properties._content._video._vimeo._showControlsByline}}&amp;byline=0{{/unless}}{{#unless properties._content._video._vimeo._showControlsPortrait}}&amp;portrait=0{{/unless}}" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                    {{/if}}
+                {{#if properties._content._video._vimeo}}
+                <iframe src="https://player.vimeo.com/video/{{properties._content._video._vimeo.id}}?color={{global.config.appColour}}{{#unless properties._content._video._vimeo._showControlsTitle}}&amp;title=0{{/unless}}{{#unless properties._content._video._vimeo._showControlsByline}}&amp;byline=0{{/unless}}{{#unless properties._content._video._vimeo._showControlsPortrait}}&amp;portrait=0{{/unless}}" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                 {{/if}}
             {{/if}}
-        </div>
+        {{/if}}
         {{#if properties._content.subtitle}}
         <div class="mdl-card__supporting-text">
             <h4 class="mdl-typography--font-light mdl-typography--subhead">{{{properties._content.subtitle}}}</h4>
