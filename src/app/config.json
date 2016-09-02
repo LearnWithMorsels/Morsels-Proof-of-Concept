@@ -24,6 +24,9 @@
   "extensions": {
     "debug": {
       "enable": true
+    },
+    "notifications": {
+      "enable": true
     }
   },
   "languages": {

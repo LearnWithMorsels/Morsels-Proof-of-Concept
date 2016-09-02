@@ -45,7 +45,7 @@ export default class extends Extension {
 				cards: []
 			};
 
-		this.consoleGroupIfExists( 'COURSE: ' + course.properties.title );
+		this.consoleGroupIfExists( 'COURSE: ' + course.properties.title, true );
 
 		summary.course.hasTitle = ( course.properties.title !== null && course.properties.title !== undefined );
 
@@ -61,7 +61,7 @@ export default class extends Extension {
 				hasTitle2: stack.properties.title ? '✔' : '✘'
 			};
 
-			this.consoleGroupIfExists( 'STACK: ' + stack.properties.title );
+			this.consoleGroupIfExists( 'STACK: ' + stack.properties.title, true );
 
 			this.consoleGroupIfExists( 'Properties', true );
 			window.console.log( stack );
@@ -85,9 +85,9 @@ export default class extends Extension {
 
 		this.consoleGroupEndIfExists();
 
-		console.table( summary.course );
-		console.table( summary.stacks );
-		console.table( summary.cards );
+		//console.table( summary.course );
+		//console.table( summary.stacks );
+		//console.table( summary.cards );
 
 	}
 

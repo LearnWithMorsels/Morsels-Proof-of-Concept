@@ -109,6 +109,7 @@ export class Card extends Morsel {
 						console.log( 'Stack complete' );
 						card.parent.isComplete = true;
 						card.parent.update();
+						window.Morsels.eventemitter.emit( 'notify', { title: 'CUSTOM' }, this );
 					}
 				}
 			}

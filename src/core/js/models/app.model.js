@@ -24,13 +24,16 @@ export class App extends Morsel {
 		window.Morsels = {
 			app: this,
 			courses: {},
-			currentLanguage: null
+			currentLanguage: null,
+			eventemitter: this.eventemitter
 		};
 
 		this.initialiseLMS();
 		this.loadExtensions();
+
 		this.createSidebar();
 		this.createLanguagesMenu();
+
 		this.loadDefaultLanguage();
 
 		this.render();
